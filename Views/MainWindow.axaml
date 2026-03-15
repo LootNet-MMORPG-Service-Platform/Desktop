@@ -1,0 +1,94 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:desktop_app.ViewModels"
+        xmlns:views="using:desktop_app.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="desktop_app.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="LootNet-MMORPG"
+        Width="1240"
+        Height="820"
+        MinWidth="1075"
+        MinHeight="720"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        CanResize="True">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid>
+        <Image Source="/Assets/background.png"
+               Stretch="UniformToFill"/>
+
+        <Border Background="#33000000"/>
+
+        <Border CornerRadius="50"
+                Background="White"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MaxWidth="1140"
+                MaxHeight="720"
+                BoxShadow="0 40 120 0 #99000000">
+
+            <Grid ColumnDefinitions="Auto,*" Margin="20">
+                
+                <Grid Grid.Column="0" Width="600">
+                    <Border CornerRadius="30,0,0,30"
+                            ClipToBounds="True">
+                        <Border.Clip>
+                            <PathGeometry>
+                                M0 25C0 11.1929 11.1929 0 25 0H570.822C586.157 0 597.878 13.6792 595.527
+                                28.8328L497.784 658.833C495.894 671.014 485.407 680 473.08 680H25C11.1929
+                                680 0 668.807 0 655V25Z
+                            </PathGeometry>
+                        </Border.Clip>
+
+                        <Image Source="/Assets/background.png"
+                               Stretch="UniformToFill"
+                               Margin="-110 0 -500 0"/>
+                    </Border>
+
+                    <Grid RowDefinitions="Auto,*,Auto">
+                        <Grid Grid.Row="0" ColumnDefinitions="*,*" Margin="35">
+
+                            <TextBlock Grid.Column="0"
+                                       Text="LootNet-MMORPG"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="rgba(255,255,255,0.9)"
+                                       VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1"
+                                       Text="Admin Panel"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="rgba(255,255,255,0.9)"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                
+                <Grid Grid.Column="1" Margin="100 0 100 0">
+                    <ContentControl Content="{Binding CurrentViewModel}">
+                        <ContentControl.DataTemplates>
+
+                            <DataTemplate DataType="vm:WelcomeViewModel">
+                                <views:WelcomeView/>
+                            </DataTemplate>
+
+                            <DataTemplate DataType="vm:LoginViewModel">
+                                <views:LoginView/>
+                            </DataTemplate>
+
+                        </ContentControl.DataTemplates>
+                    </ContentControl>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

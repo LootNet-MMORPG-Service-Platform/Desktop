@@ -1,0 +1,73 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="desktop_app.Views.LoginView">
+
+    <StackPanel HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Orientation="Vertical"
+                Spacing="20">
+
+        <TextBlock Text="Login"
+                   HorizontalAlignment="Center"
+                   FontSize="36"
+                   FontWeight="ExtraBold"
+                   Foreground="rgba(0,0,0,0.9)"/>
+        
+        <TextBlock HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   FontSize="14"
+                   FontWeight="SemiBold"
+                   TextWrapping="Wrap"
+                   Foreground="rgba(0,0,0,0.8)">
+                Welcome to the LootNet-MMORPG
+                <LineBreak/>
+                Admin Panel
+        </TextBlock>
+
+        <StackPanel Orientation="Vertical" Spacing="10">
+            <TextBox Watermark="Email"/>
+            <TextBox Watermark="Password" PasswordChar="*"/>
+        </StackPanel>
+
+        <Button x:Name="ForgotPasswordButton"
+                Content="Forgot password?"
+                HorizontalAlignment="Right"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Foreground="{StaticResource PrColor}"
+                FontSize="12"
+                FontWeight="Medium"
+                Padding="6 4"
+                CornerRadius="10"/>
+
+        <!--
+        <StackPanel x:Name="AlternativeLoginPanel"
+                    Orientation="Horizontal"
+                    Spacing="15"
+                    HorizontalAlignment="Center">
+            <Rectangle Width="50" Height="2" Fill="rgba(0,0,0,0.3)"/>
+            <TextBlock Text="or"
+                       FontWeight="SemiBold"
+                       FontSize="14"
+                       Foreground="rgba(0,0,0,0.8)"/>
+            <Rectangle Width="50" Height="2" Fill="rgba(0,0,0,0.3)"/>
+        </StackPanel>
+
+        <Button x:Name="GoogleLoginButton"
+                Classes="googleBtn"
+                HorizontalAlignment="Stretch"/>
+        -->
+
+        <Button Classes="submitBtn"
+                Content="Login"
+                HorizontalAlignment="Stretch"/>
+
+        <Button x:Name="BackButton"
+                Content="Back"
+                HorizontalAlignment="Center"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                CornerRadius="10"
+                Foreground="{StaticResource PrColor}"/>
+    </StackPanel>
+</UserControl>

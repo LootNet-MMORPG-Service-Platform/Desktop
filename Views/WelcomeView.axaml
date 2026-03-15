@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="desktop_app.Views.WelcomeView">
+
+    <StackPanel HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Orientation="Vertical"
+                Spacing="20">
+
+        <TextBlock Text="Welcome!"
+                   HorizontalAlignment="Center"
+                   FontSize="60"
+                   FontFamily="{StaticResource LobsterFont}"
+                   Foreground="rgba(0,0,0,0.9)"/>
+
+        <TextBlock HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   FontSize="14"
+                   FontWeight="SemiBold"
+                   TextWrapping="Wrap"
+                   Foreground="rgba(0,0,0,0.8)">
+            Welcome to the LootNet-MMORPG
+            <LineBreak/>
+            Admin Panel
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   FontSize="14"
+                   Foreground="rgba(0,0,0,0.75)">
+            <Run Text="Manage users and roles, configure items and drop rates, "/>
+            <Run Text="adjust game economy balance, and inspect logs and statistics."/>
+        </TextBlock>
+
+        <Button x:Name="GoToLoginButton"
+                Classes="submitBtn"
+                Content="Go to login"
+                HorizontalAlignment="Stretch"/>
+    </StackPanel>
+</UserControl>
