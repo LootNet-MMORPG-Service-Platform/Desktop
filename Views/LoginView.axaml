@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="desktop_app.Views.LoginView">
+             xmlns:vm="clr-namespace:desktop_app.ViewModels"
+             x:Class="desktop_app.Views.LoginView"
+             x:DataType="vm:LoginViewModel">
 
     <StackPanel HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
@@ -25,8 +27,17 @@
         </TextBlock>
 
         <StackPanel Orientation="Vertical" Spacing="10">
-            <TextBox Watermark="Email"/>
-            <TextBox Watermark="Password" PasswordChar="*"/>
+                <TextBox Watermark="Username"
+                         Text="{Binding Username}"/>
+
+                <TextBox Watermark="Password"
+                         Text="{Binding Password}"
+                         PasswordChar="*"/>
+                
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="Red"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"/>
         </StackPanel>
 
         <Button x:Name="ForgotPasswordButton"
@@ -60,7 +71,8 @@
 
         <Button Classes="submitBtn"
                 Content="Login"
-                HorizontalAlignment="Stretch"/>
+                HorizontalAlignment="Stretch"
+                Click="LoginButton_Click"/>
 
         <Button x:Name="BackButton"
                 Content="Back"

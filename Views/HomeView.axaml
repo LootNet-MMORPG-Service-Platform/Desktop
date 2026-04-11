@@ -1,0 +1,128 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:desktop_app.ViewModels"
+             x:Class="desktop_app.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+
+    <Grid RowDefinitions="72,*" ColumnDefinitions="240,*"
+          Background="#F8FAFC">
+
+        <!-- TOPBAR -->
+        <Border Grid.Row="0" Grid.ColumnSpan="2"
+                Background="#0F172A"
+                BorderBrush="#1E293B"
+                BorderThickness="0,0,0,1"
+                Padding="24,0">
+
+            <Grid ColumnDefinitions="*,Auto,Auto"
+                  VerticalAlignment="Center">
+
+                <StackPanel Orientation="Vertical"
+                            VerticalAlignment="Center"
+                            Spacing="2">
+                    <TextBlock Text="LootNet-MMORPG Admin Panel"
+                               Foreground="White"
+                               FontSize="20"
+                               FontWeight="Bold"/>
+
+                    <TextBlock Text="Manage the world of LootNet from one place"
+                               Foreground="#94A3B8"
+                               FontSize="12"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Username, StringFormat='Welcome, {0}!'}"
+                           Foreground="#E2E8F0"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           Margin="0,0,18,0"/>
+
+                <Button Grid.Column="2"
+                        Classes="logoutBtn"
+                        Content="Logout"
+                        Command="{Binding LogoutCommand}"
+                        VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- SIDEBAR -->
+        <Border Grid.Row="1" Grid.Column="0"
+                Background="#172033"
+                BorderBrush="#243045"
+                BorderThickness="0,1,1,0"
+                Padding="18,22">
+
+            <StackPanel Spacing="10">
+
+                <TextBlock Text="NAVIGATION"
+                           Foreground="#94A3B8"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Margin="8,0,0,10"/>
+
+                <Button Classes.navBtn="True"
+                        Classes.active="{Binding IsDashboardActive}"
+                        Content="Dashboard"
+                        Command="{Binding ShowDashboardCommand}"/>
+
+                <Button Classes.navBtn="True"
+                        Classes.active="{Binding IsUsersActive}"
+                        Content="Users"
+                        Command="{Binding ShowUsersCommand}"/>
+
+                <Button Classes.navBtn="True"
+                        Classes.active="{Binding IsItemsActive}"
+                        Content="Items"
+                        Command="{Binding ShowItemsCommand}"/>
+
+                <Button Classes.navBtn="True"
+                        Classes.active="{Binding IsEconomyActive}"
+                        Content="Economy"
+                        Command="{Binding ShowEconomyCommand}"/>
+
+                <Button Classes.navBtn="True"
+                        Classes.active="{Binding IsLogsActive}"
+                        Content="Logs"
+                        Command="{Binding ShowLogsCommand}"/>
+
+            </StackPanel>
+        </Border>
+
+        <!-- CONTENT -->
+        <Grid Grid.Row="1" Grid.Column="1"
+              Margin="24"
+              RowDefinitions="Auto,24,Auto,*">
+
+            <StackPanel Grid.Row="0" Spacing="4">
+                <TextBlock Text="{Binding CurrentSectionTitle}"
+                           FontSize="30"
+                           FontWeight="Bold"
+                           Foreground="#0F172A"/>
+
+                <TextBlock Text="{Binding CurrentSectionDescription}"
+                           FontSize="14"
+                           Foreground="#64748B"/>
+            </StackPanel>
+
+            <Border Grid.Row="2"
+                    Background="White"
+                    CornerRadius="18"
+                    Padding="22"
+                    BoxShadow="0 10 30 0 #14000000">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding CurrentSectionTitle}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="#0F172A"/>
+
+                    <TextBlock Text="{Binding CurrentSectionMessage}"
+                               TextWrapping="Wrap"
+                               FontSize="14"
+                               Foreground="#475569"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+    </Grid>
+</UserControl>
