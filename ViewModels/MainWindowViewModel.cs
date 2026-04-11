@@ -10,24 +10,27 @@ public class MainWindowViewModel : ViewModelBase
         set => SetProperty(ref _currentViewModel, value);
     }
 
-    private WelcomeViewModel WelcomeVm { get; }
-    private LoginViewModel LoginVm { get; }
+    private AuthShellViewModel AuthShellVm { get; }
+    private HomeViewModel HomeVm { get; }
 
     public MainWindowViewModel()
     {
-        WelcomeVm = new WelcomeViewModel(this);
-        LoginVm = new LoginViewModel(this);
+        AuthShellVm = new AuthShellViewModel(this);
+        HomeVm = new HomeViewModel(this);
 
-        CurrentViewModel = WelcomeVm;
+        CurrentViewModel = AuthShellVm;
     }
 
-    public void ShowLogin()
+    public void ShowHome(string username)
     {
-        CurrentViewModel = LoginVm;
+        HomeVm.SetUsername(username);
+        CurrentViewModel = HomeVm;
     }
-
+    
     public void ShowWelcome()
     {
-        CurrentViewModel = WelcomeVm;
+        AuthShellVm.LoginVm.Reset();
+        AuthShellVm.ShowWelcome();
+        CurrentViewModel = AuthShellVm;
     }
 }
