@@ -33,13 +33,14 @@ public partial class LoginViewModel : ViewModelBase
 
         var result = await _authService.LoginAsync(Username, Password);
 
-        if (result == null || result.Role != 0)
+        if (result == null ||
+            result.Role == Models.UserRole.Player)
         {
             ErrorMessage = "Invalid username or password";
             return;
         }
 
-        _mainWindow.ShowHome(result.Username);
+        _mainWindow.ShowHome(result);
     }
     
     public void Reset()

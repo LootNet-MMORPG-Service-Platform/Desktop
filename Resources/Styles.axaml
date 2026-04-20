@@ -239,5 +239,202 @@
             <Setter Property="Background" Value="#F05252"/>
         </Style>
     </Style>
+    
+    <Style Selector="Button.actionBtn">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="10"
+                            Padding="12,8"
+                            MinWidth="100">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
 
+        <Style Selector="^:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="#B91C1C"/>
+        </Style>
+
+        <Style Selector="^:pressed /template/ Border#Root">
+            <Setter Property="Background" Value="#991B1B"/>
+        </Style>
+    </Style>
+    
+    <Style Selector="Button.blockBtn">
+        <Style Selector="^:disabled /template/ Border#Root">
+            <Setter Property="Background" Value="#9CA3AF"/>
+        </Style>
+        
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Background" Value="#DC2626"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="10"
+                            Padding="12,8"
+                            MinWidth="100">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="#B91C1C"/>
+        </Style>
+
+        <Style Selector="^:pressed /template/ Border#Root">
+            <Setter Property="Background" Value="#991B1B"/>
+        </Style>
+    </Style>
+    
+    <Style Selector="Button.unblockBtn">
+        <Style Selector="^:disabled /template/ Border#Root">
+            <Setter Property="Background" Value="#9CA3AF"/>
+        </Style>
+        
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Background" Value="#16A34A"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="10"
+                            Padding="12,8"
+                            MinWidth="100">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="#15803D"/>
+        </Style>
+
+        <Style Selector="^:pressed /template/ Border#Root">
+            <Setter Property="Background" Value="#166534"/>
+        </Style>
+    </Style>
+    
+    <Style Selector="Button.dialogConfirmBtn">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Background" Value="#DC2626"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            Padding="12,8"
+                            MinWidth="90">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="#B91C1C"/>
+        </Style>
+    </Style>
+
+    <Style Selector="Button.dialogCancelBtn">
+        <Setter Property="Foreground" Value="#111827"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Background" Value="#E5E7EB"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            Padding="12,8"
+                            MinWidth="90">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="#D1D5DB"/>
+        </Style>
+    </Style>
+    
+    <Style Selector="Button.detailsBtn">
+        <Style Selector="^:disabled /template/ Border#Root">
+            <Setter Property="Background" Value="#9CA3AF"/>
+        </Style>
+
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Background" Value="#2563EB"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="10"
+                            Padding="12,8"
+                            MinWidth="100">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="#1D4ED8"/>
+        </Style>
+
+        <Style Selector="^:pressed /template/ Border#Root">
+            <Setter Property="Background" Value="#1E40AF"/>
+        </Style>
+    </Style>
 </Styles>

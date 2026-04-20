@@ -1,4 +1,6 @@
-﻿namespace desktop_app.ViewModels;
+﻿using desktop_app.Services;
+
+namespace desktop_app.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
@@ -21,9 +23,14 @@ public class MainWindowViewModel : ViewModelBase
         CurrentViewModel = AuthShellVm;
     }
 
-    public void ShowHome(string username)
+    public void ShowHome(AuthService.LoginResult result)
     {
-        HomeVm.SetUsername(username);
+        HomeVm.SetUsername(result.Username);
+        HomeVm.SetRole(result.Role.ToString());
+        HomeVm.SetToken(result.Token);
+        HomeVm.SetRefreshToken(result.RefreshToken);
+        HomeVm.SetCurrentUserId(result.UserId);
+        HomeVm.ShowDashboardCommand.Execute(null);
         CurrentViewModel = HomeVm;
     }
     
