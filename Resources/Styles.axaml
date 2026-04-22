@@ -204,16 +204,16 @@
     </Style>
     
     <Style Selector="Button.navBtn.active">
-        <Setter Property="Background" Value="#EF4444"/>
+        <Setter Property="Background" Value="{DynamicResource PrColor}"/>
         <Setter Property="Foreground" Value="White"/>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#F05252"/>
+            <Setter Property="Background" Value="{DynamicResource PrColorHover}"/>
         </Style>
     </Style>
     
     <Style Selector="Button.logoutBtn">
-        <Setter Property="Background" Value="#EF4444"/>
+        <Setter Property="Background" Value="{DynamicResource PrColor}"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Template">
@@ -236,7 +236,7 @@
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#F05252"/>
+            <Setter Property="Background" Value="{DynamicResource PrColorHover}"/>
         </Style>
     </Style>
     
@@ -436,5 +436,32 @@
         <Style Selector="^:pressed /template/ Border#Root">
             <Setter Property="Background" Value="#1E40AF"/>
         </Style>
+    </Style>
+    
+    <Style Selector="ScrollBar:vertical">
+        <Setter Property="Width" Value="10"/>
+    </Style>
+
+    <Style Selector="ScrollBar:vertical /template/ RepeatButton#PART_LineUpButton">
+        <Setter Property="IsVisible" Value="False"/>
+    </Style>
+
+    <Style Selector="ScrollBar:vertical /template/ RepeatButton#PART_LineDownButton">
+        <Setter Property="IsVisible" Value="False"/>
+    </Style>
+
+    <Style Selector="ScrollBar:vertical /template/ Thumb">
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Background" Value="#A3A3A3"/>
+    </Style>
+
+    <Style Selector="ScrollBar:vertical:pointerover /template/ Thumb">
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Background" Value="#A3A3A3"/>
+    </Style>
+
+    <Style Selector="ScrollBar:vertical:pressed /template/ Thumb">
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Background" Value="#A3A3A3"/>
     </Style>
 </Styles>
