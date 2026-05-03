@@ -12,7 +12,7 @@
         Height="820"
         MinWidth="1075"
         MinHeight="720"
-        Background="White"
+        Background="{DynamicResource SurfaceBrush}"
         WindowStartupLocation="CenterScreen"
         CanResize="True">
 

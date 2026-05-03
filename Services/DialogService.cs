@@ -10,6 +10,17 @@ namespace desktop_app.Services;
 
 public static class DialogService
 {
+    private static IBrush GetBrush(string key, IBrush fallback)
+    {
+        if (Application.Current?.TryGetResource(key, Application.Current.ActualThemeVariant, out var value) == true
+            && value is IBrush brush)
+        {
+            return brush;
+        }
+
+        return fallback;
+    }
+
     private static Window CreateBaseDialog(Control content, double width, double height)
     {
         return new Window
@@ -21,7 +32,7 @@ public static class DialogService
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Content = new Border
             {
-                Background = Brushes.White,
+                Background = GetBrush("WhiteBrush", Brushes.White),
                 CornerRadius = new CornerRadius(12),
                 Padding = new Thickness(20),
                 BoxShadow = BoxShadows.Parse("0 10 30 0 #14000000"),
@@ -64,7 +75,7 @@ public static class DialogService
                         {
                             Text = message,
                             FontSize = 14,
-                            Foreground = Brushes.Black,
+                            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black),
                             TextWrapping = TextWrapping.Wrap,
                             TextAlignment = TextAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Center
@@ -113,8 +124,7 @@ public static class DialogService
         {
             "Player",
             "GameModerator",
-            "Admin",
-            "SuperAdmin"
+            "Admin"
         };
 
         var comboBox = new ComboBox
@@ -159,7 +169,7 @@ public static class DialogService
                             Text = $"Change role for {username}",
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
-                            Foreground = Brushes.Black,
+                            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black),
                             TextAlignment = TextAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Center
                         },
@@ -220,12 +230,12 @@ public static class DialogService
                     Text = "Error",
                     FontSize = 16,
                     FontWeight = FontWeight.SemiBold,
-                    Foreground = Brushes.Black
+                    Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
                 },
                 new SelectableTextBlock
                 {
                     Text = message,
-                    Foreground = Brushes.Black,
+                    Foreground = GetBrush("TextPrimaryBrush", Brushes.Black),
                     TextWrapping = TextWrapping.Wrap
                 },
                 okButton
@@ -242,21 +252,21 @@ public static class DialogService
     public static async Task ShowInventoryDialogAsync(Window owner, ItemCollectionDTO items)
     {
         var root = new StackPanel { Spacing = 16 };
-        
+
         root.Children.Add(new TextBlock
         {
             Text = "Inventory",
             FontSize = 18,
             FontWeight = FontWeight.Bold,
-            Foreground = Brushes.Black
+            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
         });
-        
+
         root.Children.Add(new TextBlock
         {
             Text = "Weapons",
             FontSize = 16,
             FontWeight = FontWeight.SemiBold,
-            Foreground = Brushes.Black
+            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
         });
 
         if (items.Weapons.Count == 0)
@@ -264,7 +274,7 @@ public static class DialogService
             root.Children.Add(new TextBlock
             {
                 Text = "No weapons",
-                Foreground = Brushes.Gray
+                Foreground = GetBrush("TextMutedBrush", Brushes.Gray)
             });
         }
         else
@@ -273,7 +283,7 @@ public static class DialogService
             {
                 root.Children.Add(new Border
                 {
-                    Background = new SolidColorBrush(Color.Parse("#F1F5F9")),
+                    Background = GetBrush("CardBrush", new SolidColorBrush(Color.Parse("#F1F5F9"))),
                     CornerRadius = new CornerRadius(10),
                     Padding = new Thickness(12),
                     Child = new StackPanel
@@ -285,30 +295,30 @@ public static class DialogService
                             {
                                 Text = w.Name,
                                 FontWeight = FontWeight.SemiBold,
-                                Foreground = Brushes.Black
+                                Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
                             },
                             new TextBlock
                             {
                                 Text = $"Type: {w.WeaponType}",
-                                Foreground = Brushes.Gray
+                                Foreground = GetBrush("TextMutedBrush", Brushes.Gray)
                             },
                             new TextBlock
                             {
                                 Text = $"Cut: {Math.Round(w.Cut, 2)} | Blunt: {Math.Round(w.Blunt, 2)}",
-                                Foreground = Brushes.Black
+                                Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
                             }
                         }
                     }
                 });
             }
         }
-        
+
         root.Children.Add(new TextBlock
         {
             Text = "Armors",
             FontSize = 16,
             FontWeight = FontWeight.SemiBold,
-            Foreground = Brushes.Black,
+            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black),
             Margin = new Thickness(0, 10, 0, 0)
         });
 
@@ -317,7 +327,7 @@ public static class DialogService
             root.Children.Add(new TextBlock
             {
                 Text = "No armors",
-                Foreground = Brushes.Gray
+                Foreground = GetBrush("TextMutedBrush", Brushes.Gray)
             });
         }
         else
@@ -326,7 +336,7 @@ public static class DialogService
             {
                 root.Children.Add(new Border
                 {
-                    Background = new SolidColorBrush(Color.Parse("#F1F5F9")),
+                    Background = GetBrush("CardBrush", new SolidColorBrush(Color.Parse("#F1F5F9"))),
                     CornerRadius = new CornerRadius(10),
                     Padding = new Thickness(12),
                     Child = new StackPanel
@@ -338,17 +348,17 @@ public static class DialogService
                             {
                                 Text = a.Name,
                                 FontWeight = FontWeight.SemiBold,
-                                Foreground = Brushes.Black
+                                Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
                             },
                             new TextBlock
                             {
                                 Text = $"Type: {a.ArmorType}",
-                                Foreground = Brushes.Gray
+                                Foreground = GetBrush("TextMutedBrush", Brushes.Gray)
                             },
                             new TextBlock
                             {
                                 Text = $"CutRes: {Math.Round(a.CutResistance, 2)} | BluntRes: {Math.Round(a.BluntResistance, 2)}",
-                                Foreground = Brushes.Black
+                                Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
                             }
                         }
                     }
@@ -379,28 +389,28 @@ public static class DialogService
     public static async Task ShowEquipmentDialogAsync(Window owner, EquipmentResponseDTO eq)
     {
         var root = new StackPanel { Spacing = 16 };
-        
+
         root.Children.Add(new TextBlock
         {
             Text = "Equipment",
             FontSize = 18,
             FontWeight = FontWeight.Bold,
-            Foreground = Brushes.Black
+            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
         });
-        
+
         root.Children.Add(new TextBlock
         {
             Text = "Armor",
             FontSize = 16,
             FontWeight = FontWeight.SemiBold,
-            Foreground = Brushes.Black
+            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
         });
 
         void AddSlot(string label, string? value)
         {
             root.Children.Add(new Border
             {
-                Background = new SolidColorBrush(Color.Parse("#F1F5F9")),
+                Background = GetBrush("CardBrush", new SolidColorBrush(Color.Parse("#F1F5F9"))),
                 CornerRadius = new CornerRadius(10),
                 Padding = new Thickness(12),
                 Child = new StackPanel
@@ -411,13 +421,13 @@ public static class DialogService
                         new TextBlock
                         {
                             Text = label,
-                            Foreground = Brushes.Gray
+                            Foreground = GetBrush("TextMutedBrush", Brushes.Gray)
                         },
                         new TextBlock
                         {
                             Text = value ?? "Empty",
                             FontWeight = FontWeight.SemiBold,
-                            Foreground = Brushes.Black
+                            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
                         }
                     }
                 }
@@ -429,13 +439,13 @@ public static class DialogService
         AddSlot("Gloves", eq.Gloves?.Name);
         AddSlot("Legs", eq.Legs?.Name);
         AddSlot("Boots", eq.Boots?.Name);
-        
+
         root.Children.Add(new TextBlock
         {
             Text = "Weapons",
             FontSize = 16,
             FontWeight = FontWeight.SemiBold,
-            Foreground = Brushes.Black,
+            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black),
             Margin = new Thickness(0, 10, 0, 0)
         });
 

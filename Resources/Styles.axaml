@@ -12,13 +12,13 @@
     </Design.PreviewWith>
 
     <Style Selector="TextBox">
-        <Setter Property="Background" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Height" Value="50"/>
         <Setter Property="BorderThickness" Value="2"/>
-        <Setter Property="BorderBrush" Value="rgba(0,0,0,0.3)"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}"/>
         <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Foreground" Value="rgba(0,0,0,0.3)"/>
+        <Setter Property="Foreground" Value="{DynamicResource InputTextBrush}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Transitions">
@@ -29,7 +29,7 @@
 
         <Style Selector="^ /template/ TextBlock#PART_Watermark">
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="rgba(0,0,0,0.3)"/>
+            <Setter Property="Foreground" Value="{DynamicResource InputTextBrush}"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Transitions">
                 <Transitions>
@@ -39,7 +39,7 @@
         </Style>
 
         <Style Selector="^ /template/ Border#PART_BorderElement">
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
             <Setter Property="Transitions">
                 <Transitions>
                     <BrushTransition Property="BorderBrush" Duration="0:0:0.5" Easing="QuarticEaseOut"/>
@@ -49,18 +49,18 @@
 
         <Style Selector="^:pointerover">
             <Style Selector="^ /template/ Border#PART_BorderElement">
-                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource PrColor}"/>
             </Style>
             <Style Selector="^ /template/ TextBlock#PART_Watermark">
-                <Setter Property="Foreground" Value="rgba(0,0,0,0.6)"/>
+                <Setter Property="Foreground" Value="{DynamicResource InputWatermarkHoverBrush}"/>
             </Style>
         </Style>
 
         <Style Selector="^:focus">
             <Setter Property="Foreground" Value="{DynamicResource PrColor}"/>
             <Style Selector="^ /template/ Border#PART_BorderElement">
-                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource PrColor}"/>
             </Style>
         </Style>
@@ -147,7 +147,7 @@
     <Style Selector="Button.submitBtn">
         <Setter Property="Height" Value="50"/>
         <Setter Property="Background" Value="{DynamicResource PrColor}"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Template">
@@ -175,8 +175,8 @@
     <Style Selector="Button.navBtn">
         <Setter Property="Height" Value="52"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="Background" Value="#22304A"/>
-        <Setter Property="Foreground" Value="#E5E7EB"/>
+        <Setter Property="Background" Value="{DynamicResource SidebarButtonBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NeutralLightBrush}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Template">
@@ -199,13 +199,13 @@
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#2A3A59"/>
+            <Setter Property="Background" Value="{DynamicResource SidebarButtonHoverBrush}"/>
         </Style>
     </Style>
     
     <Style Selector="Button.navBtn.active">
         <Setter Property="Background" Value="{DynamicResource PrColor}"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
 
         <Style Selector="^:pointerover /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource PrColorHover}"/>
@@ -214,7 +214,7 @@
     
     <Style Selector="Button.logoutBtn">
         <Setter Property="Background" Value="{DynamicResource PrColor}"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -241,7 +241,7 @@
     </Style>
     
     <Style Selector="Button.actionBtn">
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -263,22 +263,22 @@
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#B91C1C"/>
+            <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
         </Style>
 
         <Style Selector="^:pressed /template/ Border#Root">
-            <Setter Property="Background" Value="#991B1B"/>
+            <Setter Property="Background" Value="{DynamicResource DangerPressedBrush}"/>
         </Style>
     </Style>
     
     <Style Selector="Button.blockBtn">
         <Style Selector="^:disabled /template/ Border#Root">
-            <Setter Property="Background" Value="#9CA3AF"/>
+            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
         </Style>
         
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Background" Value="#DC2626"/>
+        <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -300,22 +300,22 @@
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#B91C1C"/>
+            <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
         </Style>
 
         <Style Selector="^:pressed /template/ Border#Root">
-            <Setter Property="Background" Value="#991B1B"/>
+            <Setter Property="Background" Value="{DynamicResource DangerPressedBrush}"/>
         </Style>
     </Style>
     
     <Style Selector="Button.unblockBtn">
         <Style Selector="^:disabled /template/ Border#Root">
-            <Setter Property="Background" Value="#9CA3AF"/>
+            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
         </Style>
         
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Background" Value="#16A34A"/>
+        <Setter Property="Background" Value="{DynamicResource SuccessBrush}"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -337,18 +337,18 @@
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#15803D"/>
+            <Setter Property="Background" Value="{DynamicResource SuccessHoverBrush}"/>
         </Style>
 
         <Style Selector="^:pressed /template/ Border#Root">
-            <Setter Property="Background" Value="#166534"/>
+            <Setter Property="Background" Value="{DynamicResource SuccessPressedBrush}"/>
         </Style>
     </Style>
     
     <Style Selector="Button.dialogConfirmBtn">
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Background" Value="#DC2626"/>
+        <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -369,14 +369,14 @@
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#B91C1C"/>
+            <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
         </Style>
     </Style>
 
     <Style Selector="Button.dialogCancelBtn">
-        <Setter Property="Foreground" Value="#111827"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextStrongNeutralBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Background" Value="#E5E7EB"/>
+        <Setter Property="Background" Value="{DynamicResource NeutralLightBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -397,18 +397,18 @@
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#D1D5DB"/>
+            <Setter Property="Background" Value="{DynamicResource NeutralLightHoverBrush}"/>
         </Style>
     </Style>
     
     <Style Selector="Button.detailsBtn">
         <Style Selector="^:disabled /template/ Border#Root">
-            <Setter Property="Background" Value="#9CA3AF"/>
+            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
         </Style>
 
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Background" Value="#2563EB"/>
+        <Setter Property="Background" Value="{DynamicResource InfoBrush}"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -430,11 +430,11 @@
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#1D4ED8"/>
+            <Setter Property="Background" Value="{DynamicResource InfoHoverBrush}"/>
         </Style>
 
         <Style Selector="^:pressed /template/ Border#Root">
-            <Setter Property="Background" Value="#1E40AF"/>
+            <Setter Property="Background" Value="{DynamicResource InfoPressedBrush}"/>
         </Style>
     </Style>
     
@@ -452,16 +452,16 @@
 
     <Style Selector="ScrollBar:vertical /template/ Thumb">
         <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Background" Value="#A3A3A3"/>
+        <Setter Property="Background" Value="{DynamicResource ScrollThumbBrush}"/>
     </Style>
 
     <Style Selector="ScrollBar:vertical:pointerover /template/ Thumb">
         <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Background" Value="#A3A3A3"/>
+        <Setter Property="Background" Value="{DynamicResource ScrollThumbBrush}"/>
     </Style>
 
     <Style Selector="ScrollBar:vertical:pressed /template/ Thumb">
         <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Background" Value="#A3A3A3"/>
+        <Setter Property="Background" Value="{DynamicResource ScrollThumbBrush}"/>
     </Style>
 </Styles>

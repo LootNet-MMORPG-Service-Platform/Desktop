@@ -9,25 +9,37 @@ namespace desktop_app.Services;
 public class AdminService
 {
     private readonly HttpClient _httpClient;
-    
-    private readonly string _token;
 
     public AdminService(string token)
     {
-        _token = token;
-
         _httpClient = new HttpClient
         {
             BaseAddress = new Uri("https://localhost:7124")
         };
 
         _httpClient.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _token);
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
     }
 
-    public async Task<PagedResult<AdminUser>?> GetUsersAsync()
+    public async Task<PagedResult<AdminUser>?> GetUsersAsync(
+        int page,
+        int pageSize,
+        string? search,
+        string? role,
+        bool? isBlocked)
     {
-        return await _httpClient.GetFromJsonAsync<PagedResult<AdminUser>>("/api/admin/users");
+        var query = $"?page={page}&pageSize={pageSize}";
+
+        if (!string.IsNullOrWhiteSpace(search))
+            query += $"&search={Uri.EscapeDataString(search)}";
+
+        if (!string.IsNullOrWhiteSpace(role) && role != "All roles")
+            query += $"&role={Uri.EscapeDataString(role)}";
+
+        if (isBlocked.HasValue)
+            query += $"&isBlocked={isBlocked.Value.ToString().ToLower()}";
+
+        return await _httpClient.GetFromJsonAsync<PagedResult<AdminUser>>($"/api/admin/users{query}");
     }
     
     public async Task BlockUserAsync(string userId)

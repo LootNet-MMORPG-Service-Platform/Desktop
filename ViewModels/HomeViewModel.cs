@@ -10,11 +10,8 @@ public partial class HomeViewModel : ViewModelBase
     public MainWindowViewModel Parent { get; }
 
     private AdminService _adminService;
-    private readonly AuthService _authService;
-
-    private string _currentUserId = "";
+    
     private string _token = "";
-    private string _refreshToken = "";
 
     public UsersViewModel UsersVm { get; }
 
@@ -22,11 +19,11 @@ public partial class HomeViewModel : ViewModelBase
     {
         Parent = parent;
         _adminService = null!;
-        _authService = new AuthService();
+        var authService = new AuthService();
 
         UsersVm = new UsersViewModel(
             _adminService,
-            _authService,
+            authService,
             () => Parent.ShowWelcome());
     }
 
@@ -126,7 +123,6 @@ public partial class HomeViewModel : ViewModelBase
 
     public void SetCurrentUserId(string userId)
     {
-        _currentUserId = userId;
         UsersVm.SetCurrentUserId(userId);
     }
 
@@ -139,7 +135,6 @@ public partial class HomeViewModel : ViewModelBase
 
     public void SetRefreshToken(string refreshToken)
     {
-        _refreshToken = refreshToken;
         UsersVm.SetRefreshToken(refreshToken);
     }
 

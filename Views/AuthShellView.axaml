@@ -9,10 +9,10 @@
         <Image Source="/Assets/background.png"
                Stretch="UniformToFill"/>
 
-        <Border Background="#33000000"/>
+        <Border Background="{DynamicResource OverlayBrush}"/>
 
         <Border CornerRadius="50"
-                Background="White"
+                Background="{DynamicResource WhiteBrush}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Width="1140"
@@ -44,14 +44,14 @@
                                        Text="LootNet-MMORPG"
                                        FontSize="16"
                                        FontWeight="Bold"
-                                       Foreground="rgba(255,255,255,0.9)"
+                                       Foreground="{DynamicResource AuthOverlayTextBrush}"
                                        VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Column="1"
                                        Text="Admin Panel"
                                        FontSize="16"
                                        FontWeight="Bold"
-                                       Foreground="rgba(255,255,255,0.9)"
+                                       Foreground="{DynamicResource AuthOverlayTextBrush}"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"/>
                         </Grid>
