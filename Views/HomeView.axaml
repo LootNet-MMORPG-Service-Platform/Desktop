@@ -1,8 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:desktop_app.ViewModels"
-             xmlns:models="clr-namespace:desktop_app.Models"
-             xmlns:conv="clr-namespace:desktop_app.Converters"
+             xmlns:views="clr-namespace:desktop_app.Views"
              x:Class="desktop_app.Views.HomeView"
              x:DataType="vm:HomeViewModel"
              x:Name="Root">
@@ -22,6 +21,7 @@
                 <StackPanel Orientation="Vertical"
                             VerticalAlignment="Center"
                             Spacing="2">
+
                     <TextBlock Text="LootNet-MMORPG Admin Panel"
                                Foreground="{DynamicResource WhiteBrush}"
                                FontSize="20"
@@ -45,7 +45,6 @@
                             <Binding Path="Role"/>
                         </MultiBinding>
                     </TextBlock.Text>
-
                 </TextBlock>
 
                 <Button Grid.Column="2"
@@ -63,7 +62,6 @@
                 Padding="18,22">
 
             <StackPanel Spacing="10">
-
                 <TextBlock Text="NAVIGATION"
                            Foreground="{DynamicResource TextOnDarkMutedBrush}"
                            FontSize="12"
@@ -96,7 +94,6 @@
                         Classes.active="{Binding IsLogsActive}"
                         Content="Logs"
                         Command="{Binding ShowLogsCommand}"/>
-
             </StackPanel>
         </Border>
 
@@ -106,12 +103,9 @@
                       VerticalScrollBarVisibility="Auto">
 
             <Grid Margin="24"
-                  ColumnDefinitions="*,320"
-                  RowDefinitions="Auto,18,Auto,18,Auto">
+                  RowDefinitions="Auto,18,Auto">
 
                 <StackPanel Grid.Row="0"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
                             Spacing="4">
                     <TextBlock Text="{Binding CurrentSectionTitle}"
                                FontSize="30"
@@ -123,46 +117,19 @@
                                Foreground="{DynamicResource TextMutedBrush}"/>
                 </StackPanel>
 
-                <!-- FILTERS -->
-                <StackPanel Grid.Row="2"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Orientation="Horizontal"
-                            Spacing="12"
-                            VerticalAlignment="Center"
-                            IsVisible="{Binding IsUsersActive}">
+                <Grid Grid.Row="2"
+                      IsVisible="{Binding IsUsersActive}">
 
-                    <TextBox Width="280"
-                             Height="42"
-                             Watermark="Search username..."
-                             Text="{Binding UsersVm.SearchText}" />
+                    <views:UsersView DataContext="{Binding UsersVm}" />
 
-                    <ComboBox Width="160"
-                              Height="42"
-                              CornerRadius="10"
-                              ItemsSource="{Binding UsersVm.RoleOptions}"
-                              SelectedItem="{Binding UsersVm.SelectedRole}" />
+                </Grid>
 
-                    <ComboBox Width="150"
-                              Height="42"
-                              CornerRadius="10"
-                              ItemsSource="{Binding UsersVm.StatusOptions}"
-                              SelectedItem="{Binding UsersVm.SelectedBlockedStatus}" />
-
-                    <Button Content="Clear"
-                            Height="42"
-                            Classes="unblockBtn"
-                            Command="{Binding UsersVm.ClearFiltersCommand}" />
-
-                </StackPanel>
-
-                <Border Grid.Row="4"
-                        Grid.Column="0"
+                <Border Grid.Row="2"
                         Background="{DynamicResource SurfaceBrush}"
                         CornerRadius="18"
                         Padding="22"
-                        VerticalAlignment="Top"
-                        BoxShadow="0 10 30 0 #14000000">
+                        BoxShadow="0 10 30 0 #14000000"
+                        IsVisible="{Binding !IsUsersActive}">
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding CurrentSectionTitle}"
@@ -174,212 +141,9 @@
                                    TextWrapping="Wrap"
                                    FontSize="14"
                                    Foreground="{DynamicResource TextSecondaryBrush}"/>
-
-                        <StackPanel IsVisible="{Binding IsUsersActive}">
-
-                            <Border Background="{DynamicResource MutedSurfaceBrush}"
-                                    CornerRadius="8"
-                                    Padding="10"
-                                    Margin="0,10,0,0">
-
-                                <StackPanel Orientation="Horizontal" Spacing="12">
-                                    <TextBlock Text="Username"
-                                               FontWeight="Bold"
-                                               Width="120"/>
-
-                                    <TextBlock Text="Role"
-                                               FontWeight="Bold"
-                                               Width="120"/>
-
-                                    <TextBlock Text="Currency"
-                                               FontWeight="Bold"
-                                               Width="100"/>
-
-                                    <TextBlock Text="IsBlocked"
-                                               FontWeight="Bold"
-                                               Width="80"/>
-
-                                    <TextBlock Text="Actions"
-                                               FontWeight="Bold"
-                                               Width="230"/>
-                                </StackPanel>
-
-                            </Border>
-
-                            <ItemsControl ItemsSource="{Binding UsersVm.Users}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="models:AdminUser">
-                                        <Border Background="{DynamicResource CardBrush}"
-                                                CornerRadius="10"
-                                                Padding="10"
-                                                Margin="0,6,0,0">
-
-                                            <StackPanel Orientation="Horizontal" Spacing="12">
-                                                <TextBlock Text="{Binding Username}"
-                                                           FontWeight="Bold"
-                                                           Width="120"/>
-
-                                                <TextBlock Text="{Binding Role}"
-                                                           Width="120"/>
-
-                                                <TextBlock Text="{Binding Currency}"
-                                                           Width="100"/>
-
-                                                <TextBlock Width="80">
-                                                    <TextBlock.Text>
-                                                        <Binding Path="IsBlocked">
-                                                            <Binding.Converter>
-                                                                <conv:BooleanToStatusConverter/>
-                                                            </Binding.Converter>
-                                                        </Binding>
-                                                    </TextBlock.Text>
-                                                </TextBlock>
-
-                                                <StackPanel Orientation="Horizontal" Spacing="10" Width="230">
-                                                    <Button Width="100"
-                                                            HorizontalContentAlignment="Center"
-                                                            VerticalContentAlignment="Center"
-                                                            Click="SelectUser_Click"
-                                                            Classes="detailsBtn"
-                                                            Content="Details"/>
-
-                                                    <Button Width="100"
-                                                            HorizontalContentAlignment="Center"
-                                                            VerticalContentAlignment="Center"
-                                                            Click="ToggleBlockStatus_Click"
-                                                            Classes="blockBtn"
-                                                            IsVisible="{Binding !IsBlocked}"
-                                                            IsEnabled="{Binding CanToggleBlock}"
-                                                            Content="Block"/>
-
-                                                    <Button Width="100"
-                                                            HorizontalContentAlignment="Center"
-                                                            VerticalContentAlignment="Center"
-                                                            Click="ToggleBlockStatus_Click"
-                                                            Classes="unblockBtn"
-                                                            IsVisible="{Binding IsBlocked}"
-                                                            IsEnabled="{Binding CanToggleBlock}"
-                                                            Content="Unblock"/>
-                                                </StackPanel>
-                                            </StackPanel>
-
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center"
-                                        Spacing="10"
-                                        Margin="0,20,0,0">
-
-                                <Button Content="Previous"
-                                        Classes="detailsBtn"
-                                        Command="{Binding UsersVm.PreviousPageCommand}"
-                                        IsEnabled="{Binding UsersVm.CanGoPrevious}" />
-
-                                <TextBlock Text="{Binding UsersVm.CurrentPage}" VerticalAlignment="Center" />
-                                <TextBlock Text=" / " VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding UsersVm.TotalPages}" VerticalAlignment="Center" />
-
-                                <Button Content="Next"
-                                        Classes="detailsBtn"
-                                        Command="{Binding UsersVm.NextPageCommand}"
-                                        IsEnabled="{Binding UsersVm.CanGoNext}" />
-
-                            </StackPanel>
-                        </StackPanel>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Row="4"
-                        Grid.Column="1"
-                        Background="{DynamicResource SurfaceBrush}"
-                        CornerRadius="18"
-                        Padding="20"
-                        Margin="20,0,0,0"
-                        Height="555"
-                        VerticalAlignment="Top"
-                        BoxShadow="0 10 30 0 #14000000"
-                        IsVisible="{Binding UsersVm.HasSelectedUser}">
-
-                    <Grid RowDefinitions="Auto,Auto,*,Auto">
-
-                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                            <TextBlock Text="User Details"
-                                       FontSize="18"
-                                       FontWeight="Bold"
-                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
-                        </Grid>
-
-                        <StackPanel Grid.Row="1"
-                                    Spacing="10"
-                                    Margin="0,20,0,20"
-                                    HorizontalAlignment="Center">
-
-                            <Image Source="avares://desktop-app/Assets/user-icon.png"
-                                   Width="90"
-                                   Height="90"
-                                   HorizontalAlignment="Center"/>
-
-                            <TextBlock Text="{Binding UsersVm.SelectedUser.Username}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"
-                                       HorizontalAlignment="Center"
-                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="2"
-                                    Spacing="12"
-                                    Margin="0,20,0,0">
-
-                            <TextBlock FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}">
-                                <Run Text="Role: "/>
-                                <Run Text="{Binding UsersVm.SelectedUser.Role}"/>
-                            </TextBlock>
-
-                            <TextBlock FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}">
-                                <Run Text="Currency: "/>
-                                <Run Text="{Binding UsersVm.SelectedUser.Currency}"/>
-                            </TextBlock>
-
-                            <TextBlock FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}">
-                                <Run Text="Blocked: "/>
-                                <Run Text="{Binding UsersVm.SelectedUser.IsBlocked}"/>
-                            </TextBlock>
-
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="3"
-                                    Orientation="Vertical"
-                                    Spacing="10"
-                                    Margin="0,20,0,0"
-                                    HorizontalAlignment="Center">
-
-                            <Button Content="Inventory"
-                                    Classes="detailsBtn"
-                                    Width="140"
-                                    Click="Inventory_Click"/>
-
-                            <Button Content="Equipment"
-                                    Classes="detailsBtn"
-                                    Width="140"
-                                    Click="Equipment_Click"/>
-
-                            <Button Content="Change Role"
-                                    Classes="detailsBtn"
-                                    Width="140"
-                                    Click="ChangeRole_Click"
-                                    IsEnabled="{Binding UsersVm.CanChangeSelectedUserRole}"/>
-
-                            <Button Content="Close"
-                                    Classes="unblockBtn"
-                                    Command="{Binding UsersVm.CloseSelectionCommand}"
-                                    HorizontalAlignment="Center"/>
-                        </StackPanel>
-
-                    </Grid>
-                </Border>
             </Grid>
         </ScrollViewer>
 

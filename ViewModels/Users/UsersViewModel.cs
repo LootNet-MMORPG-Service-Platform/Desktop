@@ -1,7 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
@@ -9,23 +8,28 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using desktop_app.Models;
 using desktop_app.Services;
-using System.Threading;
-using Avalonia.Threading;
+using System.Globalization;
 
-namespace desktop_app.ViewModels;
+namespace desktop_app.ViewModels.Users;
 
 public partial class UsersViewModel : ViewModelBase
 {
+    public string SelectedUsername => SelectedUser?.Username ?? "";
+    public string SelectedUserRoleText => SelectedUser?.Role.ToString() ?? "";
+    public string SelectedUserCurrencyText =>
+        SelectedUser?.Currency.ToString(CultureInfo.CurrentCulture) ?? "";
+    public string SelectedUserBlockedText => SelectedUser?.IsBlocked.ToString() ?? "";
+    
     private AdminService _adminService;
     private readonly AuthService _authService;
     private readonly Action _onUnauthorized;
 
     private string _currentUserId = "";
     private string _refreshToken = "";
-    
-    private int _loadVersion = 0;
-    
-    private CancellationTokenSource? _searchDebounceCts;
+
+    private int _loadVersion;
+
+    public UserFiltersViewModel Filters { get; } = new();
 
     private int _currentPage = 1;
     public int CurrentPage
@@ -75,42 +79,24 @@ public partial class UsersViewModel : ViewModelBase
     private AdminUser? _selectedUser;
 
     public bool HasSelectedUser => SelectedUser != null;
-    
+
     public bool CanChangeSelectedUserRole =>
         SelectedUser != null &&
         !SelectedUser.IsSelf &&
         SelectedUser.Role != UserRole.SuperAdmin;
-
-    public List<string> RoleOptions { get; } = new()
-    {
-        "All roles",
-        "Player",
-        "GameModerator",
-        "Admin",
-        "SuperAdmin"
-    };
-
-    public List<string> StatusOptions { get; } = new()
-    {
-        "All statuses",
-        "Active",
-        "Blocked"
-    };
-
-    [ObservableProperty]
-    private string _searchText = "";
-
-    [ObservableProperty]
-    private string _selectedRole = "All roles";
-
-    [ObservableProperty]
-    private string _selectedBlockedStatus = "All statuses";
 
     public UsersViewModel(AdminService adminService, AuthService authService, Action onUnauthorized)
     {
         _adminService = adminService;
         _authService = authService;
         _onUnauthorized = onUnauthorized;
+
+        Filters.FiltersChanged += async () =>
+        {
+            CurrentPage = 1;
+            SelectedUser = null;
+            await LoadUsersAsync();
+        };
     }
 
     public void UpdateAdminService(AdminService adminService)
@@ -131,18 +117,12 @@ public partial class UsersViewModel : ViewModelBase
     public async Task LoadUsersAsync()
     {
         var loadVersion = ++_loadVersion;
-        
+
         StatusMessage = "Loading users...";
 
-        var isBlocked = SelectedBlockedStatus switch
-        {
-            "Blocked" => true,
-            "Active" => false,
-            _ => (bool?)null
-        };
-
-        var role = SelectedRole == "All roles" ? null : SelectedRole;
-        var search = string.IsNullOrWhiteSpace(SearchText) ? null : SearchText.Trim();
+        var isBlocked = Filters.IsBlocked;
+        var role = Filters.Role;
+        var search = Filters.Search;
 
         PagedResult<AdminUser>? result;
 
@@ -222,62 +202,6 @@ public partial class UsersViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task ClearFilters()
-    {
-        SearchText = "";
-        SelectedRole = "All roles";
-        SelectedBlockedStatus = "All statuses";
-
-        CurrentPage = 1;
-        SelectedUser = null;
-        await LoadUsersAsync();
-    }
-    
-    partial void OnSearchTextChanged(string value)
-    {
-        DebounceSearch();
-    }
-
-    partial void OnSelectedRoleChanged(string value)
-    {
-        DebounceSearch();
-    }
-
-    partial void OnSelectedBlockedStatusChanged(string value)
-    {
-        DebounceSearch();
-    }
-
-    private void DebounceSearch()
-    {
-        _searchDebounceCts?.Cancel();
-        _searchDebounceCts = new CancellationTokenSource();
-
-        var token = _searchDebounceCts.Token;
-
-        _ = Task.Run(async () =>
-        {
-            try
-            {
-                await Task.Delay(400, token);
-
-                if (token.IsCancellationRequested)
-                    return;
-
-                await Dispatcher.UIThread.InvokeAsync(async () =>
-                {
-                    CurrentPage = 1;
-                    SelectedUser = null;
-                    await LoadUsersAsync();
-                });
-            }
-            catch (TaskCanceledException)
-            {
-            }
-        }, token);
-    }
-
-    [RelayCommand]
     private void SelectUser(AdminUser user)
     {
         SelectedUser = user;
@@ -349,12 +273,16 @@ public partial class UsersViewModel : ViewModelBase
     {
         SelectedUser = null;
     }
-
+    
     partial void OnSelectedUserChanged(AdminUser? value)
     {
-        _ = value;
         OnPropertyChanged(nameof(HasSelectedUser));
         OnPropertyChanged(nameof(CanChangeSelectedUserRole));
+
+        OnPropertyChanged(nameof(SelectedUsername));
+        OnPropertyChanged(nameof(SelectedUserRoleText));
+        OnPropertyChanged(nameof(SelectedUserCurrencyText));
+        OnPropertyChanged(nameof(SelectedUserBlockedText));
     }
 
     private void RefreshPagingState()

@@ -1,0 +1,243 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:desktop_app.ViewModels.Users"
+             xmlns:models="clr-namespace:desktop_app.Models"
+             xmlns:conv="clr-namespace:desktop_app.Converters"
+             x:Class="desktop_app.Views.UsersView"
+             x:Name="UsersRoot"
+             x:DataType="vm:UsersViewModel">
+
+    <Grid ColumnDefinitions="*,320">
+
+        <StackPanel Grid.Column="0" Spacing="18">
+            
+            <StackPanel Orientation="Horizontal"
+                        Spacing="12"
+                        VerticalAlignment="Center">
+
+                <TextBox Width="280"
+                         Height="42"
+                         Watermark="Search username..."
+                         Text="{Binding Filters.SearchText}" />
+
+                <ComboBox Width="160"
+                          Height="42"
+                          CornerRadius="10"
+                          ItemsSource="{Binding Filters.RoleOptions}"
+                          SelectedItem="{Binding Filters.SelectedRole}" />
+
+                <ComboBox Width="150"
+                          Height="42"
+                          CornerRadius="10"
+                          ItemsSource="{Binding Filters.StatusOptions}"
+                          SelectedItem="{Binding Filters.SelectedBlockedStatus}" />
+
+                <Button Content="Clear"
+                        Height="42"
+                        Classes="unblockBtn"
+                        Command="{Binding Filters.ClearCommand}" />
+
+            </StackPanel>
+            
+            <Border Background="{DynamicResource SurfaceBrush}"
+                    CornerRadius="18"
+                    Padding="22"
+                    VerticalAlignment="Top"
+                    BoxShadow="0 10 30 0 #14000000">
+
+                <StackPanel Spacing="8">
+
+                    <TextBlock Text="Users"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                    <TextBlock Text="{Binding StatusMessage}"
+                               TextWrapping="Wrap"
+                               FontSize="14"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                    <Border Background="{DynamicResource MutedSurfaceBrush}"
+                            CornerRadius="8"
+                            Padding="10"
+                            Margin="0,10,0,0">
+
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <TextBlock Text="Username" FontWeight="Bold" Width="120"/>
+                            <TextBlock Text="Role" FontWeight="Bold" Width="120"/>
+                            <TextBlock Text="Currency" FontWeight="Bold" Width="100"/>
+                            <TextBlock Text="IsBlocked" FontWeight="Bold" Width="80"/>
+                            <TextBlock Text="Actions" FontWeight="Bold" Width="230"/>
+                        </StackPanel>
+
+                    </Border>
+
+                    <ItemsControl ItemsSource="{Binding Users}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:AdminUser">
+                                <Border Background="{DynamicResource CardBrush}"
+                                        CornerRadius="10"
+                                        Padding="10"
+                                        Margin="0,6,0,0">
+
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <TextBlock Text="{Binding Username}" FontWeight="Bold" Width="120"/>
+                                        <TextBlock Text="{Binding Role}" Width="120"/>
+                                        <TextBlock Text="{Binding Currency}" Width="100"/>
+
+                                        <TextBlock Width="80">
+                                            <TextBlock.Text>
+                                                <Binding Path="IsBlocked">
+                                                    <Binding.Converter>
+                                                        <conv:BooleanToStatusConverter/>
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+
+                                        <StackPanel Orientation="Horizontal" Spacing="10" Width="230">
+                                            <Button Width="100"
+                                                    HorizontalContentAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    Command="{Binding #UsersRoot.((vm:UsersViewModel)DataContext).SelectUserCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    Classes="detailsBtn"
+                                                    Content="Details"/>
+
+                                            <Button Width="100"
+                                                    HorizontalContentAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    Click="ToggleBlockStatus_Click"
+                                                    Classes="blockBtn"
+                                                    IsVisible="{Binding !IsBlocked}"
+                                                    IsEnabled="{Binding CanToggleBlock}"
+                                                    Content="Block"/>
+
+                                            <Button Width="100"
+                                                    HorizontalContentAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    Click="ToggleBlockStatus_Click"
+                                                    Classes="unblockBtn"
+                                                    IsVisible="{Binding IsBlocked}"
+                                                    IsEnabled="{Binding CanToggleBlock}"
+                                                    Content="Unblock"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="10"
+                                Margin="0,20,0,0">
+
+                        <Button Content="Previous"
+                                Classes="detailsBtn"
+                                Command="{Binding PreviousPageCommand}"
+                                IsEnabled="{Binding CanGoPrevious}" />
+
+                        <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" />
+                        <TextBlock Text=" / " VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding TotalPages}" VerticalAlignment="Center" />
+
+                        <Button Content="Next"
+                                Classes="detailsBtn"
+                                Command="{Binding NextPageCommand}"
+                                IsEnabled="{Binding CanGoNext}" />
+
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        
+        <Border Grid.Column="1"
+                Background="{DynamicResource SurfaceBrush}"
+                CornerRadius="18"
+                Padding="20"
+                Margin="20,60,0,0"
+                Height="530"
+                VerticalAlignment="Top"
+                BoxShadow="0 10 30 0 #14000000"
+                IsVisible="{Binding HasSelectedUser}">
+
+            <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+                <TextBlock Grid.Row="0"
+                           Text="User Details"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                <StackPanel Grid.Row="1"
+                            Spacing="10"
+                            Margin="0,20,0,20"
+                            HorizontalAlignment="Center">
+
+                    <Image Source="avares://desktop-app/Assets/user-icon.png"
+                           Width="90"
+                           Height="90"
+                           HorizontalAlignment="Center"/>
+
+                    <TextBlock Text="{Binding SelectedUsername}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2"
+                            Spacing="12"
+                            Margin="0,20,0,0">
+
+                    <TextBlock FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}">
+                        <Run Text="Role: "/>
+                        <Run Text="{Binding SelectedUserRoleText}"/>
+                    </TextBlock>
+
+                    <TextBlock FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}">
+                        <Run Text="Currency: "/>
+                        <Run Text="{Binding SelectedUserCurrencyText}"/>
+                    </TextBlock>
+
+                    <TextBlock FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}">
+                        <Run Text="Blocked: "/>
+                        <Run Text="{Binding SelectedUserBlockedText}"/>
+                    </TextBlock>
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="3"
+                            Orientation="Vertical"
+                            Spacing="10"
+                            Margin="0,20,0,0"
+                            HorizontalAlignment="Center">
+
+                    <Button Content="Inventory"
+                            Classes="detailsBtn"
+                            Width="140"
+                            Click="Inventory_Click"/>
+
+                    <Button Content="Equipment"
+                            Classes="detailsBtn"
+                            Width="140"
+                            Click="Equipment_Click"/>
+
+                    <Button Content="Change Role"
+                            Classes="detailsBtn"
+                            Width="140"
+                            Click="ChangeRole_Click"
+                            IsEnabled="{Binding CanChangeSelectedUserRole}"/>
+
+                    <Button Content="Close"
+                            Classes="unblockBtn"
+                            Command="{Binding CloseSelectionCommand}"
+                            HorizontalAlignment="Center"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

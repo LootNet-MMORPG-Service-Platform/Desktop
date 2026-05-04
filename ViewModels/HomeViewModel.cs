@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
 using desktop_app.Services;
+using desktop_app.ViewModels.Users;
 
 namespace desktop_app.ViewModels;
 
