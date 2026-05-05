@@ -80,10 +80,10 @@
                         IsVisible="{Binding CanAccessUsers}"/>
 
                 <Button Classes.navBtn="True"
-                        Classes.active="{Binding IsItemsActive}"
-                        Content="Items"
-                        Command="{Binding ShowItemsCommand}"
-                        IsVisible="{Binding CanAccessItems}"/>
+                        Classes.active="{Binding IsItemGenerationActive}"
+                        Content="Item Generation"
+                        Command="{Binding ShowItemGenerationCommand}"
+                        IsVisible="{Binding CanAccessItemGeneration}"/>
 
                 <Button Classes.navBtn="True"
                         Classes.active="{Binding IsEconomyActive}"
@@ -123,26 +123,15 @@
                     <views:UsersView DataContext="{Binding UsersVm}" />
 
                 </Grid>
+                
+                <Grid Grid.Row="2"
+                      IsVisible="{Binding IsItemGenerationActive}">
 
-                <Border Grid.Row="2"
-                        Background="{DynamicResource SurfaceBrush}"
-                        CornerRadius="18"
-                        Padding="22"
-                        BoxShadow="0 10 30 0 #14000000"
-                        IsVisible="{Binding !IsUsersActive}">
+                    <views:ItemGenerationView DataContext="{Binding ItemGenerationVm}" />
 
-                    <StackPanel Spacing="8">
-                        <TextBlock Text="{Binding CurrentSectionTitle}"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                </Grid>
 
-                        <TextBlock Text="{Binding CurrentSectionMessage}"
-                                   TextWrapping="Wrap"
-                                   FontSize="14"
-                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
-                    </StackPanel>
-                </Border>
+                
 
             </Grid>
         </ScrollViewer>

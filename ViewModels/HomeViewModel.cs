@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
 using desktop_app.Services;
 using desktop_app.ViewModels.Users;
+using desktop_app.Services.Generation;
+using desktop_app.ViewModels.Generation;
 
 namespace desktop_app.ViewModels;
 
@@ -11,16 +13,21 @@ public partial class HomeViewModel : ViewModelBase
     public MainWindowViewModel Parent { get; }
 
     private AdminService _adminService;
+    private GenerationAdminService _generationAdminService;
     
     private string _token = "";
 
     public UsersViewModel UsersVm { get; }
+    public ItemGenerationViewModel ItemGenerationVm { get; }
 
     public HomeViewModel(MainWindowViewModel parent)
     {
         Parent = parent;
         _adminService = null!;
         var authService = new AuthService();
+        
+        _generationAdminService = null!;
+        ItemGenerationVm = new ItemGenerationViewModel(_generationAdminService);
 
         UsersVm = new UsersViewModel(
             _adminService,
@@ -29,11 +36,11 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     public bool CanAccessUsers => Role == "SuperAdmin" || Role == "Admin";
-    public bool CanAccessItems => Role == "SuperAdmin" || Role == "GameModerator";
+    public bool CanAccessItemGeneration => Role == "SuperAdmin" || Role == "GameModerator";
 
     public bool IsDashboardActive => ActiveSection == "Dashboard";
     public bool IsUsersActive => ActiveSection == "Users";
-    public bool IsItemsActive => ActiveSection == "Items";
+    public bool IsItemGenerationActive => ActiveSection == "ItemGeneration";
     public bool IsEconomyActive => ActiveSection == "Economy";
     public bool IsLogsActive => ActiveSection == "Logs";
 
@@ -61,6 +68,7 @@ public partial class HomeViewModel : ViewModelBase
     private void ShowDashboard()
     {
         UsersVm.ClearSelection();
+        ItemGenerationVm.ClearSelection();
         
         ActiveSection = "Dashboard";
         CurrentSectionTitle = "Dashboard";
@@ -71,6 +79,8 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     private async Task ShowUsers()
     {
+        ItemGenerationVm.ClearSelection();
+        
         ActiveSection = "Users";
         CurrentSectionTitle = "Users";
         CurrentSectionDescription = "Manage user accounts, roles and access.";
@@ -80,19 +90,21 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void ShowItems()
+    private async Task ShowItemGeneration()
     {
         UsersVm.ClearSelection();
-        
-        ActiveSection = "Items";
-        CurrentSectionTitle = "Items";
-        CurrentSectionDescription = "Manage item generation and item properties.";
-        CurrentSectionMessage = "Items section is ready for future API integration.";
+
+        ActiveSection = "ItemGeneration";
+        CurrentSectionTitle = "Item Generation";
+        CurrentSectionDescription = "Manage item generation profiles, rules and type weights.";
+
+        await ItemGenerationVm.LoadProfilesAsync();
     }
 
     [RelayCommand]
     private void ShowEconomy()
     {
+        ItemGenerationVm.ClearSelection();
         UsersVm.ClearSelection();
         
         ActiveSection = "Economy";
@@ -105,6 +117,7 @@ public partial class HomeViewModel : ViewModelBase
     private void ShowLogs()
     {
         UsersVm.ClearSelection();
+        ItemGenerationVm.ClearSelection();
         
         ActiveSection = "Logs";
         CurrentSectionTitle = "Logs";
@@ -130,8 +143,12 @@ public partial class HomeViewModel : ViewModelBase
     public void SetToken(string token)
     {
         _token = token;
+
         _adminService = new AdminService(_token);
+        _generationAdminService = new GenerationAdminService(_token);
+
         UsersVm.UpdateAdminService(_adminService);
+        ItemGenerationVm.UpdateService(_generationAdminService);
     }
 
     public void SetRefreshToken(string refreshToken)
@@ -151,7 +168,7 @@ public partial class HomeViewModel : ViewModelBase
 
         OnPropertyChanged(nameof(IsDashboardActive));
         OnPropertyChanged(nameof(IsUsersActive));
-        OnPropertyChanged(nameof(IsItemsActive));
+        OnPropertyChanged(nameof(IsItemGenerationActive));
         OnPropertyChanged(nameof(IsEconomyActive));
         OnPropertyChanged(nameof(IsLogsActive));
     }
@@ -160,6 +177,6 @@ public partial class HomeViewModel : ViewModelBase
     {
         _ = value;
         OnPropertyChanged(nameof(CanAccessUsers));
-        OnPropertyChanged(nameof(CanAccessItems));
+        OnPropertyChanged(nameof(CanAccessItemGeneration));
     }
 }
