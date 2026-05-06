@@ -27,6 +27,12 @@
                            FontSize="14"
                            Foreground="{DynamicResource TextSecondaryBrush}"/>
 
+                <Button Content="Create Profile"
+                        Classes="detailsBtn"
+                        Width="140"
+                        HorizontalAlignment="Left"
+                        Click="CreateProfile_Click"/>
+
                 <ItemsControl ItemsSource="{Binding Profiles}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:GenerationProfile">
@@ -101,7 +107,13 @@
                                    Foreground="{DynamicResource TextPrimaryBrush}"
                                    Margin="0,6,0,0"/>
 
-                        <ItemsControl ItemsSource="{Binding Weights}">
+                        <TextBlock Text="No type weights yet"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   IsVisible="{Binding !HasWeights}"/>
+
+                        <ItemsControl ItemsSource="{Binding Weights}"
+                                      IsVisible="{Binding HasWeights}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="models:TypeWeight">
                                     <TextBlock FontSize="13"
@@ -123,8 +135,21 @@
                                    FontWeight="Bold"
                                    Foreground="{DynamicResource TextPrimaryBrush}"
                                    Margin="0,12,0,0"/>
+                        
+                        <Button Content="Add Rule"
+                                Classes="detailsBtn"
+                                Width="120"
+                                HorizontalAlignment="Left"
+                                Margin="0,4,0,6"
+                                Click="AddRule_Click"/>
 
-                        <ItemsControl ItemsSource="{Binding Rules}">
+                        <TextBlock Text="No rules yet"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   IsVisible="{Binding !HasRules}"/>
+
+                        <ItemsControl ItemsSource="{Binding Rules}"
+                                      IsVisible="{Binding HasRules}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="models:GenerationRule">
                                     <Border Background="{DynamicResource CardBrush}"
@@ -152,6 +177,12 @@
                                                        FontWeight="Bold"
                                                        Foreground="{DynamicResource TextPrimaryBrush}"
                                                        Margin="0,6,0,0"/>
+                                            
+                                            <Button Content="Add Parameter"
+                                                    Classes="detailsBtn"
+                                                    HorizontalAlignment="Left"
+                                                    Margin="0,4,0,6"
+                                                    Click="AddParameter_Click"/>
 
                                             <TextBlock Text="No parameters"
                                                        FontSize="13"
@@ -198,6 +229,12 @@
                                                        FontWeight="Bold"
                                                        Foreground="{DynamicResource TextPrimaryBrush}"
                                                        Margin="0,6,0,0"/>
+                                            
+                                            <Button Content="Add Element"
+                                                    Classes="detailsBtn"
+                                                    HorizontalAlignment="Left"
+                                                    Margin="0,4,0,6"
+                                                    Click="AddElement_Click"/>
 
                                             <TextBlock Text="No elements"
                                                        FontSize="13"
@@ -239,6 +276,12 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
 
+                                            <Button Content="Delete Rule"
+                                                    Classes="blockBtn"
+                                                    HorizontalAlignment="Right"
+                                                    Margin="0,8,0,0"
+                                                    Click="DeleteRule_Click"/>
+                                            
                                         </StackPanel>
 
                                     </Border>
@@ -255,6 +298,11 @@
                             Spacing="10"
                             Margin="0,20,0,0"
                             HorizontalAlignment="Center">
+
+                    <Button Content="Delete"
+                            Classes="blockBtn"
+                            Width="140"
+                            Click="DeleteProfile_Click"/>
 
                     <Button Content="Close"
                             Classes="unblockBtn"

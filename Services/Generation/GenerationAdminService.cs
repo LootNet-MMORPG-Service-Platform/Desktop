@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using desktop_app.Models.Generation;
+using desktop_app.Enums;
 
 namespace desktop_app.Services.Generation;
 
@@ -38,5 +39,79 @@ public class GenerationAdminService
     {
         return await _httpClient.GetFromJsonAsync<List<TypeWeight>>(
             $"/api/admin/generation/profiles/{profileId}/weights");
+    }
+    
+    public async Task DeleteProfileAsync(Guid profileId)
+    {
+        var response = await _httpClient.DeleteAsync(
+            $"/api/admin/generation/profiles/{profileId}");
+
+        response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task CreateProfileAsync(string name)
+    {
+        var response = await _httpClient.PostAsJsonAsync(
+            "/api/admin/generation/profiles",
+            new
+            {
+                name
+            });
+
+        response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task CreateRuleAsync(Guid profileId, ItemCategory category, WeaponType? weaponType, ArmorType? armorType)
+    {
+        var response = await _httpClient.PostAsJsonAsync(
+            $"/api/admin/generation/profiles/{profileId}/rules",
+            new
+            {
+                category,
+                weaponType,
+                armorType
+            });
+
+        response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task DeleteRuleAsync(Guid ruleId)
+    {
+        var response = await _httpClient.DeleteAsync(
+            $"/api/admin/generation/rules/{ruleId}");
+
+        response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task CreateParameterAsync(
+        Guid ruleId,
+        ItemParameter parameter,
+        List<CreateSegmentInput> segments)
+    {
+        var response = await _httpClient.PostAsJsonAsync(
+            $"/api/admin/generation/rules/{ruleId}/parameters",
+            new
+            {
+                parameter,
+                segments
+            });
+
+        response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task CreateElementAsync(
+        Guid ruleId,
+        ItemElementType elementType,
+        List<CreateSegmentInput> segments)
+    {
+        var response = await _httpClient.PostAsJsonAsync(
+            $"/api/admin/generation/rules/{ruleId}/elements",
+            new
+            {
+                elementType,
+                segments
+            });
+
+        response.EnsureSuccessStatusCode();
     }
 }

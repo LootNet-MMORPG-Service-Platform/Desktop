@@ -1,14 +1,18 @@
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using desktop_app.Models;
+using desktop_app.Models.Generation;
 
 namespace desktop_app.Services;
 
 public static class DialogService
 {
-    public static Task<bool> ShowConfirmDialogAsync(Window owner, string message)
+    public static Task<bool> ShowConfirmDialogAsync(
+        Window owner,
+        string message,
+        string confirmText = "Confirm")
     {
-        return CommonDialogService.ShowConfirmDialogAsync(owner, message);
+        return CommonDialogService.ShowConfirmDialogAsync(owner, message, confirmText);
     }
 
     public static Task ShowErrorDialogAsync(Window owner, string message)
@@ -29,5 +33,25 @@ public static class DialogService
     public static Task ShowEquipmentDialogAsync(Window owner, EquipmentResponseDTO eq)
     {
         return UserDialogService.ShowEquipmentDialogAsync(owner, eq);
+    }
+    
+    public static Task<string?> ShowCreateProfileDialogAsync(Window owner)
+    {
+        return GenerationDialogService.ShowCreateProfileDialogAsync(owner);
+    }
+    
+    public static Task<CreateRuleDialogResult?> ShowCreateRuleDialogAsync(Window owner)
+    {
+        return GenerationDialogService.ShowCreateRuleDialogAsync(owner);
+    }
+    
+    public static Task<CreateParameterDialogResult?> ShowCreateParameterDialogAsync(Window owner)
+    {
+        return GenerationDialogService.ShowCreateParameterDialogAsync(owner);
+    }
+    
+    public static Task<CreateElementDialogResult?> ShowCreateElementDialogAsync(Window owner)
+    {
+        return GenerationDialogService.ShowCreateElementDialogAsync(owner);
     }
 }
