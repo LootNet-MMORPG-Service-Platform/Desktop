@@ -116,7 +116,7 @@ public partial class ItemGenerationViewModel : ViewModelBase
         await LoadProfilesAsync();
     }
     
-    public async Task CreateRuleAsync(ItemCategory category, WeaponType? weaponType, ArmorType? armorType)
+    public async Task CreateRuleAsync(ItemCategory category, WeaponType? weaponType, ArmorType? armorType, bool isFallback)
     {
         if (SelectedProfile == null)
             return;
@@ -125,9 +125,36 @@ public partial class ItemGenerationViewModel : ViewModelBase
             SelectedProfile.Id,
             category,
             weaponType,
-            armorType);
+            armorType,
+            isFallback);
 
         await SelectProfile(SelectedProfile);
+    }
+
+    public async Task CreateTypeWeightAsync(
+        ItemCategory category,
+        WeaponType? weaponType,
+        ArmorType? armorType,
+        double weight)
+    {
+        if (SelectedProfile == null)
+            return;
+
+        await _service.CreateTypeWeightAsync(
+            SelectedProfile.Id,
+            category,
+            weaponType,
+            armorType,
+            weight);
+
+        await RefreshWeightsAsync();
+    }
+
+    public async Task DeleteTypeWeightAsync(TypeWeight weight)
+    {
+        await _service.DeleteTypeWeightAsync(weight.Id);
+
+        await RefreshWeightsAsync();
     }
     
     public async Task DeleteRuleAsync(GenerationRule rule)
@@ -189,6 +216,24 @@ public partial class ItemGenerationViewModel : ViewModelBase
     partial void OnSelectedProfileChanged(GenerationProfile? value)
     {
         OnPropertyChanged(nameof(HasSelectedProfile));
+    }
+
+    private async Task RefreshWeightsAsync()
+    {
+        if (SelectedProfile == null)
+            return;
+
+        Weights.Clear();
+
+        var weights = await _service.GetWeightsAsync(SelectedProfile.Id);
+
+        if (weights != null)
+        {
+            foreach (var weight in weights)
+                Weights.Add(weight);
+        }
+
+        RefreshDetailsState();
     }
 
     private void RefreshDetailsState()

@@ -70,7 +70,54 @@ public partial class ItemGenerationView : UserControl
         await vm.CreateRuleAsync(
             result.Category,
             result.WeaponType,
-            result.ArmorType);
+            result.ArmorType,
+            result.IsFallback);
+    }
+
+    private async void AddTypeWeight_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not ItemGenerationViewModel vm)
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowCreateTypeWeightDialogAsync(owner);
+
+        if (result == null)
+            return;
+
+        await vm.CreateTypeWeightAsync(
+            result.Category,
+            result.WeaponType,
+            result.ArmorType,
+            result.Weight);
+    }
+
+    private async void DeleteTypeWeight_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not ItemGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: TypeWeight weight })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var confirmed = await DialogService.ShowConfirmDialogAsync(
+            owner,
+            $"Are you sure you want to delete type weight '{weight.Category} {weight.WeaponType}{weight.ArmorType}'?",
+            "Delete");
+
+        if (!confirmed)
+            return;
+
+        await vm.DeleteTypeWeightAsync(weight);
     }
     
     private async void DeleteRule_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

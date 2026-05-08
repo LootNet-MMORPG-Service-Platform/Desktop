@@ -40,6 +40,34 @@ public class GenerationAdminService
         return await _httpClient.GetFromJsonAsync<List<TypeWeight>>(
             $"/api/admin/generation/profiles/{profileId}/weights");
     }
+
+    public async Task CreateTypeWeightAsync(
+        Guid profileId,
+        ItemCategory category,
+        WeaponType? weaponType,
+        ArmorType? armorType,
+        double weight)
+    {
+        var response = await _httpClient.PostAsJsonAsync(
+            $"/api/admin/generation/profiles/{profileId}/weights",
+            new
+            {
+                category,
+                weaponType,
+                armorType,
+                weight
+            });
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task DeleteTypeWeightAsync(Guid weightId)
+    {
+        var response = await _httpClient.DeleteAsync(
+            $"/api/admin/generation/weights/{weightId}");
+
+        response.EnsureSuccessStatusCode();
+    }
     
     public async Task DeleteProfileAsync(Guid profileId)
     {
@@ -61,7 +89,7 @@ public class GenerationAdminService
         response.EnsureSuccessStatusCode();
     }
     
-    public async Task CreateRuleAsync(Guid profileId, ItemCategory category, WeaponType? weaponType, ArmorType? armorType)
+    public async Task CreateRuleAsync(Guid profileId, ItemCategory category, WeaponType? weaponType, ArmorType? armorType, bool isFallback)
     {
         var response = await _httpClient.PostAsJsonAsync(
             $"/api/admin/generation/profiles/{profileId}/rules",
@@ -69,7 +97,8 @@ public class GenerationAdminService
             {
                 category,
                 weaponType,
-                armorType
+                armorType,
+                isFallback
             });
 
         response.EnsureSuccessStatusCode();

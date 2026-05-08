@@ -6,7 +6,7 @@
              x:DataType="vm:ItemGenerationViewModel"
              x:Name="Root">
 
-    <Grid ColumnDefinitions="*,320">
+    <Grid ColumnDefinitions="*,460">
 
         <Border Grid.Column="0"
                 Background="{DynamicResource SurfaceBrush}"
@@ -107,6 +107,13 @@
                                    Foreground="{DynamicResource TextPrimaryBrush}"
                                    Margin="0,6,0,0"/>
 
+                        <Button Content="Add Type Weight"
+                                Classes="detailsBtn"
+                                Width="150"
+                                HorizontalAlignment="Left"
+                                Margin="0,4,0,6"
+                                Click="AddTypeWeight_Click"/>
+
                         <TextBlock Text="No type weights yet"
                                    FontSize="13"
                                    Foreground="{DynamicResource TextSecondaryBrush}"
@@ -116,16 +123,32 @@
                                       IsVisible="{Binding HasWeights}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="models:TypeWeight">
-                                    <TextBlock FontSize="13"
-                                               Foreground="{DynamicResource TextSecondaryBrush}">
-                                        <Run Text="- "/>
-                                        <Run Text="{Binding Category}"/>
-                                        <Run Text=" "/>
-                                        <Run Text="{Binding WeaponType}"/>
-                                        <Run Text="{Binding ArmorType}"/>
-                                        <Run Text=", weight: "/>
-                                        <Run Text="{Binding Weight}"/>
-                                    </TextBlock>
+                                    <Border Background="{DynamicResource CardBrush}"
+                                            CornerRadius="8"
+                                            Padding="8"
+                                            Margin="0,4,0,0">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <TextBlock Grid.Column="0"
+                                                       FontSize="13"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                                       VerticalAlignment="Center">
+                                                <Run Text="{Binding Category}"/>
+                                                <Run Text=" "/>
+                                                <Run Text="{Binding WeaponType}"/>
+                                                <Run Text="{Binding ArmorType}"/>
+                                                <Run Text=", weight: "/>
+                                                <Run Text="{Binding Weight}"/>
+                                            </TextBlock>
+
+                                            <Button Grid.Column="1"
+                                                    Content="Delete"
+                                                    Classes="blockBtn"
+                                                    Width="100"
+                                                    HorizontalAlignment="Right"
+                                                    Margin="12,0,0,0"
+                                                    Click="DeleteTypeWeight_Click"/>
+                                        </Grid>
+                                    </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -170,6 +193,12 @@
                                                        Foreground="{DynamicResource TextSecondaryBrush}">
                                                 <Run Text="Weapon: "/>
                                                 <Run Text="{Binding WeaponType}"/>
+                                            </TextBlock>
+
+                                            <TextBlock FontSize="13"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}">
+                                                <Run Text="Fallback: "/>
+                                                <Run Text="{Binding IsFallback}"/>
                                             </TextBlock>
 
                                             <TextBlock Text="Parameters"

@@ -44,6 +44,11 @@ public static class DialogService
     {
         return GenerationDialogService.ShowCreateRuleDialogAsync(owner);
     }
+
+    public static Task<CreateTypeWeightDialogResult?> ShowCreateTypeWeightDialogAsync(Window owner)
+    {
+        return GenerationDialogService.ShowCreateTypeWeightDialogAsync(owner);
+    }
     
     public static Task<CreateParameterDialogResult?> ShowCreateParameterDialogAsync(Window owner)
     {
