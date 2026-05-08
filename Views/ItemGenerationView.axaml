@@ -222,33 +222,45 @@
                                                           IsVisible="{Binding HasParameters}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate x:DataType="models:GenerationParameter">
-                                                        <StackPanel Spacing="3"
-                                                                    Margin="0,2,0,6">
+                                                        <Border Background="{DynamicResource SurfaceBrush}"
+                                                                CornerRadius="8"
+                                                                Padding="8"
+                                                                Margin="0,2,0,6">
+                                                            <Grid ColumnDefinitions="*,Auto">
+                                                                <StackPanel Grid.Column="0"
+                                                                            Spacing="3">
+                                                                    <TextBlock FontSize="13"
+                                                                               Foreground="{DynamicResource TextSecondaryBrush}">
+                                                                        <Run Text="{Binding Parameter}"/>
+                                                                    </TextBlock>
 
-                                                            <TextBlock FontSize="13"
-                                                                       Foreground="{DynamicResource TextSecondaryBrush}">
-                                                                <Run Text="- "/>
-                                                                <Run Text="{Binding Parameter}"/>
-                                                            </TextBlock>
+                                                                    <ItemsControl ItemsSource="{Binding Segments}">
+                                                                        <ItemsControl.ItemTemplate>
+                                                                            <DataTemplate x:DataType="models:Segment">
+                                                                                <TextBlock FontSize="12"
+                                                                                           Margin="14,0,0,0"
+                                                                                           Foreground="{DynamicResource TextMutedBrush}">
+                                                                                    <Run Text="Min: "/>
+                                                                                    <Run Text="{Binding Min}"/>
+                                                                                    <Run Text=", Max: "/>
+                                                                                    <Run Text="{Binding Max}"/>
+                                                                                    <Run Text=", Weight: "/>
+                                                                                    <Run Text="{Binding Weight}"/>
+                                                                                </TextBlock>
+                                                                            </DataTemplate>
+                                                                        </ItemsControl.ItemTemplate>
+                                                                    </ItemsControl>
+                                                                </StackPanel>
 
-                                                            <ItemsControl ItemsSource="{Binding Segments}">
-                                                                <ItemsControl.ItemTemplate>
-                                                                    <DataTemplate x:DataType="models:Segment">
-                                                                        <TextBlock FontSize="12"
-                                                                                   Margin="14,0,0,0"
-                                                                                   Foreground="{DynamicResource TextMutedBrush}">
-                                                                            <Run Text="range: "/>
-                                                                            <Run Text="{Binding Min}"/>
-                                                                            <Run Text=" - "/>
-                                                                            <Run Text="{Binding Max}"/>
-                                                                            <Run Text=", weight: "/>
-                                                                            <Run Text="{Binding Weight}"/>
-                                                                        </TextBlock>
-                                                                    </DataTemplate>
-                                                                </ItemsControl.ItemTemplate>
-                                                            </ItemsControl>
-
-                                                        </StackPanel>
+                                                                <Button Grid.Column="1"
+                                                                        Content="Delete"
+                                                                        Classes="blockBtn"
+                                                                        Width="100"
+                                                                        HorizontalAlignment="Right"
+                                                                        Margin="12,0,0,0"
+                                                                        Click="DeleteParameter_Click"/>
+                                                            </Grid>
+                                                        </Border>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
@@ -274,33 +286,45 @@
                                                           IsVisible="{Binding HasElements}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate x:DataType="models:GenerationElement">
-                                                        <StackPanel Spacing="3"
-                                                                    Margin="0,2,0,6">
+                                                        <Border Background="{DynamicResource SurfaceBrush}"
+                                                                CornerRadius="8"
+                                                                Padding="8"
+                                                                Margin="0,2,0,6">
+                                                            <Grid ColumnDefinitions="*,Auto">
+                                                                <StackPanel Grid.Column="0"
+                                                                            Spacing="3">
+                                                                    <TextBlock FontSize="13"
+                                                                               Foreground="{DynamicResource TextSecondaryBrush}">
+                                                                        <Run Text="{Binding ElementType}"/>
+                                                                    </TextBlock>
 
-                                                            <TextBlock FontSize="13"
-                                                                       Foreground="{DynamicResource TextSecondaryBrush}">
-                                                                <Run Text="- "/>
-                                                                <Run Text="{Binding ElementType}"/>
-                                                            </TextBlock>
+                                                                    <ItemsControl ItemsSource="{Binding Segments}">
+                                                                        <ItemsControl.ItemTemplate>
+                                                                            <DataTemplate x:DataType="models:Segment">
+                                                                                <TextBlock FontSize="12"
+                                                                                           Margin="14,0,0,0"
+                                                                                           Foreground="{DynamicResource TextMutedBrush}">
+                                                                                    <Run Text="Min: "/>
+                                                                                    <Run Text="{Binding Min}"/>
+                                                                                    <Run Text=", Max: "/>
+                                                                                    <Run Text="{Binding Max}"/>
+                                                                                    <Run Text=", Weight: "/>
+                                                                                    <Run Text="{Binding Weight}"/>
+                                                                                </TextBlock>
+                                                                            </DataTemplate>
+                                                                        </ItemsControl.ItemTemplate>
+                                                                    </ItemsControl>
+                                                                </StackPanel>
 
-                                                            <ItemsControl ItemsSource="{Binding Segments}">
-                                                                <ItemsControl.ItemTemplate>
-                                                                    <DataTemplate x:DataType="models:Segment">
-                                                                        <TextBlock FontSize="12"
-                                                                                   Margin="14,0,0,0"
-                                                                                   Foreground="{DynamicResource TextMutedBrush}">
-                                                                            <Run Text="range: "/>
-                                                                            <Run Text="{Binding Min}"/>
-                                                                            <Run Text=" - "/>
-                                                                            <Run Text="{Binding Max}"/>
-                                                                            <Run Text=", weight: "/>
-                                                                            <Run Text="{Binding Weight}"/>
-                                                                        </TextBlock>
-                                                                    </DataTemplate>
-                                                                </ItemsControl.ItemTemplate>
-                                                            </ItemsControl>
-
-                                                        </StackPanel>
+                                                                <Button Grid.Column="1"
+                                                                        Content="Delete"
+                                                                        Classes="blockBtn"
+                                                                        Width="100"
+                                                                        HorizontalAlignment="Right"
+                                                                        Margin="12,0,0,0"
+                                                                        Click="DeleteElement_Click"/>
+                                                            </Grid>
+                                                        </Border>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>

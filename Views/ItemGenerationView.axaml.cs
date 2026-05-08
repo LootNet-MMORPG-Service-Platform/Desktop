@@ -167,6 +167,30 @@ public partial class ItemGenerationView : UserControl
             result.Parameter,
             result.Segments);
     }
+
+    private async void DeleteParameter_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not ItemGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: GenerationParameter parameter })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var confirmed = await DialogService.ShowConfirmDialogAsync(
+            owner,
+            $"Are you sure you want to delete parameter '{parameter.Parameter}'?",
+            "Delete");
+
+        if (!confirmed)
+            return;
+
+        await vm.DeleteParameterAsync(parameter);
+    }
     
     private async void AddElement_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
@@ -190,5 +214,29 @@ public partial class ItemGenerationView : UserControl
             rule,
             result.ElementType,
             result.Segments);
+    }
+
+    private async void DeleteElement_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not ItemGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: GenerationElement element })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var confirmed = await DialogService.ShowConfirmDialogAsync(
+            owner,
+            $"Are you sure you want to delete element '{element.ElementType}'?",
+            "Delete");
+
+        if (!confirmed)
+            return;
+
+        await vm.DeleteElementAsync(element);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using desktop_app.Models.Generation;
 using desktop_app.Services.Generation;
@@ -177,9 +178,18 @@ public partial class ItemGenerationViewModel : ViewModelBase
             parameter,
             segments);
 
-        if (SelectedProfile != null)
+        await RefreshParametersAsync(rule);
+    }
+
+    public async Task DeleteParameterAsync(GenerationParameter parameter)
+    {
+        var rule = Rules.FirstOrDefault(r => r.Parameters.Any(p => p.Id == parameter.Id));
+
+        await _service.DeleteParameterAsync(parameter.Id);
+
+        if (rule != null)
         {
-            await SelectProfile(SelectedProfile);
+            await RefreshParametersAsync(rule);
         }
     }
     
@@ -193,9 +203,18 @@ public partial class ItemGenerationViewModel : ViewModelBase
             elementType,
             segments);
 
-        if (SelectedProfile != null)
+        await RefreshElementsAsync(rule);
+    }
+
+    public async Task DeleteElementAsync(GenerationElement element)
+    {
+        var rule = Rules.FirstOrDefault(r => r.Elements.Any(e => e.Id == element.Id));
+
+        await _service.DeleteElementAsync(element.Id);
+
+        if (rule != null)
         {
-            await SelectProfile(SelectedProfile);
+            await RefreshElementsAsync(rule);
         }
     }
 
@@ -234,6 +253,34 @@ public partial class ItemGenerationViewModel : ViewModelBase
         }
 
         RefreshDetailsState();
+    }
+
+    private async Task RefreshParametersAsync(GenerationRule rule)
+    {
+        var parameters = await _service.GetParametersAsync(rule.Id);
+
+        rule.Parameters = parameters ?? new List<GenerationParameter>();
+
+        var ruleIndex = Rules.IndexOf(rule);
+
+        if (ruleIndex >= 0)
+        {
+            Rules[ruleIndex] = rule;
+        }
+    }
+
+    private async Task RefreshElementsAsync(GenerationRule rule)
+    {
+        var elements = await _service.GetElementsAsync(rule.Id);
+
+        rule.Elements = elements ?? new List<GenerationElement>();
+
+        var ruleIndex = Rules.IndexOf(rule);
+
+        if (ruleIndex >= 0)
+        {
+            Rules[ruleIndex] = rule;
+        }
     }
 
     private void RefreshDetailsState()

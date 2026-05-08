@@ -111,6 +111,12 @@ public class GenerationAdminService
 
         response.EnsureSuccessStatusCode();
     }
+
+    public async Task<List<GenerationParameter>?> GetParametersAsync(Guid ruleId)
+    {
+        return await _httpClient.GetFromJsonAsync<List<GenerationParameter>>(
+            $"/api/admin/generation/rules/{ruleId}/parameters");
+    }
     
     public async Task CreateParameterAsync(
         Guid ruleId,
@@ -127,6 +133,20 @@ public class GenerationAdminService
 
         response.EnsureSuccessStatusCode();
     }
+
+    public async Task DeleteParameterAsync(Guid parameterId)
+    {
+        var response = await _httpClient.DeleteAsync(
+            $"/api/admin/generation/parameters/{parameterId}");
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task<List<GenerationElement>?> GetElementsAsync(Guid ruleId)
+    {
+        return await _httpClient.GetFromJsonAsync<List<GenerationElement>>(
+            $"/api/admin/generation/rules/{ruleId}/elements");
+    }
     
     public async Task CreateElementAsync(
         Guid ruleId,
@@ -140,6 +160,14 @@ public class GenerationAdminService
                 elementType,
                 segments
             });
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task DeleteElementAsync(Guid elementId)
+    {
+        var response = await _httpClient.DeleteAsync(
+            $"/api/admin/generation/elements/{elementId}");
 
         response.EnsureSuccessStatusCode();
     }
