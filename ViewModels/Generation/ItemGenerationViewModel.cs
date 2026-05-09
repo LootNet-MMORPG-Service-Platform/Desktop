@@ -157,6 +157,23 @@ public partial class ItemGenerationViewModel : ViewModelBase
 
         await RefreshWeightsAsync();
     }
+
+    public async Task UpdateTypeWeightAsync(
+        TypeWeight typeWeight,
+        ItemCategory category,
+        WeaponType? weaponType,
+        ArmorType? armorType,
+        double weight)
+    {
+        await _service.UpdateTypeWeightAsync(
+            typeWeight.Id,
+            category,
+            weaponType,
+            armorType,
+            weight);
+
+        await RefreshWeightsAsync();
+    }
     
     public async Task DeleteRuleAsync(GenerationRule rule)
     {

@@ -68,6 +68,27 @@ public class GenerationAdminService
 
         response.EnsureSuccessStatusCode();
     }
+
+    public async Task UpdateTypeWeightAsync(
+        Guid weightId,
+        ItemCategory category,
+        WeaponType? weaponType,
+        ArmorType? armorType,
+        double weight)
+    {
+        var response = await _httpClient.PutAsJsonAsync(
+            "/api/admin/generation/weights",
+            new
+            {
+                id = weightId,
+                category,
+                weaponType,
+                armorType,
+                weight
+            });
+
+        response.EnsureSuccessStatusCode();
+    }
     
     public async Task DeleteProfileAsync(Guid profileId)
     {
