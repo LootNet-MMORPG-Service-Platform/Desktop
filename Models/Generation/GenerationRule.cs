@@ -12,6 +12,11 @@ public class GenerationRule
     public ArmorType? ArmorType { get; set; }
     public bool IsFallback { get; set; }
 
+    public string TypeLabel => Category == ItemCategory.Armor ? "Armor: " : "Weapon: ";
+    public string TypeValue => Category == ItemCategory.Armor
+        ? ArmorType?.ToString() ?? ""
+        : WeaponType?.ToString() ?? "";
+
     public bool HasParameters => Parameters.Count > 0;
     public List<GenerationParameter> Parameters { get; set; } = new();
     

@@ -124,6 +124,22 @@ public class GenerationAdminService
 
         response.EnsureSuccessStatusCode();
     }
+
+    public async Task UpdateRuleAsync(Guid ruleId, ItemCategory category, WeaponType? weaponType, ArmorType? armorType, bool isFallback)
+    {
+        var response = await _httpClient.PutAsJsonAsync(
+            "/api/admin/generation/rules",
+            new
+            {
+                id = ruleId,
+                category,
+                weaponType,
+                armorType,
+                isFallback
+            });
+
+        response.EnsureSuccessStatusCode();
+    }
     
     public async Task DeleteRuleAsync(Guid ruleId)
     {

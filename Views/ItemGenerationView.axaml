@@ -92,6 +92,13 @@
                                HorizontalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
 
+                    <TextBlock Text="Profile incomplete"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource DangerBrush}"
+                               IsVisible="{Binding IsProfileIncomplete}"/>
+
                 </StackPanel>
 
                 <ScrollViewer Grid.Row="2"
@@ -201,8 +208,8 @@
 
                                             <TextBlock FontSize="13"
                                                        Foreground="{DynamicResource TextSecondaryBrush}">
-                                                <Run Text="Weapon: "/>
-                                                <Run Text="{Binding WeaponType}"/>
+                                                <Run Text="{Binding TypeLabel}"/>
+                                                <Run Text="{Binding TypeValue}"/>
                                             </TextBlock>
 
                                             <TextBlock FontSize="13"
@@ -223,7 +230,7 @@
                                                     Margin="0,4,0,6"
                                                     Click="AddParameter_Click"/>
 
-                                            <TextBlock Text="No parameters"
+                                            <TextBlock Text="No parameters yet"
                                                        FontSize="13"
                                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                                        IsVisible="{Binding !HasParameters}"/>
@@ -244,7 +251,14 @@
                                                                         <Run Text="{Binding Parameter}"/>
                                                                     </TextBlock>
 
-                                                                    <ItemsControl ItemsSource="{Binding Segments}">
+                                                                    <TextBlock Text="No segments yet"
+                                                                               FontSize="12"
+                                                                               Margin="14,0,0,0"
+                                                                               Foreground="{DynamicResource TextMutedBrush}"
+                                                                               IsVisible="{Binding !HasSegments}"/>
+
+                                                                    <ItemsControl ItemsSource="{Binding Segments}"
+                                                                                  IsVisible="{Binding HasSegments}">
                                                                         <ItemsControl.ItemTemplate>
                                                                             <DataTemplate x:DataType="models:Segment">
                                                                                 <TextBlock FontSize="12"
@@ -287,7 +301,7 @@
                                                     Margin="0,4,0,6"
                                                     Click="AddElement_Click"/>
 
-                                            <TextBlock Text="No elements"
+                                            <TextBlock Text="No elements yet"
                                                        FontSize="13"
                                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                                        IsVisible="{Binding !HasElements}"/>
@@ -308,7 +322,14 @@
                                                                         <Run Text="{Binding ElementType}"/>
                                                                     </TextBlock>
 
-                                                                    <ItemsControl ItemsSource="{Binding Segments}">
+                                                                    <TextBlock Text="No segments yet"
+                                                                               FontSize="12"
+                                                                               Margin="14,0,0,0"
+                                                                               Foreground="{DynamicResource TextMutedBrush}"
+                                                                               IsVisible="{Binding !HasSegments}"/>
+
+                                                                    <ItemsControl ItemsSource="{Binding Segments}"
+                                                                                  IsVisible="{Binding HasSegments}">
                                                                         <ItemsControl.ItemTemplate>
                                                                             <DataTemplate x:DataType="models:Segment">
                                                                                 <TextBlock FontSize="12"
@@ -339,11 +360,20 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
 
-                                            <Button Content="Delete Rule"
-                                                    Classes="blockBtn"
-                                                    HorizontalAlignment="Right"
-                                                    Margin="0,8,0,0"
-                                                    Click="DeleteRule_Click"/>
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="8"
+                                                        HorizontalAlignment="Right"
+                                                        Margin="0,8,0,0">
+                                                <Button Content="Edit"
+                                                        Classes="detailsBtn"
+                                                        Width="100"
+                                                        Click="EditRule_Click"/>
+
+                                                <Button Content="Delete Rule"
+                                                        Classes="blockBtn"
+                                                        Width="120"
+                                                        Click="DeleteRule_Click"/>
+                                            </StackPanel>
                                             
                                         </StackPanel>
 

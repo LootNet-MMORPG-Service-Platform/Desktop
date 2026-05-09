@@ -169,6 +169,32 @@ public partial class ItemGenerationView : UserControl
 
         await vm.DeleteRuleAsync(rule);
     }
+
+    private async void EditRule_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not ItemGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: GenerationRule rule })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowEditRuleDialogAsync(owner, rule);
+
+        if (result == null)
+            return;
+
+        await vm.UpdateRuleAsync(
+            rule,
+            result.Category,
+            result.WeaponType,
+            result.ArmorType,
+            result.IsFallback);
+    }
     
     private async void AddParameter_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {

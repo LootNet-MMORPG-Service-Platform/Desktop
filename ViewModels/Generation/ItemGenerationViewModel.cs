@@ -21,6 +21,11 @@ public partial class ItemGenerationViewModel : ViewModelBase
     public bool HasRules => Rules.Count > 0;
     public bool HasWeights => Weights.Count > 0;
     public bool HasSelectedProfile => SelectedProfile != null;
+    public bool IsProfileIncomplete =>
+        HasSelectedProfile &&
+        (!HasWeights ||
+         !HasRules ||
+         Rules.Any(rule => !rule.HasParameters || !rule.HasElements));
 
     [ObservableProperty]
     private string _statusMessage = "";
@@ -52,7 +57,11 @@ public partial class ItemGenerationViewModel : ViewModelBase
         if (rules != null)
         {
             foreach (var r in rules)
+            {
+                r.Parameters = await _service.GetParametersAsync(r.Id) ?? new List<GenerationParameter>();
+                r.Elements = await _service.GetElementsAsync(r.Id) ?? new List<GenerationElement>();
                 Rules.Add(r);
+            }
         }
 
         var weights = await _service.GetWeightsAsync(profile.Id);
@@ -184,6 +193,23 @@ public partial class ItemGenerationViewModel : ViewModelBase
             await SelectProfile(SelectedProfile);
         }
     }
+
+    public async Task UpdateRuleAsync(
+        GenerationRule rule,
+        ItemCategory category,
+        WeaponType? weaponType,
+        ArmorType? armorType,
+        bool isFallback)
+    {
+        await _service.UpdateRuleAsync(
+            rule.Id,
+            category,
+            weaponType,
+            armorType,
+            isFallback);
+
+        await RefreshRulesAsync();
+    }
     
     public async Task CreateParameterAsync(
         GenerationRule rule,
@@ -272,6 +298,28 @@ public partial class ItemGenerationViewModel : ViewModelBase
         RefreshDetailsState();
     }
 
+    private async Task RefreshRulesAsync()
+    {
+        if (SelectedProfile == null)
+            return;
+
+        Rules.Clear();
+
+        var rules = await _service.GetRulesAsync(SelectedProfile.Id);
+
+        if (rules != null)
+        {
+            foreach (var rule in rules)
+            {
+                rule.Parameters = await _service.GetParametersAsync(rule.Id) ?? new List<GenerationParameter>();
+                rule.Elements = await _service.GetElementsAsync(rule.Id) ?? new List<GenerationElement>();
+                Rules.Add(rule);
+            }
+        }
+
+        RefreshDetailsState();
+    }
+
     private async Task RefreshParametersAsync(GenerationRule rule)
     {
         var parameters = await _service.GetParametersAsync(rule.Id);
@@ -284,6 +332,8 @@ public partial class ItemGenerationViewModel : ViewModelBase
         {
             Rules[ruleIndex] = rule;
         }
+
+        RefreshDetailsState();
     }
 
     private async Task RefreshElementsAsync(GenerationRule rule)
@@ -298,11 +348,14 @@ public partial class ItemGenerationViewModel : ViewModelBase
         {
             Rules[ruleIndex] = rule;
         }
+
+        RefreshDetailsState();
     }
 
     private void RefreshDetailsState()
     {
         OnPropertyChanged(nameof(HasRules));
         OnPropertyChanged(nameof(HasWeights));
+        OnPropertyChanged(nameof(IsProfileIncomplete));
     }
 }
