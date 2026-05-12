@@ -22,6 +22,7 @@ public partial class UsersViewModel : ViewModelBase
     
     private AdminService _adminService;
     private readonly AuthService _authService;
+    private readonly AuthTokenService _authTokenService;
     private readonly Action _onUnauthorized;
 
     private string _currentUserId = "";
@@ -89,6 +90,7 @@ public partial class UsersViewModel : ViewModelBase
     {
         _adminService = adminService;
         _authService = authService;
+        _authTokenService = new AuthTokenService();
         _onUnauthorized = onUnauthorized;
 
         Filters.FiltersChanged += async () =>
@@ -148,6 +150,8 @@ public partial class UsersViewModel : ViewModelBase
             _adminService = new AdminService(refreshed.Token);
             _refreshToken = refreshed.RefreshToken;
             _currentUserId = refreshed.UserId;
+
+            await _authTokenService.SaveRefreshTokenAsync(refreshed.RefreshToken);
 
             result = await _adminService.GetUsersAsync(
                 CurrentPage,

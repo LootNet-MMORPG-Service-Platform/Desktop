@@ -14,6 +14,7 @@ public partial class HomeViewModel : ViewModelBase
 
     private AdminService _adminService;
     private GenerationAdminService _generationAdminService;
+    private readonly AuthTokenService _authTokenService;
     
     private string _token = "";
 
@@ -25,6 +26,7 @@ public partial class HomeViewModel : ViewModelBase
         Parent = parent;
         _adminService = null!;
         var authService = new AuthService();
+        _authTokenService = new AuthTokenService();
         
         _generationAdminService = null!;
         ItemGenerationVm = new ItemGenerationViewModel(_generationAdminService);
@@ -157,8 +159,9 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Logout()
+    private async Task Logout()
     {
+        await _authTokenService.ClearRefreshTokenAsync();
         Parent.ShowWelcome();
     }
 
