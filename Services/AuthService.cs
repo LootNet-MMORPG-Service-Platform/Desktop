@@ -15,7 +15,7 @@ public class AuthService
     {
         _httpClient = new HttpClient
         {
-            BaseAddress = new Uri("https://localhost:7124")
+            BaseAddress = ApiSettings.BaseUrl
         };
         
         _jwtParser = new JwtParser();
