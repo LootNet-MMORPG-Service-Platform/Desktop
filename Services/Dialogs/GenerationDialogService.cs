@@ -22,6 +22,33 @@ public static class GenerationDialogService
         return DialogWindowFactory.CreateBaseDialog(content, width, height);
     }
 
+    private static Button CreateDialogButton(string text, string className)
+    {
+        return new Button
+        {
+            Content = text,
+            Width = 90,
+            Height = 36,
+            Classes = { className }
+        };
+    }
+
+    private static StackPanel CreateButtonRow(params Button[] buttons)
+    {
+        var row = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Spacing = 12,
+            Margin = new Thickness(0, 6, 0, 0)
+        };
+
+        foreach (var button in buttons)
+            row.Children.Add(button);
+
+        return row;
+    }
+
     public static async Task<string?> ShowCreateProfileDialogAsync(Window owner)
     {
         var tcs = new TaskCompletionSource<string?>();
@@ -32,21 +59,8 @@ public static class GenerationDialogService
             Watermark = "Profile name"
         };
 
-        var createButton = new Button
-        {
-            Content = "Create",
-            Width = 90,
-            Height = 36,
-            Classes = { "detailsBtn" }
-        };
-
-        var cancelButton = new Button
-        {
-            Content = "Cancel",
-            Width = 90,
-            Height = 36,
-            Classes = { "dialogCancelBtn" }
-        };
+        var createButton = CreateDialogButton("Create", "detailsBtn");
+        var cancelButton = CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
         {
@@ -73,18 +87,7 @@ public static class GenerationDialogService
 
                         textBox,
 
-                        new StackPanel
-                        {
-                            Orientation = Orientation.Horizontal,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Spacing = 12,
-                            Margin = new Thickness(0, 6, 0, 0),
-                            Children =
-                            {
-                                createButton,
-                                cancelButton
-                            }
-                        }
+                        CreateButtonRow(createButton, cancelButton)
                     }
                 }
             }
@@ -148,21 +151,8 @@ public static class GenerationDialogService
             HorizontalAlignment = HorizontalAlignment.Center
         };
 
-        var createButton = new Button
-        {
-            Content = "Create",
-            Width = 90,
-            Height = 36,
-            Classes = { "detailsBtn" }
-        };
-
-        var cancelButton = new Button
-        {
-            Content = "Cancel",
-            Width = 90,
-            Height = 36,
-            Classes = { "dialogCancelBtn" }
-        };
+        var createButton = CreateDialogButton("Create", "detailsBtn");
+        var cancelButton = CreateDialogButton("Cancel", "dialogCancelBtn");
 
         categoryBox.SelectionChanged += (_, _) =>
         {
@@ -219,18 +209,7 @@ public static class GenerationDialogService
 
                         fallbackBox,
 
-                        new StackPanel
-                        {
-                            Orientation = Orientation.Horizontal,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Spacing = 12,
-                            Margin = new Thickness(0, 6, 0, 0),
-                            Children =
-                            {
-                                createButton,
-                                cancelButton
-                            }
-                        }
+                        CreateButtonRow(createButton, cancelButton)
                     }
                 }
             }
@@ -337,21 +316,8 @@ public static class GenerationDialogService
             IsVisible = false
         };
 
-        var saveButton = new Button
-        {
-            Content = "Save",
-            Width = 90,
-            Height = 36,
-            Classes = { "detailsBtn" }
-        };
-
-        var cancelButton = new Button
-        {
-            Content = "Cancel",
-            Width = 90,
-            Height = 36,
-            Classes = { "dialogCancelBtn" }
-        };
+        var saveButton = CreateDialogButton("Save", "detailsBtn");
+        var cancelButton = CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
         {
@@ -402,18 +368,7 @@ public static class GenerationDialogService
                         fallbackBox,
                         errorText,
 
-                        new StackPanel
-                        {
-                            Orientation = Orientation.Horizontal,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Spacing = 12,
-                            Margin = new Thickness(0, 6, 0, 0),
-                            Children =
-                            {
-                                saveButton,
-                                cancelButton
-                            }
-                        }
+                        CreateButtonRow(saveButton, cancelButton)
                     }
                 }
             }
@@ -526,21 +481,8 @@ public static class GenerationDialogService
             IsVisible = false
         };
 
-        var createButton = new Button
-        {
-            Content = "Create",
-            Width = 90,
-            Height = 36,
-            Classes = { "detailsBtn" }
-        };
-
-        var cancelButton = new Button
-        {
-            Content = "Cancel",
-            Width = 90,
-            Height = 36,
-            Classes = { "dialogCancelBtn" }
-        };
+        var createButton = CreateDialogButton("Create", "detailsBtn");
+        var cancelButton = CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
         {
@@ -590,18 +532,7 @@ public static class GenerationDialogService
                         weightBox,
                         errorText,
 
-                        new StackPanel
-                        {
-                            Orientation = Orientation.Horizontal,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Spacing = 12,
-                            Margin = new Thickness(0, 6, 0, 0),
-                            Children =
-                            {
-                                createButton,
-                                cancelButton
-                            }
-                        }
+                        CreateButtonRow(createButton, cancelButton)
                     }
                 }
             }
@@ -725,21 +656,8 @@ public static class GenerationDialogService
             IsVisible = false
         };
 
-        var saveButton = new Button
-        {
-            Content = "Save",
-            Width = 90,
-            Height = 36,
-            Classes = { "detailsBtn" }
-        };
-
-        var cancelButton = new Button
-        {
-            Content = "Cancel",
-            Width = 90,
-            Height = 36,
-            Classes = { "dialogCancelBtn" }
-        };
+        var saveButton = CreateDialogButton("Save", "detailsBtn");
+        var cancelButton = CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
         {
@@ -790,18 +708,7 @@ public static class GenerationDialogService
                         weightBox,
                         errorText,
 
-                        new StackPanel
-                        {
-                            Orientation = Orientation.Horizontal,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Spacing = 12,
-                            Margin = new Thickness(0, 6, 0, 0),
-                            Children =
-                            {
-                                saveButton,
-                                cancelButton
-                            }
-                        }
+                        CreateButtonRow(saveButton, cancelButton)
                     }
                 }
             }
@@ -906,21 +813,8 @@ public static class GenerationDialogService
             Width = 220
         };
 
-        var createButton = new Button
-        {
-            Content = "Create",
-            Width = 90,
-            Height = 36,
-            Classes = { "detailsBtn" }
-        };
-
-        var cancelButton = new Button
-        {
-            Content = "Cancel",
-            Width = 90,
-            Height = 36,
-            Classes = { "dialogCancelBtn" }
-        };
+        var createButton = CreateDialogButton("Create", "detailsBtn");
+        var cancelButton = CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
         {
@@ -950,18 +844,7 @@ public static class GenerationDialogService
                         maxBox,
                         weightBox,
 
-                        new StackPanel
-                        {
-                            Orientation = Orientation.Horizontal,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Spacing = 12,
-                            Margin = new Thickness(0, 6, 0, 0),
-                            Children =
-                            {
-                                createButton,
-                                cancelButton
-                            }
-                        }
+                        CreateButtonRow(createButton, cancelButton)
                     }
                 }
             }
@@ -1040,21 +923,8 @@ public static class GenerationDialogService
             Width = 220
         };
 
-        var createButton = new Button
-        {
-            Content = "Create",
-            Width = 90,
-            Height = 36,
-            Classes = { "detailsBtn" }
-        };
-
-        var cancelButton = new Button
-        {
-            Content = "Cancel",
-            Width = 90,
-            Height = 36,
-            Classes = { "dialogCancelBtn" }
-        };
+        var createButton = CreateDialogButton("Create", "detailsBtn");
+        var cancelButton = CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
         {
@@ -1084,18 +954,7 @@ public static class GenerationDialogService
                         maxBox,
                         weightBox,
 
-                        new StackPanel
-                        {
-                            Orientation = Orientation.Horizontal,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Spacing = 12,
-                            Margin = new Thickness(0, 6, 0, 0),
-                            Children =
-                            {
-                                createButton,
-                                cancelButton
-                            }
-                        }
+                        CreateButtonRow(createButton, cancelButton)
                     }
                 }
             }
