@@ -45,6 +45,7 @@ public partial class LoginViewModel : ViewModelBase
         await _authTokenService.SaveRefreshTokenAsync(result.RefreshToken);
 
         _mainWindow.ShowHome(result);
+        NotificationService.Instance.ShowSuccess($"Welcome, {result.Username}.", "Login successful");
     }
     
     public void Reset()

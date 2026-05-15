@@ -2,6 +2,7 @@ using System;
 using Avalonia.Controls;
 using desktop_app.ViewModels;
 using Avalonia.Interactivity;
+using desktop_app.Services;
 
 namespace desktop_app.Views;
 
@@ -31,7 +32,7 @@ public partial class LoginView : UserControl
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex); // tymczasowo
+            NotificationService.Instance.ShowApiError(ex, "Operation failed. Please try again.");
         }
     }
 }

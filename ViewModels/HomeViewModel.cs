@@ -163,6 +163,7 @@ public partial class HomeViewModel : ViewModelBase
     {
         await _authTokenService.ClearRefreshTokenAsync();
         Parent.ShowWelcome();
+        NotificationService.Instance.ShowInfo("You have been logged out.", "Logout");
     }
 
     partial void OnActiveSectionChanged(string value)

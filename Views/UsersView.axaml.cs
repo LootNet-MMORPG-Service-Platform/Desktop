@@ -1,4 +1,6 @@
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using desktop_app.Models;
@@ -33,7 +35,7 @@ public partial class UsersView : UserControl
                 return;
         }
 
-        await Vm.ToggleBlockStatusCommand.ExecuteAsync(user);
+        await RunUsersActionAsync(() => Vm.ToggleBlockStatusCommand.ExecuteAsync(user));
     }
 
     private void SelectUser_Click(object? sender, RoutedEventArgs _)
@@ -44,32 +46,25 @@ public partial class UsersView : UserControl
 
     private async void ChangeRole_Click(object? sender, RoutedEventArgs _)
     {
-        try
-        {
-            if (Vm?.SelectedUser == null)
-                return;
+        if (Vm?.SelectedUser == null)
+            return;
 
-            var selectedUser = Vm.SelectedUser;
+        var selectedUser = Vm.SelectedUser;
 
-            var newRole = await DialogService.ShowChangeRoleDialogAsync(
-                GetOwner(),
-                selectedUser.Username,
-                selectedUser.Role.ToString());
+        var newRole = await DialogService.ShowChangeRoleDialogAsync(
+            GetOwner(),
+            selectedUser.Username,
+            selectedUser.Role.ToString());
 
-            if (string.IsNullOrWhiteSpace(newRole))
-                return;
+        if (string.IsNullOrWhiteSpace(newRole))
+            return;
 
-            await Vm.ChangeRoleAsync(newRole);
-        }
-        catch (Exception ex)
-        {
-            await DialogService.ShowErrorDialogAsync(GetOwner(), ex.ToString());
-        }
+        await RunUsersActionAsync(() => Vm.ChangeRoleAsync(newRole));
     }
 
     private async void Inventory_Click(object? sender, RoutedEventArgs _)
     {
-        try
+        await RunUsersActionAsync(async () =>
         {
             if (Vm == null)
                 return;
@@ -80,16 +75,12 @@ public partial class UsersView : UserControl
                 return;
 
             await DialogService.ShowInventoryDialogAsync(GetOwner(), items);
-        }
-        catch (Exception ex)
-        {
-            await DialogService.ShowErrorDialogAsync(GetOwner(), ex.ToString());
-        }
+        });
     }
 
     private async void Equipment_Click(object? sender, RoutedEventArgs _)
     {
-        try
+        await RunUsersActionAsync(async () =>
         {
             if (Vm == null)
                 return;
@@ -100,10 +91,22 @@ public partial class UsersView : UserControl
                 return;
 
             await DialogService.ShowEquipmentDialogAsync(GetOwner(), eq);
-        }
-        catch (Exception ex)
+        });
+    }
+
+    private static async Task RunUsersActionAsync(Func<Task> action)
+    {
+        try
         {
-            await DialogService.ShowErrorDialogAsync(GetOwner(), ex.ToString());
+            await action();
+        }
+        catch (HttpRequestException)
+        {
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+        }
+        catch (Exception)
+        {
+            NotificationService.Instance.ShowError("Operation failed. Please try again.");
         }
     }
 }

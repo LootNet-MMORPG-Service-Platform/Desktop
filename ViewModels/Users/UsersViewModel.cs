@@ -139,19 +139,8 @@ public partial class UsersViewModel : ViewModelBase
         }
         catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
         {
-            var refreshed = await _authService.RefreshAsync(_refreshToken);
-
-            if (refreshed == null)
-            {
-                _onUnauthorized.Invoke();
+            if (!await RefreshSessionAsync())
                 return;
-            }
-
-            _adminService = new AdminService(refreshed.Token);
-            _refreshToken = refreshed.RefreshToken;
-            _currentUserId = refreshed.UserId;
-
-            await _authTokenService.SaveRefreshTokenAsync(refreshed.RefreshToken);
 
             result = await _adminService.GetUsersAsync(
                 CurrentPage,
@@ -159,6 +148,18 @@ public partial class UsersViewModel : ViewModelBase
                 search,
                 role,
                 isBlocked);
+        }
+        catch (HttpRequestException)
+        {
+            StatusMessage = "Failed to load users.";
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            return;
+        }
+        catch (Exception)
+        {
+            StatusMessage = "Failed to load users.";
+            NotificationService.Instance.ShowError("Operation failed. Please try again.");
+            return;
         }
 
         if (loadVersion != _loadVersion)
@@ -221,12 +222,16 @@ public partial class UsersViewModel : ViewModelBase
 
         try
         {
-            if (user.IsBlocked)
-                await _adminService.UnblockUserAsync(user.Id);
-            else
-                await _adminService.BlockUserAsync(user.Id);
+            var changed = await ExecuteAuthorizedAsync(async () =>
+            {
+                if (user.IsBlocked)
+                    await _adminService.UnblockUserAsync(user.Id);
+                else
+                    await _adminService.BlockUserAsync(user.Id);
+            });
 
-            await LoadUsersAsync();
+            if (changed)
+                await LoadUsersAsync();
         }
         finally
         {
@@ -244,7 +249,11 @@ public partial class UsersViewModel : ViewModelBase
 
         var selectedUserId = SelectedUser.Id;
 
-        await _adminService.ChangeRoleAsync(selectedUserId, (int)parsedRole);
+        var changed = await ExecuteAuthorizedAsync(
+            () => _adminService.ChangeRoleAsync(selectedUserId, (int)parsedRole));
+
+        if (!changed)
+            return;
 
         await LoadUsersAsync();
 
@@ -256,7 +265,8 @@ public partial class UsersViewModel : ViewModelBase
         if (SelectedUser == null)
             return null;
 
-        return await _adminService.GetInventoryAsync(SelectedUser.Id);
+        return await ExecuteAuthorizedAsync(
+            () => _adminService.GetInventoryAsync(SelectedUser.Id));
     }
 
     public async Task<EquipmentResponseDTO?> GetEquipmentAsync()
@@ -264,7 +274,8 @@ public partial class UsersViewModel : ViewModelBase
         if (SelectedUser == null)
             return null;
 
-        return await _adminService.GetEquipmentAsync(SelectedUser.Id);
+        return await ExecuteAuthorizedAsync(
+            () => _adminService.GetEquipmentAsync(SelectedUser.Id));
     }
 
     public void ClearSelection()
@@ -294,5 +305,72 @@ public partial class UsersViewModel : ViewModelBase
         OnPropertyChanged(nameof(TotalPages));
         OnPropertyChanged(nameof(CanGoNext));
         OnPropertyChanged(nameof(CanGoPrevious));
+    }
+
+    private async Task<bool> ExecuteAuthorizedAsync(Func<Task> action)
+    {
+        try
+        {
+            await action();
+            return true;
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            if (!await RefreshSessionAsync())
+                return false;
+
+            await action();
+            return true;
+        }
+    }
+
+    private async Task<T?> ExecuteAuthorizedAsync<T>(Func<Task<T?>> action)
+    {
+        try
+        {
+            return await action();
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            if (!await RefreshSessionAsync())
+                return default;
+
+            return await action();
+        }
+    }
+
+    private async Task<bool> RefreshSessionAsync()
+    {
+        AuthService.LoginResult? refreshed;
+
+        try
+        {
+            refreshed = await _authService.RefreshAsync(_refreshToken);
+        }
+        catch (HttpRequestException)
+        {
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            return false;
+        }
+        catch (Exception)
+        {
+            NotificationService.Instance.ShowError("Operation failed. Please try again.");
+            return false;
+        }
+
+        if (refreshed == null)
+        {
+            NotificationService.Instance.ShowError("Session expired. Please log in again.");
+            _onUnauthorized.Invoke();
+            return false;
+        }
+
+        _adminService = new AdminService(refreshed.Token);
+        _refreshToken = refreshed.RefreshToken;
+        _currentUserId = refreshed.UserId;
+
+        await _authTokenService.SaveRefreshTokenAsync(refreshed.RefreshToken);
+
+        return true;
     }
 }

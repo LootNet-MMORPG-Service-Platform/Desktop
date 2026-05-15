@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using desktop_app.Models.Generation;
+using desktop_app.Services;
 using desktop_app.Services.Generation;
 using desktop_app.Enums;
 
@@ -46,54 +49,80 @@ public partial class ItemGenerationViewModel : ViewModelBase
     [RelayCommand]
     private async Task SelectProfile(GenerationProfile profile)
     {
-        SelectedProfile = profile;
-
-        Rules.Clear();
-        Weights.Clear();
-        RefreshDetailsState();
-
-        var rules = await _service.GetRulesAsync(profile.Id);
-
-        if (rules != null)
+        try
         {
-            foreach (var r in rules)
+            SelectedProfile = profile;
+
+            Rules.Clear();
+            Weights.Clear();
+            RefreshDetailsState();
+
+            var rules = await _service.GetRulesAsync(profile.Id);
+
+            if (rules != null)
             {
-                r.Parameters = await _service.GetParametersAsync(r.Id) ?? new List<GenerationParameter>();
-                r.Elements = await _service.GetElementsAsync(r.Id) ?? new List<GenerationElement>();
-                Rules.Add(r);
+                foreach (var r in rules)
+                {
+                    r.Parameters = await _service.GetParametersAsync(r.Id) ?? new List<GenerationParameter>();
+                    r.Elements = await _service.GetElementsAsync(r.Id) ?? new List<GenerationElement>();
+                    Rules.Add(r);
+                }
             }
+
+            var weights = await _service.GetWeightsAsync(profile.Id);
+
+            if (weights != null)
+            {
+                foreach (var w in weights)
+                    Weights.Add(w);
+            }
+
+            RefreshDetailsState();
         }
-
-        var weights = await _service.GetWeightsAsync(profile.Id);
-
-        if (weights != null)
+        catch (HttpRequestException)
         {
-            foreach (var w in weights)
-                Weights.Add(w);
+            StatusMessage = "Failed to load profile details.";
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
         }
-
-        RefreshDetailsState();
+        catch (Exception)
+        {
+            StatusMessage = "Failed to load profile details.";
+            NotificationService.Instance.ShowError("Operation failed. Please try again.");
+        }
     }
 
     [RelayCommand]
     public async Task LoadProfilesAsync()
     {
-        StatusMessage = "Loading profiles...";
+        try
+        {
+            StatusMessage = "Loading profiles...";
 
-        Profiles.Clear();
+            Profiles.Clear();
 
-        var result = await _service.GetProfilesAsync();
+            var result = await _service.GetProfilesAsync();
 
-        if (result == null)
+            if (result == null)
+            {
+                StatusMessage = "Failed to load profiles.";
+                return;
+            }
+
+            foreach (var p in result)
+                Profiles.Add(p);
+
+            StatusMessage = $"Loaded {Profiles.Count} profiles.";
+        }
+        catch (HttpRequestException)
         {
             StatusMessage = "Failed to load profiles.";
-            return;
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
         }
-
-        foreach (var p in result)
-            Profiles.Add(p);
-
-        StatusMessage = $"Loaded {Profiles.Count} profiles.";
+        catch (Exception)
+        {
+            StatusMessage = "Failed to load profiles.";
+            NotificationService.Instance.ShowError("Operation failed. Please try again.");
+        }
     }
 
     public async Task DeleteSelectedProfileAsync()
