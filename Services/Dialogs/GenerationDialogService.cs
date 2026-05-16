@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -7,6 +6,7 @@ using System;
 using desktop_app.Enums;
 using desktop_app.Models.Generation;
 using System.Collections.Generic;
+using desktop_app.Services.Dialogs.Generation;
 
 namespace desktop_app.Services;
 
@@ -14,39 +14,22 @@ public static class GenerationDialogService
 {
     private static IBrush GetBrush(string key, IBrush fallback)
     {
-        return DialogWindowFactory.GetBrush(key, fallback);
+        return GenerationDialogUiFactory.GetBrush(key, fallback);
     }
 
     private static Window CreateBaseDialog(Control content, double width, double height)
     {
-        return DialogWindowFactory.CreateBaseDialog(content, width, height);
+        return GenerationDialogUiFactory.CreateBaseDialog(content, width, height);
     }
 
     private static Button CreateDialogButton(string text, string className)
     {
-        return new Button
-        {
-            Content = text,
-            Width = 90,
-            Height = 36,
-            Classes = { className }
-        };
+        return GenerationDialogUiFactory.CreateDialogButton(text, className);
     }
 
     private static StackPanel CreateButtonRow(params Button[] buttons)
     {
-        var row = new StackPanel
-        {
-            Orientation = Orientation.Horizontal,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Spacing = 12,
-            Margin = new Thickness(0, 6, 0, 0)
-        };
-
-        foreach (var button in buttons)
-            row.Children.Add(button);
-
-        return row;
+        return GenerationDialogUiFactory.CreateButtonRow(buttons);
     }
 
     public static async Task<string?> ShowCreateProfileDialogAsync(Window owner)
