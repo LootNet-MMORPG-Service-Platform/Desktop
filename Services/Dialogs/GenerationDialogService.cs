@@ -34,65 +34,7 @@ public static class GenerationDialogService
 
     public static async Task<string?> ShowCreateProfileDialogAsync(Window owner)
     {
-        var tcs = new TaskCompletionSource<string?>();
-
-        var textBox = new TextBox
-        {
-            Width = 220,
-            Watermark = "Profile name"
-        };
-
-        var createButton = CreateDialogButton("Create", "detailsBtn");
-        var cancelButton = CreateDialogButton("Cancel", "dialogCancelBtn");
-
-        var content = new Grid
-        {
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Children =
-            {
-                new StackPanel
-                {
-                    Spacing = 12,
-                    Width = 240,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = "Create generation profile",
-                            FontSize = 16,
-                            FontWeight = FontWeight.SemiBold,
-                            Foreground = GetBrush("TextPrimaryBrush", Brushes.Black),
-                            TextAlignment = TextAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Center
-                        },
-
-                        textBox,
-
-                        CreateButtonRow(createButton, cancelButton)
-                    }
-                }
-            }
-        };
-
-        var dialog = CreateBaseDialog(content, 360, 205);
-        dialog.Title = "Create profile";
-
-        cancelButton.Click += (_, _) =>
-        {
-            tcs.TrySetResult(null);
-            dialog.Close();
-        };
-
-        createButton.Click += (_, _) =>
-        {
-            tcs.TrySetResult(textBox.Text);
-            dialog.Close();
-        };
-
-        await dialog.ShowDialog(owner);
-        return await tcs.Task;
+        return await ProfileGenerationDialogs.ShowCreateProfileDialogAsync(owner);
     }
     
     public static async Task<CreateRuleDialogResult?> ShowCreateRuleDialogAsync(Window owner)
