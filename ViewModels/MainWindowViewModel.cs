@@ -4,6 +4,8 @@ namespace desktop_app.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
+    public NotificationService Notifications { get; } = NotificationService.Instance;
+
     private ViewModelBase _currentViewModel = null!;
 
     public ViewModelBase CurrentViewModel

@@ -18,13 +18,16 @@ public static class CommonDialogService
         return DialogWindowFactory.CreateBaseDialog(content, width, height);
     }
 
-    public static async Task<bool> ShowConfirmDialogAsync(Window owner, string message)
+    public static async Task<bool> ShowConfirmDialogAsync(
+        Window owner,
+        string message,
+        string confirmText = "Confirm")
     {
         var tcs = new TaskCompletionSource<bool>();
 
         var confirmButton = new Button
         {
-            Content = "Block",
+            Content = confirmText,
             Width = 90,
             Height = 36,
             Classes = { "dialogConfirmBtn" }

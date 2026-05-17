@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="using:desktop_app.Models"
         xmlns:vm="using:desktop_app.ViewModels"
         xmlns:views="using:desktop_app.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,15 +21,52 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <ContentControl Content="{Binding CurrentViewModel}">
-        <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:AuthShellViewModel">
-                <views:AuthShellView/>
-            </DataTemplate>
+    <Grid>
+        <ContentControl Content="{Binding CurrentViewModel}">
+            <ContentControl.DataTemplates>
+                <DataTemplate DataType="vm:AuthShellViewModel">
+                    <views:AuthShellView/>
+                </DataTemplate>
 
-            <DataTemplate DataType="vm:HomeViewModel">
-                <views:HomeView/>
-            </DataTemplate>
-        </ContentControl.DataTemplates>
-    </ContentControl>
+                <DataTemplate DataType="vm:HomeViewModel">
+                    <views:HomeView/>
+                </DataTemplate>
+            </ContentControl.DataTemplates>
+        </ContentControl>
+
+        <ItemsControl ItemsSource="{Binding Notifications.Notifications}"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Bottom"
+                      Margin="24"
+                      IsHitTestVisible="False">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="models:NotificationMessage">
+                    <Border Width="340"
+                            Margin="0,0,0,10"
+                            Background="{DynamicResource TopbarBrush}"
+                            CornerRadius="10"
+                            Padding="14"
+                            BoxShadow="0 10 30 0 #33000000">
+                        <Grid ColumnDefinitions="4,*">
+                            <Border Grid.Column="0"
+                                    Background="{DynamicResource {Binding AccentBrushKey}}"
+                                    CornerRadius="3"/>
+
+                            <StackPanel Grid.Column="1"
+                                        Margin="12,0,0,0"
+                                        Spacing="4">
+                                <TextBlock Text="{Binding Title}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextOnDarkBrush}"/>
+                                <TextBlock Text="{Binding Message}"
+                                           FontSize="13"
+                                           TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextOnDarkMutedBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
 </Window>

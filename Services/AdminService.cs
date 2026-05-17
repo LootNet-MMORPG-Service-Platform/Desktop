@@ -14,7 +14,7 @@ public class AdminService
     {
         _httpClient = new HttpClient
         {
-            BaseAddress = new Uri("https://localhost:7124")
+            BaseAddress = ApiSettings.BaseUrl
         };
 
         _httpClient.DefaultRequestHeaders.Authorization =
@@ -44,16 +44,20 @@ public class AdminService
     
     public async Task BlockUserAsync(string userId)
     {
-        await _httpClient.PostAsJsonAsync($"/api/admin/users/{userId}/block", new
+        var response = await _httpClient.PostAsJsonAsync($"/api/admin/users/{userId}/block", new
         {
             days = (int?)null,
             reason = "Blocked from admin panel"
         });
+
+        response.EnsureSuccessStatusCode();
     }
 
     public async Task UnblockUserAsync(string userId)
     {
-        await _httpClient.PostAsync($"/api/admin/users/{userId}/unblock", null);
+        var response = await _httpClient.PostAsync($"/api/admin/users/{userId}/unblock", null);
+
+        response.EnsureSuccessStatusCode();
     }
     
     public async Task ChangeRoleAsync(string userId, int role)

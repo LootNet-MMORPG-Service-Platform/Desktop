@@ -1,0 +1,44 @@
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using desktop_app.Models.Generation;
+using desktop_app.Services.Dialogs.Generation;
+
+namespace desktop_app.Services;
+
+public static class GenerationDialogService
+{
+    public static async Task<string?> ShowCreateProfileDialogAsync(Window owner)
+    {
+        return await ProfileGenerationDialogs.ShowCreateProfileDialogAsync(owner);
+    }
+    
+    public static async Task<CreateRuleDialogResult?> ShowCreateRuleDialogAsync(Window owner)
+    {
+        return await RuleGenerationDialogs.ShowCreateRuleDialogAsync(owner);
+    }
+
+    public static async Task<CreateRuleDialogResult?> ShowEditRuleDialogAsync(Window owner, GenerationRule rule)
+    {
+        return await RuleGenerationDialogs.ShowEditRuleDialogAsync(owner, rule);
+    }
+
+    public static async Task<CreateTypeWeightDialogResult?> ShowCreateTypeWeightDialogAsync(Window owner)
+    {
+        return await TypeWeightGenerationDialogs.ShowCreateTypeWeightDialogAsync(owner);
+    }
+
+    public static async Task<CreateTypeWeightDialogResult?> ShowEditTypeWeightDialogAsync(Window owner, TypeWeight weight)
+    {
+        return await TypeWeightGenerationDialogs.ShowEditTypeWeightDialogAsync(owner, weight);
+    }
+    
+    public static async Task<CreateParameterDialogResult?> ShowCreateParameterDialogAsync(Window owner)
+    {
+        return await ParameterGenerationDialogs.ShowCreateParameterDialogAsync(owner);
+    }
+    
+    public static async Task<CreateElementDialogResult?> ShowCreateElementDialogAsync(Window owner)
+    {
+        return await ParameterGenerationDialogs.ShowCreateElementDialogAsync(owner);
+    }
+}
