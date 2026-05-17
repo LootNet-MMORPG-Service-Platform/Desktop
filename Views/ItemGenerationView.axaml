@@ -142,9 +142,8 @@
                                                        VerticalAlignment="Center"
                                                        TextWrapping="Wrap">
                                                 <Run Text="{Binding Category}"/>
-                                                <Run Text=" "/>
-                                                <Run Text="{Binding WeaponType}"/>
-                                                <Run Text="{Binding ArmorType}"/>
+                                                <Run Text=": "/>
+                                                <Run Text="{Binding TypeDisplay}"/>
                                                 <Run Text=", weight: "/>
                                                 <Run Text="{Binding Weight}"/>
                                             </TextBlock>

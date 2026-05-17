@@ -234,7 +234,6 @@ public static class UserDialogService
             Children =
             {
                 CreatePrimaryText(weapon.Name, FontWeight.SemiBold),
-                CreateMutedText($"Type: {weapon.WeaponType}"),
                 CreatePrimaryText(
                     $"Cut: {Math.Round(weapon.Cut, 2).ToString(CultureInfo.CurrentCulture)} | Blunt: {Math.Round(weapon.Blunt, 2).ToString(CultureInfo.CurrentCulture)}")
             }
@@ -249,7 +248,6 @@ public static class UserDialogService
             Children =
             {
                 CreatePrimaryText(armor.Name, FontWeight.SemiBold),
-                CreateMutedText($"Type: {armor.ArmorType}"),
                 CreatePrimaryText(
                     $"CutRes: {Math.Round(armor.CutResistance, 2).ToString(CultureInfo.CurrentCulture)} | BluntRes: {Math.Round(armor.BluntResistance, 2).ToString(CultureInfo.CurrentCulture)}")
             }

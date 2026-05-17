@@ -10,4 +10,7 @@ public class TypeWeight
     public WeaponType? WeaponType { get; set; }
     public ArmorType? ArmorType { get; set; }
     public double Weight { get; set; }
+    
+    public string TypeDisplay =>
+        WeaponType?.ToString() ?? ArmorType?.ToString() ?? "";
 }
