@@ -11,14 +11,14 @@
                    HorizontalAlignment="Center"
                    FontSize="60"
                    FontFamily="{StaticResource LobsterFont}"
-                   Foreground="rgba(0,0,0,0.9)"/>
+                   Foreground="{DynamicResource TextPrimaryBrush}"/>
 
         <TextBlock HorizontalAlignment="Center"
                    TextAlignment="Center"
                    FontSize="14"
                    FontWeight="SemiBold"
                    TextWrapping="Wrap"
-                   Foreground="rgba(0,0,0,0.8)">
+                   Foreground="{DynamicResource TextStrongNeutralBrush}">
             Welcome to the LootNet-MMORPG
             <LineBreak/>
             Admin Panel
@@ -27,7 +27,7 @@
         <TextBlock TextWrapping="Wrap"
                    TextAlignment="Center"
                    FontSize="14"
-                   Foreground="rgba(0,0,0,0.75)">
+                   Foreground="{DynamicResource TextSecondaryBrush}">
             <Run Text="Manage users and roles, configure items and drop rates, "/>
             <Run Text="adjust game economy balance, and inspect logs and statistics."/>
         </TextBlock>

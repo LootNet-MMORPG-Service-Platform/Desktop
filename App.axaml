@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <FontFamily x:Key="LobsterFont">avares://desktop-app/Assets/Fonts#Lobster Two</FontFamily>
-            
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Resources/Colors.axaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -14,7 +14,7 @@
     </Application.Resources>
 
     <Application.Styles>
-        <StyleInclude Source="/Resources/Styles.axaml"/>
         <FluentTheme />
+        <StyleInclude Source="/Resources/Styles.axaml"/>
     </Application.Styles>
 </Application>
