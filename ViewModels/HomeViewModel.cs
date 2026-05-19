@@ -5,6 +5,9 @@ using desktop_app.Services;
 using desktop_app.ViewModels.Users;
 using desktop_app.Services.Generation;
 using desktop_app.ViewModels.Generation;
+using desktop_app.Services.Economy;
+using desktop_app.ViewModels.Economy;
+using desktop_app.ViewModels.Logs;
 
 namespace desktop_app.ViewModels;
 
@@ -14,12 +17,15 @@ public partial class HomeViewModel : ViewModelBase
 
     private AdminService _adminService;
     private GenerationAdminService _generationAdminService;
+    private EconomyAdminService _economyAdminService;
     private readonly AuthTokenService _authTokenService;
     
     private string _token = "";
 
     public UsersViewModel UsersVm { get; }
     public ItemGenerationViewModel ItemGenerationVm { get; }
+    public EconomyViewModel EconomyVm { get; }
+    public LogsViewModel LogsVm { get; }
 
     public HomeViewModel(MainWindowViewModel parent)
     {
@@ -30,11 +36,16 @@ public partial class HomeViewModel : ViewModelBase
         
         _generationAdminService = null!;
         ItemGenerationVm = new ItemGenerationViewModel(_generationAdminService);
+        
+        _economyAdminService = null!;
+        EconomyVm = new EconomyViewModel(_economyAdminService);
 
         UsersVm = new UsersViewModel(
             _adminService,
             authService,
             () => Parent.ShowWelcome());
+
+        LogsVm = new LogsViewModel(_adminService);
     }
 
     public bool CanAccessUsers => Role == "SuperAdmin" || Role == "Admin";
@@ -104,7 +115,7 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void ShowEconomy()
+    private async Task ShowEconomy()
     {
         ItemGenerationVm.ClearSelection();
         UsersVm.ClearSelection();
@@ -112,11 +123,12 @@ public partial class HomeViewModel : ViewModelBase
         ActiveSection = "Economy";
         CurrentSectionTitle = "Economy";
         CurrentSectionDescription = "Manage economy settings and game balance.";
-        CurrentSectionMessage = "Economy section is ready for future API integration.";
+
+        await EconomyVm.LoadAsync();
     }
 
     [RelayCommand]
-    private void ShowLogs()
+    private async Task ShowLogs()
     {
         UsersVm.ClearSelection();
         ItemGenerationVm.ClearSelection();
@@ -124,7 +136,8 @@ public partial class HomeViewModel : ViewModelBase
         ActiveSection = "Logs";
         CurrentSectionTitle = "Logs";
         CurrentSectionDescription = "Review logs, statistics and important system events.";
-        CurrentSectionMessage = "Logs section is ready for future API integration.";
+
+        await LogsVm.LoadLogsAsync();
     }
 
     public void SetRole(string role)
@@ -148,9 +161,12 @@ public partial class HomeViewModel : ViewModelBase
 
         _adminService = new AdminService(_token);
         _generationAdminService = new GenerationAdminService(_token);
+        _economyAdminService = new EconomyAdminService(_token);
 
         UsersVm.UpdateAdminService(_adminService);
         ItemGenerationVm.UpdateService(_generationAdminService);
+        EconomyVm.UpdateService(_economyAdminService);
+        LogsVm.UpdateAdminService(_adminService);
     }
 
     public void SetRefreshToken(string refreshToken)

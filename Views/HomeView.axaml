@@ -131,7 +131,19 @@
 
                 </Grid>
 
-                
+                <Grid Grid.Row="2"
+                      IsVisible="{Binding IsEconomyActive}">
+
+                    <views:EconomyView DataContext="{Binding EconomyVm}" />
+
+                </Grid>
+
+                <Grid Grid.Row="2"
+                      IsVisible="{Binding IsLogsActive}">
+
+                    <views:LogsView DataContext="{Binding LogsVm}" />
+
+                </Grid>
 
             </Grid>
         </ScrollViewer>

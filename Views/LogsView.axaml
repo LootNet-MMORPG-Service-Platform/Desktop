@@ -1,0 +1,145 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:desktop_app.ViewModels.Logs"
+             xmlns:models="clr-namespace:desktop_app.Models"
+             x:Class="desktop_app.Views.LogsView"
+             x:DataType="vm:LogsViewModel"
+             x:Name="LogsRoot">
+
+    <Border Background="{DynamicResource SurfaceBrush}"
+            CornerRadius="18"
+            Padding="22"
+            VerticalAlignment="Top"
+            BoxShadow="0 10 30 0 #14000000">
+
+        <StackPanel Spacing="14">
+            <TextBlock Text="Admin Logs"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+            <TextBlock Text="{Binding StatusMessage}"
+                       TextWrapping="Wrap"
+                       FontSize="14"
+                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="12"
+                        VerticalAlignment="Center">
+                <TextBox Width="180"
+                         Height="42"
+                         Watermark="Action"
+                         Text="{Binding ActionFilter}"/>
+
+                <ComboBox Width="240"
+                          Height="42"
+                          CornerRadius="10"
+                          ItemsSource="{Binding AdminOptions}"
+                          SelectedItem="{Binding SelectedAdminOption}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:AdminFilterOption">
+                            <TextBlock Text="{Binding DisplayName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBox Width="240"
+                         Height="42"
+                         Watermark="TargetUserId"
+                         Text="{Binding TargetUserIdFilter}"/>
+
+                <Button Content="Clear"
+                        Height="42"
+                        Classes="unblockBtn"
+                        Command="{Binding ClearFiltersCommand}"/>
+            </StackPanel>
+
+            <TextBlock Text="No logs found."
+                       FontSize="13"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       IsVisible="{Binding !HasLogs}"/>
+
+            <Border Background="{DynamicResource MutedSurfaceBrush}"
+                    CornerRadius="8"
+                    Padding="10"
+                    IsVisible="{Binding HasLogs}">
+                <Grid ColumnDefinitions="145,140,250,190,*,100"
+                      ColumnSpacing="12">
+                    <TextBlock Grid.Column="0" Text="CreatedAt" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="Action" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="2" Text="AdminId" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="3" Text="TargetUserId" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="4" Text="Data" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="5" Text="Actions" FontWeight="Bold"/>
+                </Grid>
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding Logs}"
+                          IsVisible="{Binding HasLogs}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:AdminLog">
+                        <Border Background="{DynamicResource CardBrush}"
+                                CornerRadius="10"
+                                Padding="10"
+                                Margin="0,6,0,0">
+                            <Grid ColumnDefinitions="145,140,250,190,*,100"
+                                  ColumnSpacing="12">
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding CreatedAtText}"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding Action}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding AdminId}"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Column="3"
+                                           Text="{Binding TargetUserId}"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Column="4"
+                                           Text="{Binding DataPreview}"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap"/>
+
+                                <Button Grid.Column="5"
+                                        Content="Details"
+                                        Classes="detailsBtn"
+                                        MinWidth="90"
+                                        HorizontalAlignment="Right"
+                                        Click="Details_Click"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="10"
+                        Margin="0,12,0,0">
+                <Button Content="Previous"
+                        Classes="detailsBtn"
+                        Command="{Binding PreviousPageCommand}"
+                        IsEnabled="{Binding CanGoPrevious}"/>
+
+                <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center"/>
+                <TextBlock Text=" / " VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding TotalPages}" VerticalAlignment="Center"/>
+
+                <Button Content="Next"
+                        Classes="detailsBtn"
+                        Command="{Binding NextPageCommand}"
+                        IsEnabled="{Binding CanGoNext}"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>
