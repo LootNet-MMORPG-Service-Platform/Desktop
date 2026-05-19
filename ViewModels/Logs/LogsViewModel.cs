@@ -173,6 +173,23 @@ public partial class LogsViewModel : ViewModelBase
         await LoadLogsAsync();
     }
 
+    public void ResetSessionState()
+    {
+        _filtersDebounceCts?.Cancel();
+        _adminUsersLoaded = false;
+        _suppressFilterDebounce = true;
+        ActionFilter = "";
+        SelectedAdminOption = null;
+        TargetUserIdFilter = "";
+        _suppressFilterDebounce = false;
+        AdminOptions.Clear();
+        Logs.Clear();
+        CurrentPage = 1;
+        TotalCount = 0;
+        StatusMessage = "Logs section ready.";
+        RefreshLogsState();
+    }
+
     private async Task EnsureAdminUsersLoadedAsync()
     {
         if (_adminUsersLoaded)

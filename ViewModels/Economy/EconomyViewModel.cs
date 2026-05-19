@@ -251,6 +251,23 @@ public partial class EconomyViewModel : ViewModelBase
         BotElementMultiplierError = "";
     }
 
+    public void ResetSessionState()
+    {
+        Settings = null;
+        Stats = null;
+        StatItems.Clear();
+        DailyCurrencyRewardValue = "";
+        BotBasePriceValue = "";
+        BotStatMultiplierValue = "";
+        BotElementMultiplierValue = "";
+        IsPlayerToPlayerTaxEnabled = false;
+        IsPlayerToBotTaxEnabled = false;
+        IsLoading = false;
+        StatusMessage = "Economy section ready.";
+        ClearValidationErrors();
+        RefreshState();
+    }
+
     private void RefreshState()
     {
         OnPropertyChanged(nameof(HasSettings));

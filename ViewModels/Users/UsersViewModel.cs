@@ -283,6 +283,18 @@ public partial class UsersViewModel : ViewModelBase
         SelectedUser = null;
     }
 
+    public void ResetSessionState()
+    {
+        _currentUserId = "";
+        _refreshToken = "";
+        Users.Clear();
+        SelectedUser = null;
+        CurrentPage = 1;
+        TotalCount = 0;
+        StatusMessage = "Users section ready.";
+        RefreshPagingState();
+    }
+
     [RelayCommand]
     private void CloseSelection()
     {

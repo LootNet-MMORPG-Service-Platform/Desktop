@@ -298,6 +298,16 @@ public partial class ItemGenerationViewModel : ViewModelBase
         RefreshDetailsState();
     }
 
+    public void ResetSessionState()
+    {
+        Profiles.Clear();
+        Rules.Clear();
+        Weights.Clear();
+        SelectedProfile = null;
+        StatusMessage = "";
+        RefreshDetailsState();
+    }
+
     [RelayCommand]
     private void CloseSelection()
     {

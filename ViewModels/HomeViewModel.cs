@@ -21,7 +21,6 @@ public partial class HomeViewModel : ViewModelBase
     private GenerationAdminService _generationAdminService;
     private EconomyAdminService _economyAdminService;
     private readonly AuthService _authService;
-    private readonly AuthTokenService _authTokenService;
     
     private string _token = "";
 
@@ -35,7 +34,6 @@ public partial class HomeViewModel : ViewModelBase
         Parent = parent;
         _adminService = null!;
         _authService = new AuthService();
-        _authTokenService = new AuthTokenService();
         
         _generationAdminService = null!;
         ItemGenerationVm = new ItemGenerationViewModel(_generationAdminService);
@@ -180,9 +178,23 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     private async Task Logout()
     {
-        await _authTokenService.ClearRefreshTokenAsync();
-        Parent.ShowWelcome();
-        NotificationService.Instance.ShowInfo("You have been logged out.", "Logout");
+        await Parent.LogoutAsync("You have been logged out.", false);
+    }
+
+    public void ResetSessionState()
+    {
+        _token = "";
+        Username = "admin";
+        Role = "";
+        UsersVm.ResetSessionState();
+        ItemGenerationVm.ResetSessionState();
+        EconomyVm.ResetSessionState();
+        LogsVm.ResetSessionState();
+
+        ActiveSection = "Dashboard";
+        CurrentSectionTitle = "Dashboard";
+        CurrentSectionDescription = "Overview of the administrative panel and key management areas.";
+        CurrentSectionMessage = "Choose a section from the sidebar to manage the game as an administrator.";
     }
 
     public async Task ChangePasswordAsync(string oldPassword, string newPassword)
