@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Layout;
 using Avalonia.Media;
 
@@ -132,6 +133,60 @@ public static class CommonDialogService
         dialog.Title = "Error";
 
         okButton.Click += (_, _) => dialog.Close();
+
+        await dialog.ShowDialog(owner);
+    }
+
+    public static async Task ShowReadonlyTextDialogAsync(Window owner, string title, string text)
+    {
+        var closeButton = new Button
+        {
+            Content = "Close",
+            Width = 90,
+            Height = 36,
+            Classes = { "dialogCancelBtn" }
+        };
+
+        var content = new StackPanel
+        {
+            Spacing = 12,
+            Children =
+            {
+                new TextBlock
+                {
+                    Text = title,
+                    FontSize = 16,
+                    FontWeight = FontWeight.SemiBold,
+                    Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
+                },
+                new ScrollViewer
+                {
+                    Height = 330,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    Content = new SelectableTextBlock
+                    {
+                        Text = text,
+                        TextWrapping = TextWrapping.Wrap,
+                        FontFamily = new FontFamily("Consolas"),
+                        Foreground = GetBrush("TextPrimaryBrush", Brushes.Black)
+                    }
+                },
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Children =
+                    {
+                        closeButton
+                    }
+                }
+            }
+        };
+
+        var dialog = CreateBaseDialog(content, 700, 480);
+        dialog.Title = title;
+
+        closeButton.Click += (_, _) => dialog.Close();
 
         await dialog.ShowDialog(owner);
     }

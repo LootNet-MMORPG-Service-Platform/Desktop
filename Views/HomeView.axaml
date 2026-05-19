@@ -138,6 +138,13 @@
 
                 </Grid>
 
+                <Grid Grid.Row="2"
+                      IsVisible="{Binding IsLogsActive}">
+
+                    <views:LogsView DataContext="{Binding LogsVm}" />
+
+                </Grid>
+
             </Grid>
         </ScrollViewer>
 

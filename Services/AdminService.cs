@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -40,6 +41,33 @@ public class AdminService
             query += $"&isBlocked={isBlocked.Value.ToString().ToLower()}";
 
         return await _httpClient.GetFromJsonAsync<PagedResult<AdminUser>>($"/api/admin/users{query}");
+    }
+
+    public async Task<PagedResult<AdminLog>?> GetLogsAsync(
+        int page,
+        int pageSize,
+        string? action,
+        Guid? adminId,
+        string? targetUserId)
+    {
+        var query = $"?Page={page}&PageSize={pageSize}";
+
+        if (!string.IsNullOrWhiteSpace(action))
+            query += $"&Action={Uri.EscapeDataString(action)}";
+
+        if (adminId.HasValue)
+            query += $"&AdminId={adminId.Value}";
+
+        if (!string.IsNullOrWhiteSpace(targetUserId))
+            query += $"&TargetUserId={Uri.EscapeDataString(targetUserId)}";
+
+        return await _httpClient.GetFromJsonAsync<PagedResult<AdminLog>>($"/api/admin/logs{query}");
+    }
+
+    public async Task<List<AdminUserList>?> GetAdminUsersAsync()
+    {
+        return await _httpClient.GetFromJsonAsync<List<AdminUserList>>(
+            "/api/admin/users/admins");
     }
     
     public async Task BlockUserAsync(string userId)

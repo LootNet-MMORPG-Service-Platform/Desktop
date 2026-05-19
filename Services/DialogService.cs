@@ -20,6 +20,11 @@ public static class DialogService
         return CommonDialogService.ShowErrorDialogAsync(owner, message);
     }
 
+    public static Task ShowReadonlyTextDialogAsync(Window owner, string title, string text)
+    {
+        return CommonDialogService.ShowReadonlyTextDialogAsync(owner, title, text);
+    }
+
     public static Task<string?> ShowChangeRoleDialogAsync(Window owner, string username, string currentRole)
     {
         return UserDialogService.ShowChangeRoleDialogAsync(owner, username, currentRole);
