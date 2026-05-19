@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -77,6 +78,23 @@ public class AuthService
             Username = user.Username,
             Role = user.Role
         };
+    }
+
+    public async Task ResetPasswordAsync(string oldPassword, string newPassword, string accessToken)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Post, "/api/auth/reset-password")
+        {
+            Content = JsonContent.Create(new
+            {
+                oldPassword,
+                newPassword
+            })
+        };
+
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
     }
     
     public class LoginResult

@@ -40,17 +40,6 @@
                            TextWrapping="Wrap"/>
         </StackPanel>
 
-        <Button x:Name="ForgotPasswordButton"
-                Content="Forgot password?"
-                HorizontalAlignment="Right"
-                Background="{DynamicResource TransparentBrush}"
-                BorderBrush="{DynamicResource TransparentBrush}"
-                Foreground="{StaticResource PrColor}"
-                FontSize="12"
-                FontWeight="Medium"
-                Padding="6 4"
-                CornerRadius="10"/>
-
         <!--
         <StackPanel x:Name="AlternativeLoginPanel"
                     Orientation="Horizontal"

@@ -25,6 +25,11 @@ public static class DialogService
         return CommonDialogService.ShowReadonlyTextDialogAsync(owner, title, text);
     }
 
+    public static Task<ChangePasswordDialogResult?> ShowChangePasswordDialogAsync(Window owner)
+    {
+        return CommonDialogService.ShowChangePasswordDialogAsync(owner);
+    }
+
     public static Task<string?> ShowChangeRoleDialogAsync(Window owner, string username, string currentRole)
     {
         return UserDialogService.ShowChangeRoleDialogAsync(owner, username, currentRole);

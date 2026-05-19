@@ -1,5 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using desktop_app.Services;
 using desktop_app.ViewModels.Users;
@@ -18,6 +20,7 @@ public partial class HomeViewModel : ViewModelBase
     private AdminService _adminService;
     private GenerationAdminService _generationAdminService;
     private EconomyAdminService _economyAdminService;
+    private readonly AuthService _authService;
     private readonly AuthTokenService _authTokenService;
     
     private string _token = "";
@@ -31,7 +34,7 @@ public partial class HomeViewModel : ViewModelBase
     {
         Parent = parent;
         _adminService = null!;
-        var authService = new AuthService();
+        _authService = new AuthService();
         _authTokenService = new AuthTokenService();
         
         _generationAdminService = null!;
@@ -42,7 +45,7 @@ public partial class HomeViewModel : ViewModelBase
 
         UsersVm = new UsersViewModel(
             _adminService,
-            authService,
+            _authService,
             () => Parent.ShowWelcome());
 
         LogsVm = new LogsViewModel(_adminService);
@@ -180,6 +183,27 @@ public partial class HomeViewModel : ViewModelBase
         await _authTokenService.ClearRefreshTokenAsync();
         Parent.ShowWelcome();
         NotificationService.Instance.ShowInfo("You have been logged out.", "Logout");
+    }
+
+    public async Task ChangePasswordAsync(string oldPassword, string newPassword)
+    {
+        try
+        {
+            await _authService.ResetPasswordAsync(oldPassword, newPassword, _token);
+            NotificationService.Instance.ShowSuccess("Password changed.");
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.BadRequest)
+        {
+            NotificationService.Instance.ShowError("Wrong password.");
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == null)
+        {
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+        }
+        catch (HttpRequestException)
+        {
+            NotificationService.Instance.ShowError("Operation failed. Please try again.");
+        }
     }
 
     partial void OnActiveSectionChanged(string value)
