@@ -18,7 +18,7 @@ public partial class HomeViewModel : ViewModelBase
     public MainWindowViewModel Parent { get; }
 
     private AdminService _adminService;
-    private GenerationAdminService _generationAdminService;
+    private ItemGenerationAdminService _itemGenerationAdminService;
     private EconomyAdminService _economyAdminService;
     private readonly AuthService _authService;
     
@@ -35,8 +35,8 @@ public partial class HomeViewModel : ViewModelBase
         _adminService = null!;
         _authService = new AuthService();
         
-        _generationAdminService = null!;
-        ItemGenerationVm = new ItemGenerationViewModel(_generationAdminService);
+        _itemGenerationAdminService = null!;
+        ItemGenerationVm = new ItemGenerationViewModel(_itemGenerationAdminService);
         
         _economyAdminService = null!;
         EconomyVm = new EconomyViewModel(_economyAdminService);
@@ -161,11 +161,11 @@ public partial class HomeViewModel : ViewModelBase
         _token = token;
 
         _adminService = new AdminService(_token);
-        _generationAdminService = new GenerationAdminService(_token);
+        _itemGenerationAdminService = new ItemGenerationAdminService(_token);
         _economyAdminService = new EconomyAdminService(_token);
 
         UsersVm.UpdateAdminService(_adminService);
-        ItemGenerationVm.UpdateService(_generationAdminService);
+        ItemGenerationVm.UpdateService(_itemGenerationAdminService);
         EconomyVm.UpdateService(_economyAdminService);
         LogsVm.UpdateAdminService(_adminService);
     }

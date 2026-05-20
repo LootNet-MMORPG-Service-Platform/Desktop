@@ -15,7 +15,7 @@ namespace desktop_app.ViewModels.Generation;
 
 public partial class ItemGenerationViewModel : ViewModelBase
 {
-    private GenerationAdminService _service;
+    private ItemGenerationAdminService _service;
 
     public ObservableCollection<GenerationProfile> Profiles { get; } = new();
     public ObservableCollection<GenerationRule> Rules { get; } = new();
@@ -36,12 +36,12 @@ public partial class ItemGenerationViewModel : ViewModelBase
     [ObservableProperty]
     private GenerationProfile? _selectedProfile;
 
-    public ItemGenerationViewModel(GenerationAdminService service)
+    public ItemGenerationViewModel(ItemGenerationAdminService service)
     {
         _service = service;
     }
 
-    public void UpdateService(GenerationAdminService service)
+    public void UpdateService(ItemGenerationAdminService service)
     {
         _service = service;
     }

@@ -8,11 +8,11 @@ using desktop_app.Enums;
 
 namespace desktop_app.Services.Generation;
 
-public class GenerationAdminService
+public class ItemGenerationAdminService
 {
     private readonly HttpClient _httpClient;
 
-    public GenerationAdminService(string token)
+    public ItemGenerationAdminService(string token)
     {
         _httpClient = new HttpClient
         {
