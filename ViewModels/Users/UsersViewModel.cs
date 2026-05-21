@@ -136,24 +136,13 @@ public partial class UsersViewModel : ViewModelBase
 
         try
         {
-            result = await _adminService.GetUsersAsync(
+            result = await ExecuteAuthorizedAsync(
+                () => _adminService.GetUsersAsync(
                 CurrentPage,
                 PageSize,
                 search,
                 role,
-                isBlocked);
-        }
-        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
-        {
-            if (!await RefreshSessionAsync())
-                return;
-
-            result = await _adminService.GetUsersAsync(
-                CurrentPage,
-                PageSize,
-                search,
-                role,
-                isBlocked);
+                isBlocked));
         }
         catch (HttpRequestException)
         {
@@ -168,14 +157,20 @@ public partial class UsersViewModel : ViewModelBase
             return;
         }
 
+        if (result == null)
+        {
+            StatusMessage = "Failed to load users.";
+            return;
+        }
+
         if (loadVersion != _loadVersion)
             return;
 
         Users.Clear();
 
-        if (result?.Items == null || result.Items.Count == 0)
+        if (result.Items == null || result.Items.Count == 0)
         {
-            TotalCount = result?.TotalCount ?? 0;
+            TotalCount = result.TotalCount;
             SelectedUser = null;
             StatusMessage = "No users found.";
             return;
@@ -337,8 +332,21 @@ public partial class UsersViewModel : ViewModelBase
             if (!await RefreshSessionAsync())
                 return false;
 
-            await action();
-            return true;
+            try
+            {
+                await action();
+                return true;
+            }
+            catch (HttpRequestException retryEx) when (retryEx.StatusCode == HttpStatusCode.Forbidden)
+            {
+                ShowAccessDenied();
+                return false;
+            }
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
+        {
+            ShowAccessDenied();
+            return false;
         }
     }
 
@@ -353,8 +361,26 @@ public partial class UsersViewModel : ViewModelBase
             if (!await RefreshSessionAsync())
                 return default;
 
-            return await action();
+            try
+            {
+                return await action();
+            }
+            catch (HttpRequestException retryEx) when (retryEx.StatusCode == HttpStatusCode.Forbidden)
+            {
+                ShowAccessDenied();
+                return default;
+            }
         }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
+        {
+            ShowAccessDenied();
+            return default;
+        }
+    }
+
+    private static void ShowAccessDenied()
+    {
+        NotificationService.Instance.ShowError("Access denied. Your permissions may have changed.");
     }
 
     private async Task<bool> RefreshSessionAsync()
