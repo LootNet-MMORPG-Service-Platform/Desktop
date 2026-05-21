@@ -44,6 +44,7 @@ public partial class HomeViewModel : ViewModelBase
         UsersVm = new UsersViewModel(
             _adminService,
             _authService,
+            UpdateAccessToken,
             () => Parent.ShowWelcome());
 
         LogsVm = new LogsViewModel(_adminService);
@@ -157,6 +158,11 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     public void SetToken(string token)
+    {
+        UpdateAccessToken(token);
+    }
+
+    public void UpdateAccessToken(string token)
     {
         _token = token;
 

@@ -23,6 +23,7 @@ public partial class UsersViewModel : ViewModelBase
     private AdminService _adminService;
     private readonly AuthService _authService;
     private readonly AuthTokenService _authTokenService;
+    private readonly Action<string> _onAccessTokenRefreshed;
     private readonly Action _onUnauthorized;
 
     private string _currentUserId = "";
@@ -86,11 +87,16 @@ public partial class UsersViewModel : ViewModelBase
         !SelectedUser.IsSelf &&
         SelectedUser.Role != UserRole.SuperAdmin;
 
-    public UsersViewModel(AdminService adminService, AuthService authService, Action onUnauthorized)
+    public UsersViewModel(
+        AdminService adminService,
+        AuthService authService,
+        Action<string> onAccessTokenRefreshed,
+        Action onUnauthorized)
     {
         _adminService = adminService;
         _authService = authService;
         _authTokenService = new AuthTokenService();
+        _onAccessTokenRefreshed = onAccessTokenRefreshed;
         _onUnauthorized = onUnauthorized;
 
         Filters.FiltersChanged += async () =>
@@ -377,7 +383,7 @@ public partial class UsersViewModel : ViewModelBase
             return false;
         }
 
-        _adminService = new AdminService(refreshed.Token);
+        _onAccessTokenRefreshed.Invoke(refreshed.Token);
         _refreshToken = refreshed.RefreshToken;
         _currentUserId = refreshed.UserId;
 
