@@ -45,7 +45,7 @@ public partial class HomeViewModel : ViewModelBase
             _adminService,
             _authService,
             UpdateAccessToken,
-            () => Parent.ShowWelcome());
+            () => Parent.LogoutAsync("Your session has expired. Please log in again.", true));
 
         LogsVm = new LogsViewModel(_adminService);
     }

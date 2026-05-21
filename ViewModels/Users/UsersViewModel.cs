@@ -24,7 +24,7 @@ public partial class UsersViewModel : ViewModelBase
     private readonly AuthService _authService;
     private readonly AuthTokenService _authTokenService;
     private readonly Action<string> _onAccessTokenRefreshed;
-    private readonly Action _onUnauthorized;
+    private readonly Func<Task> _onSessionExpired;
 
     private string _currentUserId = "";
     private string _refreshToken = "";
@@ -91,13 +91,13 @@ public partial class UsersViewModel : ViewModelBase
         AdminService adminService,
         AuthService authService,
         Action<string> onAccessTokenRefreshed,
-        Action onUnauthorized)
+        Func<Task> onSessionExpired)
     {
         _adminService = adminService;
         _authService = authService;
         _authTokenService = new AuthTokenService();
         _onAccessTokenRefreshed = onAccessTokenRefreshed;
-        _onUnauthorized = onUnauthorized;
+        _onSessionExpired = onSessionExpired;
 
         Filters.FiltersChanged += async () =>
         {
@@ -378,8 +378,7 @@ public partial class UsersViewModel : ViewModelBase
 
         if (refreshed == null)
         {
-            NotificationService.Instance.ShowError("Session expired. Please log in again.");
-            _onUnauthorized.Invoke();
+            await _onSessionExpired.Invoke();
             return false;
         }
 
