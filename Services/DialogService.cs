@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using desktop_app.Models;
+using desktop_app.Models.EnemyGeneration;
 using desktop_app.Models.Generation;
 
 namespace desktop_app.Services;
@@ -78,5 +79,10 @@ public static class DialogService
     public static Task<CreateElementDialogResult?> ShowCreateElementDialogAsync(Window owner)
     {
         return GenerationDialogService.ShowCreateElementDialogAsync(owner);
+    }
+
+    public static Task<CreateStageProfileDialogResult?> ShowCreateStageProfileDialogAsync(Window owner)
+    {
+        return GenerationDialogService.ShowCreateStageProfileDialogAsync(owner);
     }
 }

@@ -17,10 +17,20 @@
 
             <StackPanel Spacing="12">
 
-                <TextBlock Text="Stage Profiles"
-                           FontSize="18"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0"
+                               Text="Stage Profiles"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               VerticalAlignment="Center"/>
+
+                    <Button Grid.Column="1"
+                            Content="Create Profile"
+                            Classes="detailsBtn"
+                            Width="140"
+                            Click="CreateStageProfile_Click"/>
+                </Grid>
 
                 <TextBlock Text="{Binding StatusMessage}"
                            TextWrapping="Wrap"
@@ -41,7 +51,7 @@
                                     Padding="10"
                                     Margin="0,6,0,0">
 
-                                <Grid ColumnDefinitions="*,Auto"
+                                <Grid ColumnDefinitions="*,Auto,Auto"
                                       ColumnSpacing="12">
                                     <StackPanel Grid.Column="0"
                                                 Spacing="4">
@@ -70,6 +80,13 @@
                                             VerticalAlignment="Center"
                                             Command="{Binding #Root.((vm:EnemyGenerationViewModel)DataContext).SelectProfileCommand}"
                                             CommandParameter="{Binding}"/>
+
+                                    <Button Grid.Column="2"
+                                            Content="Delete"
+                                            Width="100"
+                                            Classes="blockBtn"
+                                            VerticalAlignment="Center"
+                                            Click="DeleteStageProfile_Click"/>
                                 </Grid>
 
                             </Border>
@@ -135,7 +152,7 @@
                                                Foreground="{DynamicResource TextSecondaryBrush}"
                                                TextWrapping="Wrap">
                                         <Run Text="Generation Profile: "/>
-                                        <Run Text="{Binding GenerationProfileId}"/>
+                                        <Run Text="{Binding GenerationProfileDisplay}"/>
                                         <Run Text=", Weight: "/>
                                         <Run Text="{Binding Weight}"/>
                                     </TextBlock>
@@ -159,7 +176,7 @@
                 BoxShadow="0 10 30 0 #14000000"
                 IsVisible="{Binding HasSelectedProfile}">
 
-            <Grid RowDefinitions="Auto,Auto,*">
+            <Grid RowDefinitions="Auto,Auto,*,Auto">
 
                 <TextBlock Grid.Row="0"
                            Text="Profile Details"
@@ -260,7 +277,7 @@
                                                        Foreground="{DynamicResource TextMutedBrush}"
                                                        TextWrapping="Wrap">
                                                 <Run Text="Class Profile: "/>
-                                                <Run Text="{Binding ClassProfileId}"/>
+                                                <Run Text="{Binding ClassProfileDisplay}"/>
                                             </TextBlock>
                                         </StackPanel>
 
@@ -272,6 +289,16 @@
                     </StackPanel>
 
                 </ScrollViewer>
+
+                <StackPanel Grid.Row="3"
+                            Margin="0,16,0,0"
+                            HorizontalAlignment="Center">
+
+                    <Button Content="Close"
+                            Width="140"
+                            Classes="unblockBtn"
+                            Command="{Binding ClearSelectionCommand}"/>
+                </StackPanel>
 
             </Grid>
         </Border>

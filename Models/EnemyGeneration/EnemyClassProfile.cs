@@ -11,5 +11,10 @@ public class EnemyClassProfile
     public EnemyClass Class { get; set; }
     public List<int> AllowedColumns { get; set; } = new();
     public Guid GenerationProfileId { get; set; }
+    public string GenerationProfileName { get; set; } = "";
     public double Weight { get; set; }
+
+    public string GenerationProfileDisplay => string.IsNullOrWhiteSpace(GenerationProfileName)
+        ? GenerationProfileId.ToString()
+        : GenerationProfileName;
 }

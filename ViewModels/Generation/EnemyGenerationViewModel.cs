@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace desktop_app.ViewModels.Generation;
 public partial class EnemyGenerationViewModel : ViewModelBase
 {
     private EnemyGenerationAdminService _service;
+    private readonly Dictionary<Guid, string> _classProfileNames = new();
+    private readonly Dictionary<Guid, string> _stageProfileNames = new();
 
     public ObservableCollection<StageProfile> Profiles { get; } = new();
     public ObservableCollection<StageScenario> Scenarios { get; } = new();
@@ -46,6 +49,36 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         _service = service;
     }
 
+    public async Task CreateStageProfileAsync(
+        string name,
+        int stageIndex,
+        double weight,
+        double falloff,
+        int threshold)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return;
+
+        await _service.CreateStageProfileAsync(
+            name.Trim(),
+            stageIndex,
+            weight,
+            falloff,
+            threshold);
+
+        await LoadProfilesAsync();
+    }
+
+    public async Task DeleteStageProfileAsync(StageProfile profile)
+    {
+        await _service.DeleteStageProfileAsync(profile.Id);
+
+        if (SelectedProfile?.Id == profile.Id)
+            ClearSelection();
+
+        await LoadProfilesAsync();
+    }
+
     [RelayCommand]
     public async Task LoadProfilesAsync()
     {
@@ -67,11 +100,18 @@ public partial class EnemyGenerationViewModel : ViewModelBase
                     Profiles.Add(profile);
             }
 
+            RefreshStageProfileNameCache();
+
             if (classProfiles != null)
             {
                 foreach (var classProfile in classProfiles)
+                {
+                    ApplyGenerationProfileDisplay(classProfile);
                     ClassProfiles.Add(classProfile);
+                }
             }
+
+            RefreshClassProfileNameCache();
 
             StatusMessage = $"Loaded {Profiles.Count} stage profiles and {ClassProfiles.Count} class profiles.";
             RefreshDetailsState();
@@ -137,7 +177,10 @@ public partial class EnemyGenerationViewModel : ViewModelBase
             if (slots != null)
             {
                 foreach (var slot in slots)
+                {
+                    ApplyClassProfileDisplay(slot);
                     Slots.Add(slot);
+                }
             }
 
             RefreshDetailsState();
@@ -154,6 +197,7 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     public void ClearSelection()
     {
         Scenarios.Clear();
@@ -169,10 +213,52 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         Scenarios.Clear();
         Slots.Clear();
         ClassProfiles.Clear();
+        _classProfileNames.Clear();
+        _stageProfileNames.Clear();
         SelectedProfile = null;
         SelectedScenario = null;
         StatusMessage = "";
         RefreshDetailsState();
+    }
+
+    private void RefreshStageProfileNameCache()
+    {
+        _stageProfileNames.Clear();
+
+        foreach (var profile in Profiles)
+            _stageProfileNames[profile.Id] = profile.Name;
+
+        foreach (var classProfile in ClassProfiles)
+            ApplyGenerationProfileDisplay(classProfile);
+    }
+
+    private void RefreshClassProfileNameCache()
+    {
+        _classProfileNames.Clear();
+
+        foreach (var classProfile in ClassProfiles)
+            _classProfileNames[classProfile.Id] = classProfile.Name;
+
+        foreach (var slot in Slots)
+            ApplyClassProfileDisplay(slot);
+    }
+
+    private void ApplyGenerationProfileDisplay(EnemyClassProfile classProfile)
+    {
+        classProfile.GenerationProfileName = _stageProfileNames.TryGetValue(
+            classProfile.GenerationProfileId,
+            out var name)
+            ? name
+            : "";
+    }
+
+    private void ApplyClassProfileDisplay(ScenarioSlot slot)
+    {
+        slot.ClassProfileName = _classProfileNames.TryGetValue(
+            slot.ClassProfileId,
+            out var name)
+            ? name
+            : "";
     }
 
     partial void OnSelectedProfileChanged(StageProfile? value)

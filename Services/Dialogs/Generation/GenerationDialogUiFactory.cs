@@ -22,7 +22,7 @@ public static class GenerationDialogUiFactory
         return new Button
         {
             Content = text,
-            Width = 90,
+            MinWidth = 90,
             Height = 36,
             Classes = { className }
         };
