@@ -198,11 +198,21 @@
 
                     <StackPanel Spacing="10">
 
-                        <TextBlock Text="Scenarios"
-                                   FontSize="13"
-                                   FontWeight="Bold"
-                                   Foreground="{DynamicResource TextPrimaryBrush}"
-                                   Margin="0,6,0,0"/>
+                        <Grid ColumnDefinitions="*,Auto"
+                              Margin="0,6,0,0">
+                            <TextBlock Grid.Column="0"
+                                       Text="Scenarios"
+                                       FontSize="13"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+
+                            <Button Grid.Column="1"
+                                    Content="Create Scenario"
+                                    Classes="detailsBtn"
+                                    Width="150"
+                                    Click="CreateStageScenario_Click"/>
+                        </Grid>
 
                         <TextBlock Text="No scenarios yet"
                                    FontSize="13"
@@ -218,7 +228,7 @@
                                             Padding="8"
                                             Margin="0,4,0,0">
 
-                                        <Grid ColumnDefinitions="*,Auto"
+                                        <Grid ColumnDefinitions="*,Auto,Auto"
                                               ColumnSpacing="12">
                                             <TextBlock Grid.Column="0"
                                                        FontSize="13"
@@ -236,6 +246,12 @@
                                                     Classes="detailsBtn"
                                                     Command="{Binding #Root.((vm:EnemyGenerationViewModel)DataContext).SelectScenarioCommand}"
                                                     CommandParameter="{Binding}"/>
+
+                                            <Button Grid.Column="2"
+                                                    Content="Delete"
+                                                    Width="100"
+                                                    Classes="blockBtn"
+                                                    Click="DeleteStageScenario_Click"/>
                                         </Grid>
 
                                     </Border>

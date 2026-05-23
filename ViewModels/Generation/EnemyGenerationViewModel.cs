@@ -79,6 +79,32 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         await LoadProfilesAsync();
     }
 
+    public async Task CreateStageScenarioAsync(int enemyCount, double weight)
+    {
+        if (SelectedProfile == null)
+            return;
+
+        await _service.CreateStageScenarioAsync(
+            SelectedProfile.Id,
+            enemyCount,
+            weight);
+
+        await RefreshScenariosAsync();
+    }
+
+    public async Task DeleteStageScenarioAsync(StageScenario scenario)
+    {
+        await _service.DeleteStageScenarioAsync(scenario.Id);
+
+        if (SelectedScenario?.Id == scenario.Id)
+        {
+            SelectedScenario = null;
+            Slots.Clear();
+        }
+
+        await RefreshScenariosAsync();
+    }
+
     [RelayCommand]
     public async Task LoadProfilesAsync()
     {
@@ -140,15 +166,7 @@ public partial class EnemyGenerationViewModel : ViewModelBase
             Slots.Clear();
             RefreshDetailsState();
 
-            var scenarios = await _service.GetStageScenariosAsync(profile.Id);
-
-            if (scenarios != null)
-            {
-                foreach (var scenario in scenarios)
-                    Scenarios.Add(scenario);
-            }
-
-            RefreshDetailsState();
+            await RefreshScenariosAsync();
         }
         catch (HttpRequestException)
         {
@@ -259,6 +277,24 @@ public partial class EnemyGenerationViewModel : ViewModelBase
             out var name)
             ? name
             : "";
+    }
+
+    private async Task RefreshScenariosAsync()
+    {
+        if (SelectedProfile == null)
+            return;
+
+        Scenarios.Clear();
+
+        var scenarios = await _service.GetStageScenariosAsync(SelectedProfile.Id);
+
+        if (scenarios != null)
+        {
+            foreach (var scenario in scenarios)
+                Scenarios.Add(scenario);
+        }
+
+        RefreshDetailsState();
     }
 
     partial void OnSelectedProfileChanged(StageProfile? value)

@@ -102,6 +102,87 @@ public static class EnemyGenerationDialogs
         return await tcs.Task;
     }
 
+    public static async Task<CreateStageScenarioDialogResult?> ShowCreateStageScenarioDialogAsync(Window owner)
+    {
+        var tcs = new TaskCompletionSource<CreateStageScenarioDialogResult?>();
+
+        var enemyCountBox = CreateTextBox("Enemy count");
+        var weightBox = CreateTextBox("Weight");
+        var errorText = new TextBlock
+        {
+            Foreground = Brushes.IndianRed,
+            FontSize = 12,
+            TextWrapping = TextWrapping.Wrap,
+            Height = 20
+        };
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
+
+        var content = new Grid
+        {
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Children =
+            {
+                new StackPanel
+                {
+                    Spacing = 10,
+                    Width = 260,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = "Create scenario",
+                            FontSize = 16,
+                            FontWeight = FontWeight.SemiBold,
+                            Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
+                            TextAlignment = TextAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center
+                        },
+
+                        CreateLabel("Enemy count"),
+                        enemyCountBox,
+                        CreateLabel("Weight"),
+                        weightBox,
+                        errorText,
+
+                        GenerationDialogUiFactory.CreateButtonRow(createButton, cancelButton)
+                    }
+                }
+            }
+        };
+
+        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 315);
+        dialog.Title = "Create scenario";
+
+        cancelButton.Click += (_, _) =>
+        {
+            tcs.TrySetResult(null);
+            dialog.Close();
+        };
+
+        createButton.Click += (_, _) =>
+        {
+            if (!TryCreateScenarioResult(
+                    enemyCountBox.Text,
+                    weightBox.Text,
+                    out var result,
+                    out var error))
+            {
+                errorText.Text = error;
+                return;
+            }
+
+            tcs.TrySetResult(result);
+            dialog.Close();
+        };
+
+        await dialog.ShowDialog(owner);
+        return await tcs.Task;
+    }
+
     private static TextBox CreateTextBox(string watermark)
     {
         return new TextBox
@@ -155,6 +236,48 @@ public static class EnemyGenerationDialogs
             Weight = weight,
             Falloff = falloff,
             Threshold = threshold
+        };
+
+        return true;
+    }
+
+    private static bool TryCreateScenarioResult(
+        string? enemyCountValue,
+        string? weightValue,
+        out CreateStageScenarioDialogResult? result,
+        out string error)
+    {
+        result = null;
+        error = "";
+
+        if (!int.TryParse(enemyCountValue, NumberStyles.Integer, CultureInfo.CurrentCulture, out var enemyCount))
+        {
+            error = "Enter valid numeric values.";
+            return false;
+        }
+
+        if (enemyCount is < 1 or > 20)
+        {
+            error = "Enemy count must be between 1 and 20.";
+            return false;
+        }
+
+        if (!TryParseDouble(weightValue, out var weight))
+        {
+            error = "Enter valid numeric values.";
+            return false;
+        }
+
+        if (weight is < 0.0001 or > 1000000)
+        {
+            error = "Weight must be between 0.0001 and 1000000.";
+            return false;
+        }
+
+        result = new CreateStageScenarioDialogResult
+        {
+            EnemyCount = enemyCount,
+            Weight = weight
         };
 
         return true;

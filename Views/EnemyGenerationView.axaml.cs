@@ -67,6 +67,54 @@ public partial class EnemyGenerationView : UserControl
             "Stage profile deleted.");
     }
 
+    private async void CreateStageScenario_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowCreateStageScenarioDialogAsync(owner);
+
+        if (result == null)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.CreateStageScenarioAsync(
+                result.EnemyCount,
+                result.Weight),
+            "Scenario created.");
+    }
+
+    private async void DeleteStageScenario_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: StageScenario scenario })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var confirmed = await DialogService.ShowConfirmDialogAsync(
+            owner,
+            $"Are you sure you want to delete scenario with {scenario.EnemyCount} enemies?",
+            "Delete");
+
+        if (!confirmed)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.DeleteStageScenarioAsync(scenario),
+            "Scenario deleted.");
+    }
+
     private static async Task RunEnemyGenerationActionAsync(Func<Task> action, string? successMessage = null)
     {
         try

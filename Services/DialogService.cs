@@ -85,4 +85,9 @@ public static class DialogService
     {
         return GenerationDialogService.ShowCreateStageProfileDialogAsync(owner);
     }
+
+    public static Task<CreateStageScenarioDialogResult?> ShowCreateStageScenarioDialogAsync(Window owner)
+    {
+        return GenerationDialogService.ShowCreateStageScenarioDialogAsync(owner);
+    }
 }

@@ -47,4 +47,9 @@ public static class GenerationDialogService
     {
         return await EnemyGenerationDialogs.ShowCreateStageProfileDialogAsync(owner);
     }
+
+    public static async Task<CreateStageScenarioDialogResult?> ShowCreateStageScenarioDialogAsync(Window owner)
+    {
+        return await EnemyGenerationDialogs.ShowCreateStageScenarioDialogAsync(owner);
+    }
 }
