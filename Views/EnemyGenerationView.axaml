@@ -1,0 +1,280 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:desktop_app.ViewModels.Generation"
+             xmlns:models="clr-namespace:desktop_app.Models.EnemyGeneration"
+             x:Class="desktop_app.Views.EnemyGenerationView"
+             x:DataType="vm:EnemyGenerationViewModel"
+             x:Name="Root">
+
+    <Grid ColumnDefinitions="*,560">
+
+        <Border Grid.Column="0"
+                Background="{DynamicResource SurfaceBrush}"
+                CornerRadius="18"
+                Padding="22"
+                VerticalAlignment="Top"
+                BoxShadow="0 10 30 0 #14000000">
+
+            <StackPanel Spacing="12">
+
+                <TextBlock Text="Stage Profiles"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                <TextBlock Text="{Binding StatusMessage}"
+                           TextWrapping="Wrap"
+                           FontSize="14"
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                <TextBlock Text="No stage profiles yet"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           IsVisible="{Binding !HasProfiles}"/>
+
+                <ItemsControl ItemsSource="{Binding Profiles}"
+                              IsVisible="{Binding HasProfiles}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:StageProfile">
+                            <Border Background="{DynamicResource CardBrush}"
+                                    CornerRadius="10"
+                                    Padding="10"
+                                    Margin="0,6,0,0">
+
+                                <Grid ColumnDefinitions="*,Auto"
+                                      ColumnSpacing="12">
+                                    <StackPanel Grid.Column="0"
+                                                Spacing="4">
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontWeight="Bold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                                        <TextBlock FontSize="13"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   TextWrapping="Wrap">
+                                            <Run Text="Stage: "/>
+                                            <Run Text="{Binding StageIndex}"/>
+                                            <Run Text=", Weight: "/>
+                                            <Run Text="{Binding Weight}"/>
+                                            <Run Text=", Falloff: "/>
+                                            <Run Text="{Binding Falloff}"/>
+                                            <Run Text=", Threshold: "/>
+                                            <Run Text="{Binding Threshold}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <Button Grid.Column="1"
+                                            Content="Details"
+                                            Width="100"
+                                            Classes="detailsBtn"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding #Root.((vm:EnemyGenerationViewModel)DataContext).SelectProfileCommand}"
+                                            CommandParameter="{Binding}"/>
+                                </Grid>
+
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="Enemy Class Profiles"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           Margin="0,14,0,0"/>
+
+                <TextBlock Text="No enemy class profiles yet"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           IsVisible="{Binding !HasClassProfiles}"/>
+
+                <ItemsControl ItemsSource="{Binding ClassProfiles}"
+                              IsVisible="{Binding HasClassProfiles}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:EnemyClassProfile">
+                            <Border Background="{DynamicResource CardBrush}"
+                                    CornerRadius="10"
+                                    Padding="10"
+                                    Margin="0,6,0,0">
+
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Name}"
+                                               FontWeight="Bold"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                                    <TextBlock FontSize="13"
+                                               Foreground="{DynamicResource TextSecondaryBrush}">
+                                        <Run Text="Class: "/>
+                                        <Run Text="{Binding Class}"/>
+                                    </TextBlock>
+
+                                    <StackPanel Orientation="Horizontal"
+                                                Spacing="4">
+                                        <TextBlock Text="Allowed Columns:"
+                                                   FontSize="13"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                                        <ItemsControl ItemsSource="{Binding AllowedColumns}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"
+                                                                Spacing="4"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}"
+                                                               FontSize="13"
+                                                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+
+                                    <TextBlock FontSize="13"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               TextWrapping="Wrap">
+                                        <Run Text="Generation Profile: "/>
+                                        <Run Text="{Binding GenerationProfileId}"/>
+                                        <Run Text=", Weight: "/>
+                                        <Run Text="{Binding Weight}"/>
+                                    </TextBlock>
+                                </StackPanel>
+
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1"
+                Background="{DynamicResource SurfaceBrush}"
+                CornerRadius="18"
+                Padding="20"
+                Margin="20,0,0,0"
+                Height="620"
+                VerticalAlignment="Top"
+                BoxShadow="0 10 30 0 #14000000"
+                IsVisible="{Binding HasSelectedProfile}">
+
+            <Grid RowDefinitions="Auto,Auto,*">
+
+                <TextBlock Grid.Row="0"
+                           Text="Profile Details"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                <TextBlock Grid.Row="1"
+                           Text="{Binding SelectedProfile.Name}"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"
+                           Margin="0,20,0,14"
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                <ScrollViewer Grid.Row="2"
+                              VerticalScrollBarVisibility="Auto"
+                              AllowAutoHide="False">
+
+                    <StackPanel Spacing="10">
+
+                        <TextBlock Text="Scenarios"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                   Margin="0,6,0,0"/>
+
+                        <TextBlock Text="No scenarios yet"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   IsVisible="{Binding !HasScenarios}"/>
+
+                        <ItemsControl ItemsSource="{Binding Scenarios}"
+                                      IsVisible="{Binding HasScenarios}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:StageScenario">
+                                    <Border Background="{DynamicResource CardBrush}"
+                                            CornerRadius="8"
+                                            Padding="8"
+                                            Margin="0,4,0,0">
+
+                                        <Grid ColumnDefinitions="*,Auto"
+                                              ColumnSpacing="12">
+                                            <TextBlock Grid.Column="0"
+                                                       FontSize="13"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                                       VerticalAlignment="Center">
+                                                <Run Text="Enemy Count: "/>
+                                                <Run Text="{Binding EnemyCount}"/>
+                                                <Run Text=", Weight: "/>
+                                                <Run Text="{Binding Weight}"/>
+                                            </TextBlock>
+
+                                            <Button Grid.Column="1"
+                                                    Content="Details"
+                                                    Width="100"
+                                                    Classes="detailsBtn"
+                                                    Command="{Binding #Root.((vm:EnemyGenerationViewModel)DataContext).SelectScenarioCommand}"
+                                                    CommandParameter="{Binding}"/>
+                                        </Grid>
+
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="Scenario Slots"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                   Margin="0,12,0,0"
+                                   IsVisible="{Binding HasSelectedScenario}"/>
+
+                        <TextBlock Text="No slots yet"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   IsVisible="{Binding HasSelectedScenarioWithoutSlots}"/>
+
+                        <ItemsControl ItemsSource="{Binding Slots}"
+                                      IsVisible="{Binding HasSlots}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:ScenarioSlot">
+                                    <Border Background="{DynamicResource CardBrush}"
+                                            CornerRadius="8"
+                                            Padding="8"
+                                            Margin="0,4,0,0">
+
+                                        <StackPanel Spacing="4">
+                                            <TextBlock FontSize="13"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}">
+                                                <Run Text="Position: "/>
+                                                <Run Text="{Binding Position}"/>
+                                                <Run Text=", Weight: "/>
+                                                <Run Text="{Binding Weight}"/>
+                                            </TextBlock>
+
+                                            <TextBlock FontSize="12"
+                                                       Foreground="{DynamicResource TextMutedBrush}"
+                                                       TextWrapping="Wrap">
+                                                <Run Text="Class Profile: "/>
+                                                <Run Text="{Binding ClassProfileId}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </StackPanel>
+
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</UserControl>

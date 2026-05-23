@@ -24,6 +24,7 @@ public partial class EnemyGenerationViewModel : ViewModelBase
     public bool HasSlots => Slots.Count > 0;
     public bool HasSelectedProfile => SelectedProfile != null;
     public bool HasSelectedScenario => SelectedScenario != null;
+    public bool HasSelectedScenarioWithoutSlots => HasSelectedScenario && !HasSlots;
     public bool HasClassProfiles => ClassProfiles.Count > 0;
 
     [ObservableProperty]
@@ -193,6 +194,7 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         OnPropertyChanged(nameof(HasSlots));
         OnPropertyChanged(nameof(HasSelectedProfile));
         OnPropertyChanged(nameof(HasSelectedScenario));
+        OnPropertyChanged(nameof(HasSelectedScenarioWithoutSlots));
         OnPropertyChanged(nameof(HasClassProfiles));
     }
 }

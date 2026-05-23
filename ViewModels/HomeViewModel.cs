@@ -19,6 +19,7 @@ public partial class HomeViewModel : ViewModelBase
 
     private AdminService _adminService;
     private ItemGenerationAdminService _itemGenerationAdminService;
+    private EnemyGenerationAdminService _enemyGenerationAdminService;
     private EconomyAdminService _economyAdminService;
     private readonly AuthService _authService;
     
@@ -26,6 +27,7 @@ public partial class HomeViewModel : ViewModelBase
 
     public UsersViewModel UsersVm { get; }
     public ItemGenerationViewModel ItemGenerationVm { get; }
+    public EnemyGenerationViewModel EnemyGenerationVm { get; }
     public EconomyViewModel EconomyVm { get; }
     public LogsViewModel LogsVm { get; }
 
@@ -37,6 +39,9 @@ public partial class HomeViewModel : ViewModelBase
         
         _itemGenerationAdminService = null!;
         ItemGenerationVm = new ItemGenerationViewModel(_itemGenerationAdminService);
+
+        _enemyGenerationAdminService = null!;
+        EnemyGenerationVm = new EnemyGenerationViewModel(_enemyGenerationAdminService);
         
         _economyAdminService = null!;
         EconomyVm = new EconomyViewModel(_economyAdminService);
@@ -52,10 +57,12 @@ public partial class HomeViewModel : ViewModelBase
 
     public bool CanAccessUsers => Role == "SuperAdmin" || Role == "Admin";
     public bool CanAccessItemGeneration => Role == "SuperAdmin" || Role == "GameModerator";
+    public bool CanAccessEnemyGeneration => Role == "SuperAdmin" || Role == "GameModerator";
 
     public bool IsDashboardActive => ActiveSection == "Dashboard";
     public bool IsUsersActive => ActiveSection == "Users";
     public bool IsItemGenerationActive => ActiveSection == "ItemGeneration";
+    public bool IsEnemyGenerationActive => ActiveSection == "EnemyGeneration";
     public bool IsEconomyActive => ActiveSection == "Economy";
     public bool IsLogsActive => ActiveSection == "Logs";
 
@@ -84,6 +91,7 @@ public partial class HomeViewModel : ViewModelBase
     {
         UsersVm.ClearSelection();
         ItemGenerationVm.ClearSelection();
+        EnemyGenerationVm.ClearSelection();
         
         ActiveSection = "Dashboard";
         CurrentSectionTitle = "Dashboard";
@@ -95,6 +103,7 @@ public partial class HomeViewModel : ViewModelBase
     private async Task ShowUsers()
     {
         ItemGenerationVm.ClearSelection();
+        EnemyGenerationVm.ClearSelection();
         
         ActiveSection = "Users";
         CurrentSectionTitle = "Users";
@@ -108,6 +117,7 @@ public partial class HomeViewModel : ViewModelBase
     private async Task ShowItemGeneration()
     {
         UsersVm.ClearSelection();
+        EnemyGenerationVm.ClearSelection();
 
         ActiveSection = "ItemGeneration";
         CurrentSectionTitle = "Item Generation";
@@ -117,9 +127,23 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private async Task ShowEnemyGeneration()
+    {
+        UsersVm.ClearSelection();
+        ItemGenerationVm.ClearSelection();
+
+        ActiveSection = "EnemyGeneration";
+        CurrentSectionTitle = "Enemy Generation";
+        CurrentSectionDescription = "Manage enemy generation profiles, scenarios, slots and class profiles.";
+
+        await EnemyGenerationVm.LoadProfilesAsync();
+    }
+
+    [RelayCommand]
     private async Task ShowEconomy()
     {
         ItemGenerationVm.ClearSelection();
+        EnemyGenerationVm.ClearSelection();
         UsersVm.ClearSelection();
         
         ActiveSection = "Economy";
@@ -134,6 +158,7 @@ public partial class HomeViewModel : ViewModelBase
     {
         UsersVm.ClearSelection();
         ItemGenerationVm.ClearSelection();
+        EnemyGenerationVm.ClearSelection();
         
         ActiveSection = "Logs";
         CurrentSectionTitle = "Logs";
@@ -168,10 +193,12 @@ public partial class HomeViewModel : ViewModelBase
 
         _adminService = new AdminService(_token);
         _itemGenerationAdminService = new ItemGenerationAdminService(_token);
+        _enemyGenerationAdminService = new EnemyGenerationAdminService(_token);
         _economyAdminService = new EconomyAdminService(_token);
 
         UsersVm.UpdateAdminService(_adminService);
         ItemGenerationVm.UpdateService(_itemGenerationAdminService);
+        EnemyGenerationVm.UpdateService(_enemyGenerationAdminService);
         EconomyVm.UpdateService(_economyAdminService);
         LogsVm.UpdateAdminService(_adminService);
     }
@@ -194,6 +221,7 @@ public partial class HomeViewModel : ViewModelBase
         Role = "";
         UsersVm.ResetSessionState();
         ItemGenerationVm.ResetSessionState();
+        EnemyGenerationVm.ResetSessionState();
         EconomyVm.ResetSessionState();
         LogsVm.ResetSessionState();
 
@@ -231,6 +259,7 @@ public partial class HomeViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsDashboardActive));
         OnPropertyChanged(nameof(IsUsersActive));
         OnPropertyChanged(nameof(IsItemGenerationActive));
+        OnPropertyChanged(nameof(IsEnemyGenerationActive));
         OnPropertyChanged(nameof(IsEconomyActive));
         OnPropertyChanged(nameof(IsLogsActive));
     }
@@ -240,5 +269,6 @@ public partial class HomeViewModel : ViewModelBase
         _ = value;
         OnPropertyChanged(nameof(CanAccessUsers));
         OnPropertyChanged(nameof(CanAccessItemGeneration));
+        OnPropertyChanged(nameof(CanAccessEnemyGeneration));
     }
 }

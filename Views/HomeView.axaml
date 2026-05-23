@@ -93,6 +93,12 @@
                         IsVisible="{Binding CanAccessItemGeneration}"/>
 
                 <Button Classes.navBtn="True"
+                        Classes.active="{Binding IsEnemyGenerationActive}"
+                        Content="Enemy Generation"
+                        Command="{Binding ShowEnemyGenerationCommand}"
+                        IsVisible="{Binding CanAccessEnemyGeneration}"/>
+
+                <Button Classes.navBtn="True"
                         Classes.active="{Binding IsEconomyActive}"
                         Content="Economy"
                         Command="{Binding ShowEconomyCommand}"/>
@@ -135,6 +141,13 @@
                       IsVisible="{Binding IsItemGenerationActive}">
 
                     <views:ItemGenerationView DataContext="{Binding ItemGenerationVm}" />
+
+                </Grid>
+
+                <Grid Grid.Row="2"
+                      IsVisible="{Binding IsEnemyGenerationActive}">
+
+                    <views:EnemyGenerationView DataContext="{Binding EnemyGenerationVm}" />
 
                 </Grid>
 
