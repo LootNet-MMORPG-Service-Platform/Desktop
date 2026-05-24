@@ -115,6 +115,55 @@ public partial class EnemyGenerationView : UserControl
             "Scenario deleted.");
     }
 
+    private async void CreateScenarioSlot_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowCreateScenarioSlotDialogAsync(owner, vm.ClassProfiles);
+
+        if (result == null)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.CreateScenarioSlotAsync(
+                result.Position,
+                result.ClassProfileId,
+                result.Weight),
+            "Slot created.");
+    }
+
+    private async void DeleteScenarioSlot_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: ScenarioSlot slot })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var confirmed = await DialogService.ShowConfirmDialogAsync(
+            owner,
+            $"Are you sure you want to delete slot at position {slot.Position}?",
+            "Delete");
+
+        if (!confirmed)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.DeleteScenarioSlotAsync(slot),
+            "Slot deleted.");
+    }
+
     private static async Task RunEnemyGenerationActionAsync(Func<Task> action, string? successMessage = null)
     {
         try

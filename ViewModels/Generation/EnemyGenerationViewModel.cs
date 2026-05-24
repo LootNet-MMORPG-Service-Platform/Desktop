@@ -105,6 +105,26 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         await RefreshScenariosAsync();
     }
 
+    public async Task CreateScenarioSlotAsync(int position, Guid classProfileId, double weight)
+    {
+        if (SelectedScenario == null)
+            return;
+
+        await _service.CreateScenarioSlotAsync(
+            SelectedScenario.Id,
+            position,
+            classProfileId,
+            weight);
+
+        await RefreshSlotsAsync();
+    }
+
+    public async Task DeleteScenarioSlotAsync(ScenarioSlot slot)
+    {
+        await _service.DeleteScenarioSlotAsync(slot.Id);
+        await RefreshSlotsAsync();
+    }
+
     [RelayCommand]
     public async Task LoadProfilesAsync()
     {
@@ -292,6 +312,27 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         {
             foreach (var scenario in scenarios)
                 Scenarios.Add(scenario);
+        }
+
+        RefreshDetailsState();
+    }
+
+    public async Task RefreshSlotsAsync()
+    {
+        if (SelectedScenario == null)
+            return;
+
+        Slots.Clear();
+
+        var slots = await _service.GetScenarioSlotsAsync(SelectedScenario.Id);
+
+        if (slots != null)
+        {
+            foreach (var slot in slots)
+            {
+                ApplyClassProfileDisplay(slot);
+                Slots.Add(slot);
+            }
         }
 
         RefreshDetailsState();

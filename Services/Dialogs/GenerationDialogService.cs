@@ -52,4 +52,11 @@ public static class GenerationDialogService
     {
         return await EnemyGenerationDialogs.ShowCreateStageScenarioDialogAsync(owner);
     }
+
+    public static async Task<CreateScenarioSlotDialogResult?> ShowCreateScenarioSlotDialogAsync(
+        Window owner,
+        System.Collections.Generic.IEnumerable<EnemyClassProfile> classProfiles)
+    {
+        return await EnemyGenerationDialogs.ShowCreateScenarioSlotDialogAsync(owner, classProfiles);
+    }
 }

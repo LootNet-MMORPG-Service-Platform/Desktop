@@ -90,4 +90,11 @@ public static class DialogService
     {
         return GenerationDialogService.ShowCreateStageScenarioDialogAsync(owner);
     }
+
+    public static Task<CreateScenarioSlotDialogResult?> ShowCreateScenarioSlotDialogAsync(
+        Window owner,
+        System.Collections.Generic.IEnumerable<EnemyClassProfile> classProfiles)
+    {
+        return GenerationDialogService.ShowCreateScenarioSlotDialogAsync(owner, classProfiles);
+    }
 }
