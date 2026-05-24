@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Layout;
 using Avalonia.Media;
+using desktop_app.Enums;
 using desktop_app.Models.EnemyGeneration;
 
 namespace desktop_app.Services.Dialogs.Generation;
@@ -285,6 +286,119 @@ public static class EnemyGenerationDialogs
         return await tcs.Task;
     }
 
+    public static async Task<CreateEnemyClassProfileDialogResult?> ShowCreateEnemyClassProfileDialogAsync(
+        Window owner,
+        IEnumerable<StageProfile> generationProfiles)
+    {
+        var tcs = new TaskCompletionSource<CreateEnemyClassProfileDialogResult?>();
+
+        var nameBox = CreateTextBox("Name");
+        var classBox = new ComboBox
+        {
+            Width = 230,
+            PlaceholderText = "Enemy class",
+            ItemsSource = Enum.GetValues<EnemyClass>(),
+            HorizontalAlignment = HorizontalAlignment.Center
+        };
+        var allowedColumnsBox = CreateTextBox("0,1,2");
+        var generationProfileBox = new ComboBox
+        {
+            Width = 230,
+            PlaceholderText = "Generation profile",
+            ItemsSource = generationProfiles,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            ItemTemplate = new FuncDataTemplate<StageProfile>((profile, _) =>
+                new TextBlock
+                {
+                    Text = profile?.Name ?? "",
+                    Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black)
+                })
+        };
+        var weightBox = CreateTextBox("Weight");
+        var errorText = new TextBlock
+        {
+            Foreground = Brushes.IndianRed,
+            FontSize = 12,
+            TextWrapping = TextWrapping.Wrap,
+            MinHeight = 25
+        };
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
+
+        var content = new Grid
+        {
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Children =
+            {
+                new StackPanel
+                {
+                    Spacing = 10,
+                    Width = 260,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = "Create class profile",
+                            FontSize = 16,
+                            FontWeight = FontWeight.SemiBold,
+                            Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
+                            TextAlignment = TextAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center
+                        },
+
+                        CreateLabel("Name"),
+                        nameBox,
+                        CreateLabel("Enemy class"),
+                        classBox,
+                        CreateLabel("Allowed columns"),
+                        allowedColumnsBox,
+                        CreateLabel("Generation profile"),
+                        generationProfileBox,
+                        CreateLabel("Weight"),
+                        weightBox,
+                        errorText,
+
+                        GenerationDialogUiFactory.CreateButtonRow(createButton, cancelButton)
+                    }
+                }
+            }
+        };
+
+        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 575);
+        dialog.Title = "Create class profile";
+
+        cancelButton.Click += (_, _) =>
+        {
+            tcs.TrySetResult(null);
+            dialog.Close();
+        };
+
+        createButton.Click += (_, _) =>
+        {
+            if (!TryCreateClassProfileResult(
+                    nameBox.Text,
+                    classBox.SelectedItem,
+                    allowedColumnsBox.Text,
+                    generationProfileBox.SelectedItem as StageProfile,
+                    weightBox.Text,
+                    out var result,
+                    out var error))
+            {
+                errorText.Text = error;
+                return;
+            }
+
+            tcs.TrySetResult(result);
+            dialog.Close();
+        };
+
+        await dialog.ShowDialog(owner);
+        return await tcs.Task;
+    }
+
     private static TextBox CreateTextBox(string watermark)
     {
         return new TextBox
@@ -433,6 +547,87 @@ public static class EnemyGenerationDialogs
         };
 
         return true;
+    }
+
+    private static bool TryCreateClassProfileResult(
+        string? name,
+        object? enemyClassValue,
+        string? allowedColumnsValue,
+        StageProfile? generationProfile,
+        string? weightValue,
+        out CreateEnemyClassProfileDialogResult? result,
+        out string error)
+    {
+        result = null;
+        error = "";
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            error = "Name is required.";
+            return false;
+        }
+
+        if (enemyClassValue is not EnemyClass enemyClass)
+        {
+            error = "Enemy class is required.";
+            return false;
+        }
+
+        if (generationProfile == null || generationProfile.Id == Guid.Empty)
+        {
+            error = "Generation profile is required.";
+            return false;
+        }
+
+        if (!TryParseAllowedColumns(allowedColumnsValue, out var allowedColumns))
+        {
+            error = "Allowed columns must contain integers between 0 and 4.";
+            return false;
+        }
+
+        if (!TryParseDouble(weightValue, out var weight))
+        {
+            error = "Enter valid numeric values.";
+            return false;
+        }
+
+        if (weight is < 0.0001 or > 1000000)
+        {
+            error = "Weight must be between 0.0001 and 1000000.";
+            return false;
+        }
+
+        result = new CreateEnemyClassProfileDialogResult
+        {
+            Name = name.Trim(),
+            Class = enemyClass,
+            AllowedColumns = allowedColumns,
+            GenerationProfileId = generationProfile.Id,
+            Weight = weight
+        };
+
+        return true;
+    }
+
+    private static bool TryParseAllowedColumns(string? value, out List<int> allowedColumns)
+    {
+        allowedColumns = new List<int>();
+
+        if (string.IsNullOrWhiteSpace(value))
+            return false;
+
+        foreach (var part in value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            if (!int.TryParse(part, NumberStyles.Integer, CultureInfo.CurrentCulture, out var column))
+                return false;
+
+            if (column is < 0 or > 4)
+                return false;
+
+            allowedColumns.Add(column);
+        }
+
+        return allowedColumns.Count > 0;
     }
 
     private static bool TryParseDouble(string? value, out double result)

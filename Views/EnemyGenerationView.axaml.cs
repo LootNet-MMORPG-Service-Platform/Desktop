@@ -164,6 +164,57 @@ public partial class EnemyGenerationView : UserControl
             "Slot deleted.");
     }
 
+    private async void CreateEnemyClassProfile_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowCreateEnemyClassProfileDialogAsync(owner, vm.Profiles);
+
+        if (result == null)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.CreateEnemyClassProfileAsync(
+                result.Name,
+                result.Class,
+                result.AllowedColumns,
+                result.GenerationProfileId,
+                result.Weight),
+            "Class profile created.");
+    }
+
+    private async void DeleteEnemyClassProfile_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: EnemyClassProfile classProfile })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var confirmed = await DialogService.ShowConfirmDialogAsync(
+            owner,
+            $"Are you sure you want to delete class profile '{classProfile.Name}'?",
+            "Delete");
+
+        if (!confirmed)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.DeleteEnemyClassProfileAsync(classProfile),
+            "Class profile deleted.");
+    }
+
     private static async Task RunEnemyGenerationActionAsync(Func<Task> action, string? successMessage = null)
     {
         try

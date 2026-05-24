@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using desktop_app.Enums;
 using desktop_app.Models.EnemyGeneration;
 using desktop_app.Services;
 using desktop_app.Services.Generation;
@@ -123,6 +124,32 @@ public partial class EnemyGenerationViewModel : ViewModelBase
     {
         await _service.DeleteScenarioSlotAsync(slot.Id);
         await RefreshSlotsAsync();
+    }
+
+    public async Task CreateEnemyClassProfileAsync(
+        string name,
+        EnemyClass enemyClass,
+        List<int> allowedColumns,
+        Guid generationProfileId,
+        double weight)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return;
+
+        await _service.CreateEnemyClassProfileAsync(
+            name.Trim(),
+            enemyClass,
+            allowedColumns,
+            generationProfileId,
+            weight);
+
+        await RefreshClassProfilesAsync();
+    }
+
+    public async Task DeleteEnemyClassProfileAsync(EnemyClassProfile classProfile)
+    {
+        await _service.DeleteEnemyClassProfileAsync(classProfile.Id);
+        await RefreshClassProfilesAsync();
     }
 
     [RelayCommand]
@@ -335,6 +362,25 @@ public partial class EnemyGenerationViewModel : ViewModelBase
             }
         }
 
+        RefreshDetailsState();
+    }
+
+    public async Task RefreshClassProfilesAsync()
+    {
+        ClassProfiles.Clear();
+
+        var classProfiles = await _service.GetEnemyClassProfilesAsync();
+
+        if (classProfiles != null)
+        {
+            foreach (var classProfile in classProfiles)
+            {
+                ApplyGenerationProfileDisplay(classProfile);
+                ClassProfiles.Add(classProfile);
+            }
+        }
+
+        RefreshClassProfileNameCache();
         RefreshDetailsState();
     }
 

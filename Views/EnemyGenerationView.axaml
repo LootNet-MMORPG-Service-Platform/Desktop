@@ -94,11 +94,21 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <TextBlock Text="Enemy Class Profiles"
-                           FontSize="18"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource TextPrimaryBrush}"
-                           Margin="0,14,0,0"/>
+                <Grid ColumnDefinitions="*,Auto"
+                      Margin="0,14,0,0">
+                    <TextBlock Grid.Column="0"
+                               Text="Enemy Class Profiles"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               VerticalAlignment="Center"/>
+
+                    <Button Grid.Column="1"
+                            Content="Create Class Profile"
+                            Classes="detailsBtn"
+                            Width="170"
+                            Click="CreateEnemyClassProfile_Click"/>
+                </Grid>
 
                 <TextBlock Text="No enemy class profiles yet"
                            FontSize="13"
@@ -114,49 +124,59 @@
                                     Padding="10"
                                     Margin="0,6,0,0">
 
-                                <StackPanel Spacing="4">
-                                    <TextBlock Text="{Binding Name}"
-                                               FontWeight="Bold"
-                                               Foreground="{DynamicResource TextPrimaryBrush}"/>
-
-                                    <TextBlock FontSize="13"
-                                               Foreground="{DynamicResource TextSecondaryBrush}">
-                                        <Run Text="Class: "/>
-                                        <Run Text="{Binding Class}"/>
-                                    </TextBlock>
-
-                                    <StackPanel Orientation="Horizontal"
+                                <Grid ColumnDefinitions="*,Auto"
+                                      ColumnSpacing="12">
+                                    <StackPanel Grid.Column="0"
                                                 Spacing="4">
-                                        <TextBlock Text="Allowed Columns:"
-                                                   FontSize="13"
-                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontWeight="Bold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
 
-                                        <ItemsControl ItemsSource="{Binding AllowedColumns}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"
-                                                                Spacing="4"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding}"
-                                                               FontSize="13"
-                                                               Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
+                                        <TextBlock FontSize="13"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}">
+                                            <Run Text="Class: "/>
+                                            <Run Text="{Binding Class}"/>
+                                        </TextBlock>
+
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="4">
+                                            <TextBlock Text="Allowed Columns:"
+                                                       FontSize="13"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                                            <ItemsControl ItemsSource="{Binding AllowedColumns}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    Spacing="4"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}"
+                                                                   FontSize="13"
+                                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+
+                                        <TextBlock FontSize="13"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   TextWrapping="Wrap">
+                                            <Run Text="Generation Profile: "/>
+                                            <Run Text="{Binding GenerationProfileDisplay}"/>
+                                            <Run Text=", Weight: "/>
+                                            <Run Text="{Binding Weight}"/>
+                                        </TextBlock>
                                     </StackPanel>
 
-                                    <TextBlock FontSize="13"
-                                               Foreground="{DynamicResource TextSecondaryBrush}"
-                                               TextWrapping="Wrap">
-                                        <Run Text="Generation Profile: "/>
-                                        <Run Text="{Binding GenerationProfileDisplay}"/>
-                                        <Run Text=", Weight: "/>
-                                        <Run Text="{Binding Weight}"/>
-                                    </TextBlock>
-                                </StackPanel>
+                                    <Button Grid.Column="1"
+                                            Content="Delete"
+                                            Classes="blockBtn"
+                                            VerticalAlignment="Center"
+                                            Click="DeleteEnemyClassProfile_Click"/>
+                                </Grid>
 
                             </Border>
                         </DataTemplate>
