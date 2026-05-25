@@ -76,6 +76,14 @@ public static class EnemyGenerationDialogs
             return false;
         }
 
+        var trimmedName = name.Trim();
+
+        if (trimmedName.Length is < 1 or > 80)
+        {
+            error = "Name must be between 1 and 80 characters.";
+            return false;
+        }
+
         if (!int.TryParse(stageIndexValue, NumberStyles.Integer, CultureInfo.CurrentCulture, out var stageIndex) ||
             !TryParseDouble(weightValue, out var weight) ||
             !TryParseDouble(falloffValue, out var falloff) ||
@@ -85,9 +93,33 @@ public static class EnemyGenerationDialogs
             return false;
         }
 
+        if (stageIndex is < 0 or > 1000)
+        {
+            error = "Stage index must be between 0 and 1000.";
+            return false;
+        }
+
+        if (weight is < 0.0001 or > 1000000)
+        {
+            error = "Weight must be between 0.0001 and 1000000.";
+            return false;
+        }
+
+        if (falloff is < 0 or > 1000000)
+        {
+            error = "Falloff must be between 0 and 1000000.";
+            return false;
+        }
+
+        if (threshold is < 1 or > 1000)
+        {
+            error = "Threshold must be between 1 and 1000.";
+            return false;
+        }
+
         result = new CreateStageProfileDialogResult
         {
-            Name = name.Trim(),
+            Name = trimmedName,
             StageIndex = stageIndex,
             Weight = weight,
             Falloff = falloff,
@@ -207,6 +239,14 @@ public static class EnemyGenerationDialogs
             return false;
         }
 
+        var trimmedName = name.Trim();
+
+        if (trimmedName.Length is < 1 or > 80)
+        {
+            error = "Name must be between 1 and 80 characters.";
+            return false;
+        }
+
         if (enemyClassValue is not EnemyClass enemyClass)
         {
             error = "Enemy class is required.";
@@ -219,9 +259,9 @@ public static class EnemyGenerationDialogs
             return false;
         }
 
-        if (!TryParseAllowedColumns(allowedColumnsValue, out var allowedColumns))
+        if (!TryParseAllowedColumns(allowedColumnsValue, out var allowedColumns, out var allowedColumnsError))
         {
-            error = "Allowed columns must contain integers between 0 and 4.";
+            error = allowedColumnsError;
             return false;
         }
 
@@ -239,7 +279,7 @@ public static class EnemyGenerationDialogs
 
         result = new CreateEnemyClassProfileDialogResult
         {
-            Name = name.Trim(),
+            Name = trimmedName,
             Class = enemyClass,
             AllowedColumns = allowedColumns,
             GenerationProfileId = generationProfile.Id,
@@ -249,25 +289,41 @@ public static class EnemyGenerationDialogs
         return true;
     }
 
-    internal static bool TryParseAllowedColumns(string? value, out List<int> allowedColumns)
+    internal static bool TryParseAllowedColumns(string? value, out List<int> allowedColumns, out string error)
     {
         allowedColumns = new List<int>();
+        error = "";
 
         if (string.IsNullOrWhiteSpace(value))
+        {
+            error = "Allowed columns must contain 1 to 10 values.";
             return false;
+        }
 
         foreach (var part in value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
         {
             if (!int.TryParse(part, NumberStyles.Integer, CultureInfo.CurrentCulture, out var column))
+            {
+                error = "Enter valid numeric values.";
                 return false;
+            }
 
             if (column is < 0 or > 4)
+            {
+                error = "Allowed columns must be between 0 and 4.";
                 return false;
+            }
 
             allowedColumns.Add(column);
         }
 
-        return allowedColumns.Count > 0;
+        if (allowedColumns.Count is < 1 or > 10)
+        {
+            error = "Allowed columns must contain 1 to 10 values.";
+            return false;
+        }
+
+        return true;
     }
 
     internal static bool TryParseDouble(string? value, out double result)

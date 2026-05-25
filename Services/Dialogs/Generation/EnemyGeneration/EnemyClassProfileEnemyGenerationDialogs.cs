@@ -46,7 +46,7 @@ public static class EnemyClassProfileEnemyGenerationDialogs
             Foreground = Brushes.IndianRed,
             FontSize = 12,
             TextWrapping = TextWrapping.Wrap,
-            MinHeight = 25
+            MinHeight = 34
         };
 
         var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");

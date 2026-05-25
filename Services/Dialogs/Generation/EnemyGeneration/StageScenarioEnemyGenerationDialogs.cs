@@ -19,7 +19,7 @@ public static class StageScenarioEnemyGenerationDialogs
             Foreground = Brushes.IndianRed,
             FontSize = 12,
             TextWrapping = TextWrapping.Wrap,
-            Height = 20
+            MinHeight = 34
         };
 
         var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
@@ -60,7 +60,7 @@ public static class StageScenarioEnemyGenerationDialogs
             }
         };
 
-        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 315);
+        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 360);
         dialog.Title = "Create scenario";
 
         cancelButton.Click += (_, _) =>

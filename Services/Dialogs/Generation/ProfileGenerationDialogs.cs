@@ -77,6 +77,13 @@ public static class ProfileGenerationDialogs
                 return;
             }
 
+            if (textBox.Text.Trim().Length > 80)
+            {
+                errorText.Text = "Name must be between 1 and 80 characters.";
+                errorText.IsVisible = true;
+                return;
+            }
+
             tcs.TrySetResult(textBox.Text);
             dialog.Close();
         };

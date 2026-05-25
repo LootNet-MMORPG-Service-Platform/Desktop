@@ -22,7 +22,7 @@ public static class StageProfileEnemyGenerationDialogs
             Foreground = Brushes.IndianRed,
             FontSize = 12,
             TextWrapping = TextWrapping.Wrap,
-            Height = 20
+            MinHeight = 34
         };
 
         var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
