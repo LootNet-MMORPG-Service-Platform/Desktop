@@ -1,4 +1,4 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.VisualTree;
 using desktop_app.Models.EnemyGeneration;
 using desktop_app.Services;

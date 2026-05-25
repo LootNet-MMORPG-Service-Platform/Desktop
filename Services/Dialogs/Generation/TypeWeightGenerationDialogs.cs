@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -143,7 +144,7 @@ public static class TypeWeightGenerationDialogs
 
         createButton.Click += (_, _) =>
         {
-            if (!double.TryParse(weightBox.Text, out var weight) || weight <= 0)
+            if (!TryParseDouble(weightBox.Text, out var weight) || weight <= 0)
             {
                 errorText.Text = "Weight must be greater than 0.";
                 errorText.IsVisible = true;
@@ -319,7 +320,7 @@ public static class TypeWeightGenerationDialogs
 
         saveButton.Click += (_, _) =>
         {
-            if (!double.TryParse(weightBox.Text, out var newWeight) || newWeight <= 0)
+            if (!TryParseDouble(weightBox.Text, out var newWeight) || newWeight <= 0)
             {
                 errorText.Text = "Weight must be greater than 0.";
                 errorText.IsVisible = true;
@@ -355,5 +356,16 @@ public static class TypeWeightGenerationDialogs
 
         await dialog.ShowDialog(owner);
         return await tcs.Task;
+    }
+
+    private static bool TryParseDouble(string? value, out double result)
+    {
+        return double.TryParse(value, NumberStyles.Number, CultureInfo.CurrentCulture, out result)
+            || double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out result)
+            || double.TryParse(
+                value?.Replace(',', '.'),
+                NumberStyles.Number,
+                CultureInfo.InvariantCulture,
+                out result);
     }
 }

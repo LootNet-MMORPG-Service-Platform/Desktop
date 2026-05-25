@@ -49,6 +49,14 @@ public static class RuleGenerationDialogs
             HorizontalAlignment = HorizontalAlignment.Center
         };
 
+        var errorText = new TextBlock
+        {
+            Foreground = Brushes.IndianRed,
+            FontSize = 12,
+            TextWrapping = TextWrapping.Wrap,
+            IsVisible = false
+        };
+
         var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
@@ -106,6 +114,7 @@ public static class RuleGenerationDialogs
                         armorTypeBox,
 
                         fallbackBox,
+                        errorText,
 
                         GenerationDialogUiFactory.CreateButtonRow(createButton, cancelButton)
                     }
@@ -143,16 +152,26 @@ public static class RuleGenerationDialogs
         createButton.Click += (_, _) =>
         {
             var category = (ItemCategory)categoryBox.SelectedItem!;
+            var weaponType = category == ItemCategory.Weapon
+                ? (WeaponType?)weaponTypeBox.SelectedItem
+                : null;
+            var armorType = category == ItemCategory.Armor
+                ? (ArmorType?)armorTypeBox.SelectedItem
+                : null;
+
+            if ((weaponType == null && armorType == null) ||
+                (weaponType != null && armorType != null))
+            {
+                errorText.Text = "Choose exactly one item type.";
+                errorText.IsVisible = true;
+                return;
+            }
 
             tcs.TrySetResult(new CreateRuleDialogResult
             {
                 Category = category,
-                WeaponType = category == ItemCategory.Weapon
-                    ? (WeaponType?)weaponTypeBox.SelectedItem
-                    : null,
-                ArmorType = category == ItemCategory.Armor
-                    ? (ArmorType?)armorTypeBox.SelectedItem
-                    : null,
+                WeaponType = weaponType,
+                ArmorType = armorType,
                 IsFallback = fallbackBox.IsChecked == true
             });
 

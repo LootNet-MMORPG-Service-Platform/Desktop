@@ -2,30 +2,28 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using desktop_app.Models.EnemyGeneration;
 
-namespace desktop_app.Services.Dialogs.Generation;
+namespace desktop_app.Services.Dialogs.Generation.EnemyGeneration;
 
-public static class ProfileGenerationDialogs
+public static class StageScenarioEnemyGenerationDialogs
 {
-    public static async Task<string?> ShowCreateProfileDialogAsync(Window owner)
+    public static async Task<CreateStageScenarioDialogResult?> ShowCreateStageScenarioDialogAsync(Window owner)
     {
-        var tcs = new TaskCompletionSource<string?>();
+        var tcs = new TaskCompletionSource<CreateStageScenarioDialogResult?>();
 
-        var textBox = new TextBox
-        {
-            Width = 220,
-            Watermark = "Profile name"
-        };
-
-        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
-        var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
+        var enemyCountBox = EnemyGenerationDialogs.CreateTextBox("Enemy count");
+        var weightBox = EnemyGenerationDialogs.CreateTextBox("Weight");
         var errorText = new TextBlock
         {
             Foreground = Brushes.IndianRed,
             FontSize = 12,
             TextWrapping = TextWrapping.Wrap,
-            IsVisible = false
+            Height = 20
         };
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
         {
@@ -35,14 +33,14 @@ public static class ProfileGenerationDialogs
             {
                 new StackPanel
                 {
-                    Spacing = 12,
-                    Width = 240,
+                    Spacing = 10,
+                    Width = 260,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Children =
                     {
                         new TextBlock
                         {
-                            Text = "Create generation profile",
+                            Text = "Create scenario",
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
                             Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
@@ -50,7 +48,10 @@ public static class ProfileGenerationDialogs
                             HorizontalAlignment = HorizontalAlignment.Center
                         },
 
-                        textBox,
+                        EnemyGenerationDialogs.CreateLabel("Enemy count"),
+                        enemyCountBox,
+                        EnemyGenerationDialogs.CreateLabel("Weight"),
+                        weightBox,
                         errorText,
 
                         GenerationDialogUiFactory.CreateButtonRow(createButton, cancelButton)
@@ -59,8 +60,8 @@ public static class ProfileGenerationDialogs
             }
         };
 
-        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 360, 205);
-        dialog.Title = "Create profile";
+        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 315);
+        dialog.Title = "Create scenario";
 
         cancelButton.Click += (_, _) =>
         {
@@ -70,14 +71,17 @@ public static class ProfileGenerationDialogs
 
         createButton.Click += (_, _) =>
         {
-            if (string.IsNullOrWhiteSpace(textBox.Text))
+            if (!EnemyGenerationDialogs.TryCreateScenarioResult(
+                    enemyCountBox.Text,
+                    weightBox.Text,
+                    out var result,
+                    out var error))
             {
-                errorText.Text = "Name is required.";
-                errorText.IsVisible = true;
+                errorText.Text = error;
                 return;
             }
 
-            tcs.TrySetResult(textBox.Text);
+            tcs.TrySetResult(result);
             dialog.Close();
         };
 

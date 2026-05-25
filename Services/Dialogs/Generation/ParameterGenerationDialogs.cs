@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -43,6 +44,14 @@ public static class ParameterGenerationDialogs
             Width = 220
         };
 
+        var errorText = new TextBlock
+        {
+            Foreground = Brushes.IndianRed,
+            FontSize = 12,
+            TextWrapping = TextWrapping.Wrap,
+            MinHeight = 34
+        };
+
         var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
@@ -73,6 +82,7 @@ public static class ParameterGenerationDialogs
                         minBox,
                         maxBox,
                         weightBox,
+                        errorText,
 
                         GenerationDialogUiFactory.CreateButtonRow(createButton, cancelButton)
                     }
@@ -80,7 +90,7 @@ public static class ParameterGenerationDialogs
             }
         };
 
-        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 360, 340);
+        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 360, 400);
         dialog.Title = "Create parameter";
 
         cancelButton.Click += (_, _) =>
@@ -91,26 +101,29 @@ public static class ParameterGenerationDialogs
 
         createButton.Click += (_, _) =>
         {
-            if (!double.TryParse(minBox.Text, out var min))
+            if (parameterBox.SelectedItem == null)
+            {
+                errorText.Text = "Parameter is required.";
                 return;
+            }
 
-            if (!double.TryParse(maxBox.Text, out var max))
+            if (!TryCreateSegment(
+                    minBox.Text,
+                    maxBox.Text,
+                    weightBox.Text,
+                    out var segment,
+                    out var error))
+            {
+                errorText.Text = error;
                 return;
-
-            if (!int.TryParse(weightBox.Text, out var weight))
-                return;
+            }
 
             tcs.TrySetResult(new CreateParameterDialogResult
             {
                 Parameter = (ItemParameter)parameterBox.SelectedItem!,
                 Segments = new List<CreateSegmentInput>
                 {
-                    new()
-                    {
-                        Min = min,
-                        Max = max,
-                        Weight = weight
-                    }
+                    segment
                 }
             });
 
@@ -153,6 +166,14 @@ public static class ParameterGenerationDialogs
             Width = 220
         };
 
+        var errorText = new TextBlock
+        {
+            Foreground = Brushes.IndianRed,
+            FontSize = 12,
+            TextWrapping = TextWrapping.Wrap,
+            MinHeight = 34
+        };
+
         var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
@@ -183,6 +204,7 @@ public static class ParameterGenerationDialogs
                         minBox,
                         maxBox,
                         weightBox,
+                        errorText,
 
                         GenerationDialogUiFactory.CreateButtonRow(createButton, cancelButton)
                     }
@@ -190,7 +212,7 @@ public static class ParameterGenerationDialogs
             }
         };
 
-        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 360, 340);
+        var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 360, 400);
         dialog.Title = "Create element";
 
         cancelButton.Click += (_, _) =>
@@ -201,26 +223,29 @@ public static class ParameterGenerationDialogs
 
         createButton.Click += (_, _) =>
         {
-            if (!double.TryParse(minBox.Text, out var min))
+            if (elementBox.SelectedItem == null)
+            {
+                errorText.Text = "Element type is required.";
                 return;
+            }
 
-            if (!double.TryParse(maxBox.Text, out var max))
+            if (!TryCreateSegment(
+                    minBox.Text,
+                    maxBox.Text,
+                    weightBox.Text,
+                    out var segment,
+                    out var error))
+            {
+                errorText.Text = error;
                 return;
-
-            if (!int.TryParse(weightBox.Text, out var weight))
-                return;
+            }
 
             tcs.TrySetResult(new CreateElementDialogResult
             {
                 ElementType = (ItemElementType)elementBox.SelectedItem!,
                 Segments = new List<CreateSegmentInput>
                 {
-                    new()
-                    {
-                        Min = min,
-                        Max = max,
-                        Weight = weight
-                    }
+                    segment
                 }
             });
 
@@ -229,5 +254,81 @@ public static class ParameterGenerationDialogs
 
         await dialog.ShowDialog(owner);
         return await tcs.Task;
+    }
+
+    private static bool TryCreateSegment(
+        string? minValue,
+        string? maxValue,
+        string? weightValue,
+        out CreateSegmentInput segment,
+        out string error)
+    {
+        segment = new CreateSegmentInput();
+        error = "";
+
+        if (string.IsNullOrWhiteSpace(minValue))
+        {
+            error = "Min is required.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(maxValue))
+        {
+            error = "Max is required.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(weightValue))
+        {
+            error = "Weight is required.";
+            return false;
+        }
+
+        if (!TryParseDouble(minValue, out var min) ||
+            !TryParseDouble(maxValue, out var max) ||
+            !int.TryParse(weightValue, NumberStyles.Integer, CultureInfo.CurrentCulture, out var weight))
+        {
+            error = "Enter valid numeric values.";
+            return false;
+        }
+
+        if (min is < -1000000 or > 1000000 ||
+            max is < -1000000 or > 1000000)
+        {
+            error = "Min and Max must be between -1000000 and 1000000.";
+            return false;
+        }
+
+        if (weight is < 1 or > 1000000)
+        {
+            error = "Weight must be between 1 and 1000000.";
+            return false;
+        }
+
+        if (min > max)
+        {
+            error = "Min cannot be greater than Max.";
+            return false;
+        }
+
+        segment = new CreateSegmentInput
+        {
+            Min = min,
+            Max = max,
+            Weight = weight
+        };
+
+        return true;
+    }
+
+    private static bool TryParseDouble(string? value, out double result)
+    {
+        return double.TryParse(value, NumberStyles.Number, CultureInfo.CurrentCulture, out result)
+            || double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out result)
+            || double.TryParse(
+                value?.Replace(',', '.'),
+                NumberStyles.Number,
+                CultureInfo.InvariantCulture,
+                out result);
     }
 }
