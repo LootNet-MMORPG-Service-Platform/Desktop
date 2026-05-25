@@ -14,49 +14,35 @@
                    FontSize="36"
                    FontWeight="ExtraBold"
                    Foreground="{DynamicResource TextPrimaryBrush}"/>
-        
+
         <TextBlock HorizontalAlignment="Center"
                    TextAlignment="Center"
                    FontSize="14"
                    FontWeight="SemiBold"
                    TextWrapping="Wrap"
-                   Foreground="{DynamicResource TextStrongNeutralBrush}">
-                Welcome to the LootNet-MMORPG
-                <LineBreak/>
-                Admin Panel
+                   Foreground="{DynamicResource TextSecondaryBrush}">
+            Welcome to the LootNet-MMORPG
+            <LineBreak/>
+            Admin Panel
         </TextBlock>
 
         <StackPanel Orientation="Vertical" Spacing="10">
-                <TextBox Watermark="Username"
-                         Text="{Binding Username}"/>
+            <TextBox Watermark="Username"
+                     Background="#4027272A"
+                     Foreground="White"
+                     Text="{Binding Username}"/>
 
-                <TextBox Watermark="Password"
-                         Text="{Binding Password}"
-                         PasswordChar="*"/>
-                
-                <TextBlock Text="{Binding ErrorMessage}"
-                           Foreground="{DynamicResource DangerBrush}"
-                           HorizontalAlignment="Center"
-                           TextWrapping="Wrap"/>
+            <TextBox Watermark="Password"
+                     Background="#4027272A"
+                     Foreground="White"
+                     Text="{Binding Password}"
+                     PasswordChar="*"/>
+
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Foreground="{DynamicResource DangerBrush}"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"/>
         </StackPanel>
-
-        <!--
-        <StackPanel x:Name="AlternativeLoginPanel"
-                    Orientation="Horizontal"
-                    Spacing="15"
-                    HorizontalAlignment="Center">
-            <Rectangle Width="50" Height="2" Fill="rgba(0,0,0,0.3)"/>
-            <TextBlock Text="or"
-                       FontWeight="SemiBold"
-                       FontSize="14"
-                       Foreground="rgba(0,0,0,0.8)"/>
-            <Rectangle Width="50" Height="2" Fill="rgba(0,0,0,0.3)"/>
-        </StackPanel>
-
-        <Button x:Name="GoogleLoginButton"
-                Classes="googleBtn"
-                HorizontalAlignment="Stretch"/>
-        -->
 
         <Button Classes="submitBtn"
                 Content="Login"
@@ -64,11 +50,8 @@
                 Click="LoginButton_Click"/>
 
         <Button x:Name="BackButton"
+                Classes="backBtn"
                 Content="Back"
-                HorizontalAlignment="Center"
-                Background="{DynamicResource TransparentBrush}"
-                BorderBrush="{DynamicResource TransparentBrush}"
-                CornerRadius="10"
-                Foreground="{StaticResource PrColor}"/>
+                HorizontalAlignment="Center"/>
     </StackPanel>
 </UserControl>

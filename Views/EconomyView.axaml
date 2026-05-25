@@ -15,24 +15,26 @@
 
         <Border Grid.Column="0"
                 Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource SidebarBorderBrush}"
+                BorderThickness="1"
                 CornerRadius="18"
                 Padding="22"
                 VerticalAlignment="Top"
-                BoxShadow="0 10 30 0 #14000000">
+                BoxShadow="0 12 40 0 #66000000">
 
-            <StackPanel Spacing="12">
+            <StackPanel Spacing="16">
+
                 <Grid ColumnDefinitions="*,Auto">
-                    <StackPanel Grid.Column="0"
-                                Spacing="4">
+                    <StackPanel Spacing="4">
                         <TextBlock Text="Economy Settings"
-                                   FontSize="18"
+                                   FontSize="20"
                                    FontWeight="Bold"
                                    Foreground="{DynamicResource TextPrimaryBrush}"/>
 
                         <TextBlock Text="{Binding StatusMessage}"
                                    TextWrapping="Wrap"
-                                   FontSize="14"
-                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                   FontSize="13"
+                                   Foreground="{DynamicResource TextMutedBrush}"/>
                     </StackPanel>
 
                     <Button Grid.Column="1"
@@ -44,159 +46,73 @@
 
                 <TextBlock Text="No economy settings loaded."
                            FontSize="13"
-                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           Foreground="{DynamicResource TextMutedBrush}"
                            IsVisible="{Binding !HasSettings}"/>
 
-                <StackPanel Spacing="8"
+                <StackPanel Spacing="10"
                             IsVisible="{Binding HasSettings}">
-                    <Border Background="{DynamicResource CardBrush}"
-                            CornerRadius="10"
-                            Padding="12">
-                        <Grid ColumnDefinitions="240,*"
-                              ColumnSpacing="14">
-                            <StackPanel Grid.Column="0"
-                                        Spacing="3"
-                                        VerticalAlignment="Center"
-                                        ToolTip.Tip="Daily currency granted by economy rewards.">
-                                <TextBlock Text="Daily Currency Reward"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="Daily currency granted by economy rewards."
-                                           FontSize="12"
-                                           TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextMutedBrush}"/>
+
+                    <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="14">
+                        <Grid ColumnDefinitions="260,*" ColumnSpacing="18">
+                            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Text="Daily Currency Reward" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Daily currency granted by economy rewards." FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="1"
-                                        Spacing="4">
-                                <TextBox Height="42"
-                                         Width="180"
-                                         HorizontalAlignment="Left"
-                                         Text="{Binding DailyCurrencyRewardValue, Mode=TwoWay}"
-                                         Watermark="Value"/>
-                                <TextBlock Text="{Binding DailyCurrencyRewardError}"
-                                           FontSize="12"
-                                           Foreground="{DynamicResource DangerBrush}"
-                                           IsVisible="{Binding HasDailyCurrencyRewardError}"/>
+                            <StackPanel Grid.Column="1" Spacing="4">
+                                <TextBox Height="42" Width="180" HorizontalAlignment="Left" Text="{Binding DailyCurrencyRewardValue, Mode=TwoWay}" Watermark="Value"/>
+                                <TextBlock Text="{Binding DailyCurrencyRewardError}" FontSize="12" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding HasDailyCurrencyRewardError}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
 
-                    <Border Background="{DynamicResource CardBrush}"
-                            CornerRadius="10"
-                            Padding="12">
-                        <Grid ColumnDefinitions="240,*"
-                              ColumnSpacing="14">
-                            <StackPanel Grid.Column="0"
-                                        Spacing="3"
-                                        VerticalAlignment="Center"
-                                        ToolTip.Tip="Base currency value used when the bot calculates item sale prices.">
-                                <TextBlock Text="Bot Base Price"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="Base currency value used when the bot calculates item sale prices."
-                                           FontSize="12"
-                                           TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextMutedBrush}"/>
+                    <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="14">
+                        <Grid ColumnDefinitions="260,*" ColumnSpacing="18">
+                            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Text="Bot Base Price" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Base currency value used when the bot calculates item sale prices." FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="1"
-                                        Spacing="4">
-                                <TextBox Height="42"
-                                         Width="180"
-                                         HorizontalAlignment="Left"
-                                         Text="{Binding BotBasePriceValue, Mode=TwoWay}"
-                                         Watermark="Value"/>
-                                <TextBlock Text="{Binding BotBasePriceError}"
-                                           FontSize="12"
-                                           Foreground="{DynamicResource DangerBrush}"
-                                           IsVisible="{Binding HasBotBasePriceError}"/>
+                            <StackPanel Grid.Column="1" Spacing="4">
+                                <TextBox Height="42" Width="180" HorizontalAlignment="Left" Text="{Binding BotBasePriceValue, Mode=TwoWay}" Watermark="Value"/>
+                                <TextBlock Text="{Binding BotBasePriceError}" FontSize="12" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding HasBotBasePriceError}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
 
-                    <Border Background="{DynamicResource CardBrush}"
-                            CornerRadius="10"
-                            Padding="12">
-                        <Grid ColumnDefinitions="240,*"
-                              ColumnSpacing="14">
-                            <StackPanel Grid.Column="0"
-                                        Spacing="3"
-                                        VerticalAlignment="Center"
-                                        ToolTip.Tip="Multiplier applied to item stats when calculating bot prices.">
-                                <TextBlock Text="Bot Stat Multiplier"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="Multiplier applied to item stats when calculating bot prices."
-                                           FontSize="12"
-                                           TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextMutedBrush}"/>
+                    <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="14">
+                        <Grid ColumnDefinitions="260,*" ColumnSpacing="18">
+                            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Text="Bot Stat Multiplier" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Multiplier applied to item stats when calculating bot prices." FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="1"
-                                        Spacing="4">
-                                <TextBox Height="42"
-                                         Width="180"
-                                         HorizontalAlignment="Left"
-                                         Text="{Binding BotStatMultiplierValue, Mode=TwoWay}"
-                                         Watermark="Value"/>
-                                <TextBlock Text="{Binding BotStatMultiplierError}"
-                                           FontSize="12"
-                                           Foreground="{DynamicResource DangerBrush}"
-                                           IsVisible="{Binding HasBotStatMultiplierError}"/>
+                            <StackPanel Grid.Column="1" Spacing="4">
+                                <TextBox Height="42" Width="180" HorizontalAlignment="Left" Text="{Binding BotStatMultiplierValue, Mode=TwoWay}" Watermark="Value"/>
+                                <TextBlock Text="{Binding BotStatMultiplierError}" FontSize="12" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding HasBotStatMultiplierError}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
 
-                    <Border Background="{DynamicResource CardBrush}"
-                            CornerRadius="10"
-                            Padding="12">
-                        <Grid ColumnDefinitions="240,*"
-                              ColumnSpacing="14">
-                            <StackPanel Grid.Column="0"
-                                        Spacing="3"
-                                        VerticalAlignment="Center"
-                                        ToolTip.Tip="Multiplier applied to element values when calculating bot prices.">
-                                <TextBlock Text="Bot Element Multiplier"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="Multiplier applied to element values when calculating bot prices."
-                                           FontSize="12"
-                                           TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextMutedBrush}"/>
+                    <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="14">
+                        <Grid ColumnDefinitions="260,*" ColumnSpacing="18">
+                            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Text="Bot Element Multiplier" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Multiplier applied to element values when calculating bot prices." FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="1"
-                                        Spacing="4">
-                                <TextBox Height="42"
-                                         Width="180"
-                                         HorizontalAlignment="Left"
-                                         Text="{Binding BotElementMultiplierValue, Mode=TwoWay}"
-                                         Watermark="Value"/>
-                                <TextBlock Text="{Binding BotElementMultiplierError}"
-                                           FontSize="12"
-                                           Foreground="{DynamicResource DangerBrush}"
-                                           IsVisible="{Binding HasBotElementMultiplierError}"/>
+                            <StackPanel Grid.Column="1" Spacing="4">
+                                <TextBox Height="42" Width="180" HorizontalAlignment="Left" Text="{Binding BotElementMultiplierValue, Mode=TwoWay}" Watermark="Value"/>
+                                <TextBlock Text="{Binding BotElementMultiplierError}" FontSize="12" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding HasBotElementMultiplierError}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
 
-                    <Border Background="{DynamicResource CardBrush}"
-                            CornerRadius="10"
-                            Padding="12">
-                        <Grid ColumnDefinitions="240,*"
-                              ColumnSpacing="14">
-                            <StackPanel Grid.Column="0"
-                                        Spacing="3"
-                                        VerticalAlignment="Center"
-                                        ToolTip.Tip="Enables or disables tax for player-to-player market transactions.">
-                                <TextBlock Text="Player To Player Tax"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="Enables or disables tax for player-to-player market transactions."
-                                           FontSize="12"
-                                           TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextMutedBrush}"/>
+                    <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="14">
+                        <Grid ColumnDefinitions="260,*" ColumnSpacing="18">
+                            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Text="Player To Player Tax" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Enables or disables tax for player-to-player market transactions." FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}"/>
                             </StackPanel>
 
                             <ToggleSwitch Grid.Column="1"
@@ -208,22 +124,11 @@
                         </Grid>
                     </Border>
 
-                    <Border Background="{DynamicResource CardBrush}"
-                            CornerRadius="10"
-                            Padding="12">
-                        <Grid ColumnDefinitions="240,*"
-                              ColumnSpacing="14">
-                            <StackPanel Grid.Column="0"
-                                        Spacing="3"
-                                        VerticalAlignment="Center"
-                                        ToolTip.Tip="Enables or disables tax for sales from players to bot buyers.">
-                                <TextBlock Text="Player To Bot Tax"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="Enables or disables tax for sales from players to bot buyers."
-                                           FontSize="12"
-                                           TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextMutedBrush}"/>
+                    <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="14">
+                        <Grid ColumnDefinitions="260,*" ColumnSpacing="18">
+                            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Text="Player To Bot Tax" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Enables or disables tax for sales from players to bot buyers." FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}"/>
                             </StackPanel>
 
                             <ToggleSwitch Grid.Column="1"
@@ -235,26 +140,17 @@
                         </Grid>
                     </Border>
 
-                    <Border Background="{DynamicResource CardBrush}"
-                            CornerRadius="10"
-                            Padding="12">
-                        <Grid ColumnDefinitions="240,*"
-                              ColumnSpacing="14">
-                            <StackPanel Grid.Column="0"
-                                        Spacing="3"
-                                        VerticalAlignment="Center"
-                                        ToolTip.Tip="Readonly preview of the formula used for bot sale price calculation.">
-                                <TextBlock Text="Bot Sale Formula"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="Readonly preview of the formula used for bot sale price calculation."
-                                           FontSize="12"
-                                           TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextMutedBrush}"/>
+                    <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="14">
+                        <Grid ColumnDefinitions="260,*" ColumnSpacing="18">
+                            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Text="Bot Sale Formula" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Readonly preview of the formula used for bot sale price calculation." FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}"/>
                             </StackPanel>
 
                             <Border Grid.Column="1"
-                                    Background="{DynamicResource MutedSurfaceBrush}"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    BorderBrush="{DynamicResource SidebarBorderBrush}"
+                                    BorderThickness="1"
                                     CornerRadius="10"
                                     Padding="12,10">
                                 <TextBlock Text="{Binding Settings.BotSaleFormula}"
@@ -266,17 +162,15 @@
                         </Grid>
                     </Border>
 
-                    <Border Background="{DynamicResource CardBrush}"
-                            CornerRadius="10"
-                            Padding="12">
-                        <StackPanel Spacing="8">
+                    <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="14">
+                        <StackPanel Spacing="10">
                             <TextBlock Text="Progressive Tax Brackets"
-                                       FontWeight="SemiBold"
+                                       FontWeight="Bold"
                                        Foreground="{DynamicResource TextPrimaryBrush}"/>
 
                             <TextBlock Text="No tax brackets configured."
                                        FontSize="13"
-                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       Foreground="{DynamicResource TextMutedBrush}"
                                        IsVisible="{Binding !HasProgressiveTaxBrackets}"/>
 
                             <ItemsControl ItemsSource="{Binding Settings.ProgressiveTaxBrackets}"
@@ -284,8 +178,10 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="economy:MarketTaxBracket">
                                         <Border Background="{DynamicResource SurfaceBrush}"
-                                                CornerRadius="8"
-                                                Padding="8"
+                                                BorderBrush="{DynamicResource SidebarBorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="10"
                                                 Margin="0,4,0,0">
                                             <TextBlock Text="{Binding Converter={StaticResource TaxBracketDisplayConverter}}"
                                                        FontSize="13"
@@ -299,9 +195,8 @@
                     </Border>
                 </StackPanel>
 
-                <Button Content="Save"
+                <Button Content="Save Settings"
                         Classes="detailsBtn"
-                        Width="120"
                         HorizontalAlignment="Left"
                         Command="{Binding SaveCommand}"
                         IsEnabled="{Binding HasSettings}"/>
@@ -310,20 +205,22 @@
 
         <Border Grid.Column="1"
                 Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource SidebarBorderBrush}"
+                BorderThickness="1"
                 CornerRadius="18"
                 Padding="22"
                 VerticalAlignment="Top"
-                BoxShadow="0 10 30 0 #14000000">
+                BoxShadow="0 12 40 0 #66000000">
 
-            <StackPanel Spacing="12">
+            <StackPanel Spacing="14">
                 <TextBlock Text="Market Stats"
-                           FontSize="18"
+                           FontSize="20"
                            FontWeight="Bold"
                            Foreground="{DynamicResource TextPrimaryBrush}"/>
 
                 <TextBlock Text="No market stats loaded."
                            FontSize="13"
-                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           Foreground="{DynamicResource TextMutedBrush}"
                            IsVisible="{Binding !HasStats}"/>
 
                 <ItemsControl ItemsSource="{Binding StatItems}"
@@ -331,19 +228,21 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="vm:EconomyStatItem">
                             <Border Background="{DynamicResource CardBrush}"
-                                    CornerRadius="10"
+                                    BorderBrush="{DynamicResource SidebarBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
                                     Padding="12"
-                                    Margin="0,6,0,0">
+                                    Margin="0,0,0,8">
                                 <Grid ColumnDefinitions="*,Auto"
                                       ColumnSpacing="12">
                                     <TextBlock Grid.Column="0"
                                                Text="{Binding Label}"
-                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Foreground="{DynamicResource TextMutedBrush}"
                                                TextWrapping="Wrap"/>
 
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding Value}"
-                                               FontWeight="SemiBold"
+                                               FontWeight="Bold"
                                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                                 </Grid>
                             </Border>

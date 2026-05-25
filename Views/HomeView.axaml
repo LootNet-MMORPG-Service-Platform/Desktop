@@ -6,7 +6,7 @@
              x:DataType="vm:HomeViewModel"
              x:Name="Root">
 
-    <Grid RowDefinitions="72,*" ColumnDefinitions="240,*"
+    <Grid RowDefinitions="76,*" ColumnDefinitions="260,*"
           Background="{DynamicResource AppBackgroundBrush}">
 
         <Border Grid.Row="0" Grid.ColumnSpan="2"
@@ -18,17 +18,14 @@
             <Grid ColumnDefinitions="*,Auto,Auto,Auto"
                   VerticalAlignment="Center">
 
-                <StackPanel Orientation="Vertical"
-                            VerticalAlignment="Center"
-                            Spacing="2">
-
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Spacing="2">
                     <TextBlock Text="LootNet-MMORPG Admin Panel"
-                               Foreground="{DynamicResource WhiteBrush}"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
                                FontSize="20"
                                FontWeight="Bold"/>
 
                     <TextBlock Text="Manage the world of LootNet from one place"
-                               Foreground="{DynamicResource TextOnDarkMutedBrush}"
+                               Foreground="#D4D4D8"
                                FontSize="12"/>
                 </StackPanel>
 
@@ -38,7 +35,6 @@
                            FontWeight="SemiBold"
                            VerticalAlignment="Center"
                            Margin="0,0,18,0">
-
                     <TextBlock.Text>
                         <MultiBinding StringFormat="Welcome, {0}! ({1})">
                             <Binding Path="Username"/>
@@ -48,7 +44,7 @@
                 </TextBlock>
 
                 <Button Grid.Column="2"
-                        Classes="logoutBtn"
+                        Classes="detailsBtn"
                         Content="Change Password"
                         Click="ChangePassword_Click"
                         VerticalAlignment="Center"
@@ -66,7 +62,7 @@
                 Background="{DynamicResource SidebarBrush}"
                 BorderBrush="{DynamicResource SidebarBorderBrush}"
                 BorderThickness="0,1,1,0"
-                Padding="18,22">
+                Padding="18,24">
 
             <StackPanel Spacing="10">
                 <TextBlock Text="NAVIGATION"
@@ -115,11 +111,9 @@
                       AllowAutoHide="False"
                       VerticalScrollBarVisibility="Auto">
 
-            <Grid Margin="24"
-                  RowDefinitions="Auto,18,Auto">
+            <Grid Margin="24" RowDefinitions="Auto,18,Auto">
 
-                <StackPanel Grid.Row="0"
-                            Spacing="4">
+                <StackPanel Grid.Row="0" Spacing="4">
                     <TextBlock Text="{Binding CurrentSectionTitle}"
                                FontSize="30"
                                FontWeight="Bold"
@@ -131,42 +125,147 @@
                 </StackPanel>
 
                 <Grid Grid.Row="2"
-                      IsVisible="{Binding IsUsersActive}">
+                      IsVisible="{Binding IsDashboardActive}"
+                      RowDefinitions="Auto,18,Auto,18,Auto">
 
+                    <Border Grid.Row="0"
+                            Background="{DynamicResource SurfaceBrush}"
+                            BorderBrush="{DynamicResource SidebarBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="16"
+                            Padding="26"
+                            BoxShadow="0 12 40 0 #66000000">
+
+                        <Grid>
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="LootNet Admin Center"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                                <TextBlock Text="A desktop administration panel for managing users, game economy, generated content and system activity."
+                                           FontSize="14"
+                                           TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           MaxWidth="720"
+                                           HorizontalAlignment="Left"
+                                           TextAlignment="Left"/>
+
+                                <TextBlock Text="Built with Avalonia UI, MVVM, ASP.NET Core API and PostgreSQL."
+                                           FontSize="13"
+                                           Foreground="{DynamicResource TextMutedBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="*,*,*,*"
+                          ColumnSpacing="14">
+
+                        <Border Grid.Column="0" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="18">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Users" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Manage accounts, roles, profile details and player access." TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="18">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Item Generation" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Configure generation profiles, rules, parameters and item balancing." TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="18">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Economy" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Control currency settings, rewards and marketplace balance." TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="3" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource SidebarBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="18">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Logs" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Inspect administrative events and system activity history." TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}" FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="4"
+                          ColumnDefinitions="*,*"
+                          ColumnSpacing="14">
+
+                        <Border Grid.Column="0"
+                                Background="{DynamicResource CardBrush}"
+                                BorderBrush="{DynamicResource SidebarBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="14"
+                                Padding="20">
+
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Security &amp; Access Control"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                                <TextBlock Text="• JWT authentication with refresh token flow"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <TextBlock Text="• Role-based access for Admin, SuperAdmin and GameModerator"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <TextBlock Text="• Automatic logout after inactivity"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <TextBlock Text="• Protected administrative sections"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1"
+                                Background="{DynamicResource CardBrush}"
+                                BorderBrush="{DynamicResource SidebarBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="14"
+                                Padding="20">
+
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Project Architecture"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                                <TextBlock Text="• Avalonia UI desktop client"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <TextBlock Text="• MVVM application structure"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <TextBlock Text="• ASP.NET Core backend API"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <TextBlock Text="• PostgreSQL database"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2" IsVisible="{Binding IsUsersActive}">
                     <views:UsersView DataContext="{Binding UsersVm}" />
-
                 </Grid>
-                
-                <Grid Grid.Row="2"
-                      IsVisible="{Binding IsItemGenerationActive}">
 
+                <Grid Grid.Row="2" IsVisible="{Binding IsItemGenerationActive}">
                     <views:ItemGenerationView DataContext="{Binding ItemGenerationVm}" />
-
                 </Grid>
 
-                <Grid Grid.Row="2"
-                      IsVisible="{Binding IsEnemyGenerationActive}">
-
+                <Grid Grid.Row="2" IsVisible="{Binding IsEnemyGenerationActive}">
                     <views:EnemyGenerationView DataContext="{Binding EnemyGenerationVm}" />
-
                 </Grid>
 
-                <Grid Grid.Row="2"
-                      IsVisible="{Binding IsEconomyActive}">
-
+                <Grid Grid.Row="2" IsVisible="{Binding IsEconomyActive}">
                     <views:EconomyView DataContext="{Binding EconomyVm}" />
-
                 </Grid>
 
-                <Grid Grid.Row="2"
-                      IsVisible="{Binding IsLogsActive}">
-
+                <Grid Grid.Row="2" IsVisible="{Binding IsLogsActive}">
                     <views:LogsView DataContext="{Binding LogsVm}" />
-
                 </Grid>
 
             </Grid>
         </ScrollViewer>
-
     </Grid>
 </UserControl>

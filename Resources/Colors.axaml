@@ -1,43 +1,52 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!-- App surfaces -->
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#09090B"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#18181B"/>
+    <SolidColorBrush x:Key="CardBrush" Color="#27272A"/>
+    <SolidColorBrush x:Key="MutedSurfaceBrush" Color="#18181B"/>
+    <SolidColorBrush x:Key="OverlayBrush" Color="#66000000"/>
+
+    <!-- Topbar / Sidebar -->
+    <SolidColorBrush x:Key="TopbarBrush" Color="#18181B"/>
+    <SolidColorBrush x:Key="TopbarBorderBrush" Color="#27272A"/>
+    <SolidColorBrush x:Key="SidebarBrush" Color="#18181B"/>
+    <SolidColorBrush x:Key="SidebarBorderBrush" Color="#27272A"/>
+    <SolidColorBrush x:Key="SidebarButtonBrush" Color="#27272A"/>
+    <SolidColorBrush x:Key="SidebarButtonHoverBrush" Color="#3F3F46"/>
+
+    <!-- Text -->
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F4F4F5"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#D4D4D8"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="#A1A1AA"/>
+    <SolidColorBrush x:Key="TextOnDarkBrush" Color="#F4F4F5"/>
+    <SolidColorBrush x:Key="TextOnDarkMutedBrush" Color="#A1A1AA"/>
+    <SolidColorBrush x:Key="TextStrongNeutralBrush" Color="#F4F4F5"/>
+    <SolidColorBrush x:Key="TextDisabledBrush" Color="#71717A"/>
+
+    <!-- Input / borders -->
+    <SolidColorBrush x:Key="InputBorderBrush" Color="#3F3F46"/>
+    <SolidColorBrush x:Key="InputTextBrush" Color="#F4F4F5"/>
+    <SolidColorBrush x:Key="InputWatermarkHoverBrush" Color="#A1A1AA"/>
+    <SolidColorBrush x:Key="NeutralLightBrush" Color="#27272A"/>
+    <SolidColorBrush x:Key="NeutralLightHoverBrush" Color="#3F3F46"/>
+
+    <!-- Primary green like web -->
+    <SolidColorBrush x:Key="PrColor" Color="#16A34A"/>
+    <SolidColorBrush x:Key="PrColorHover" Color="#22C55E"/>
+
+    <!-- Info blue like web -->
+    <SolidColorBrush x:Key="InfoBrush" Color="#2563EB"/>
+    <SolidColorBrush x:Key="InfoHoverBrush" Color="#3B82F6"/>
+    <SolidColorBrush x:Key="InfoPressedBrush" Color="#1D4ED8"/>
+
+    <!-- Scroll -->
+    <SolidColorBrush x:Key="ScrollThumbBrush" Color="#52525B"/>
+    
     <!-- Core -->
     <SolidColorBrush x:Key="WhiteBrush" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="TransparentBrush" Color="#00FFFFFF"/>
-
-    <!-- App surfaces -->
-    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F8FAFC"/>
-    <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="CardBrush" Color="#F1F5F9"/>
-    <SolidColorBrush x:Key="MutedSurfaceBrush" Color="#E2E8F0"/>
-
-    <!-- Topbar / Sidebar -->
-    <SolidColorBrush x:Key="TopbarBrush" Color="#0F172A"/>
-    <SolidColorBrush x:Key="TopbarBorderBrush" Color="#1E293B"/>
-    <SolidColorBrush x:Key="SidebarBrush" Color="#172033"/>
-    <SolidColorBrush x:Key="SidebarBorderBrush" Color="#243045"/>
-    <SolidColorBrush x:Key="SidebarButtonBrush" Color="#22304A"/>
-    <SolidColorBrush x:Key="SidebarButtonHoverBrush" Color="#2A3A59"/>
-
-    <!-- Text -->
-    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#0F172A"/>
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#475569"/>
-    <SolidColorBrush x:Key="TextMutedBrush" Color="#64748B"/>
-    <SolidColorBrush x:Key="TextOnDarkBrush" Color="#E2E8F0"/>
-    <SolidColorBrush x:Key="TextOnDarkMutedBrush" Color="#94A3B8"/>
-    <SolidColorBrush x:Key="TextStrongNeutralBrush" Color="#111827"/>
-    <SolidColorBrush x:Key="TextDisabledBrush" Color="#9CA3AF"/>
-
-    <!-- Input / borders -->
-    <SolidColorBrush x:Key="InputBorderBrush" Color="#4D000000"/>
-    <SolidColorBrush x:Key="InputTextBrush" Color="#4D000000"/>
-    <SolidColorBrush x:Key="InputWatermarkHoverBrush" Color="#99000000"/>
-    <SolidColorBrush x:Key="NeutralLightBrush" Color="#E5E7EB"/>
-    <SolidColorBrush x:Key="NeutralLightHoverBrush" Color="#D1D5DB"/>
-
-    <!-- Primary red -->
-    <SolidColorBrush x:Key="PrColor" Color="#EA4336"/>
-    <SolidColorBrush x:Key="PrColorHover" Color="#D63B30"/>
 
     <!-- Danger -->
     <SolidColorBrush x:Key="DangerBrush" Color="#DC2626"/>
@@ -48,22 +57,5 @@
     <SolidColorBrush x:Key="SuccessBrush" Color="#16A34A"/>
     <SolidColorBrush x:Key="SuccessHoverBrush" Color="#15803D"/>
     <SolidColorBrush x:Key="SuccessPressedBrush" Color="#166534"/>
-
-    <!-- Info -->
-    <SolidColorBrush x:Key="InfoBrush" Color="#2563EB"/>
-    <SolidColorBrush x:Key="InfoHoverBrush" Color="#1D4ED8"/>
-    <SolidColorBrush x:Key="InfoPressedBrush" Color="#1E40AF"/>
-
-    <!-- Scroll -->
-    <SolidColorBrush x:Key="ScrollThumbBrush" Color="#A3A3A3"/>
-
-    <!-- Overlays / shadows -->
-    <SolidColorBrush x:Key="OverlayBrush" Color="#33000000"/>
-    <SolidColorBrush x:Key="HeroOverlayBrush" Color="#E6FFFFFF"/>
-    <SolidColorBrush x:Key="DialogShadowBrush" Color="#14000000"/>
-    <SolidColorBrush x:Key="HeroShadowBrush" Color="#99000000"/>
-    
-    <!-- Overlay / Auth -->
-    <SolidColorBrush x:Key="AuthOverlayTextBrush" Color="#E6FFFFFF"/>
 
 </ResourceDictionary>

@@ -10,7 +10,7 @@
     <Grid ColumnDefinitions="*,320">
 
         <StackPanel Grid.Column="0" Spacing="18">
-            
+
             <StackPanel Orientation="Horizontal"
                         Spacing="12"
                         VerticalAlignment="Center">
@@ -38,47 +38,47 @@
                         Command="{Binding Filters.ClearCommand}" />
 
             </StackPanel>
-            
+
             <Border Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource SidebarBorderBrush}"
+                    BorderThickness="1"
                     CornerRadius="18"
                     Padding="22"
                     VerticalAlignment="Top"
-                    BoxShadow="0 10 30 0 #14000000">
+                    BoxShadow="0 12 40 0 #66000000">
 
                 <StackPanel Spacing="8">
 
                     <TextBlock Text="Users"
-                               FontSize="18"
+                               FontSize="20"
                                FontWeight="Bold"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
 
                     <TextBlock Text="{Binding StatusMessage}"
                                TextWrapping="Wrap"
                                FontSize="14"
-                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                               Foreground="{DynamicResource TextMutedBrush}"/>
 
                     <Border Background="{DynamicResource MutedSurfaceBrush}"
-                            CornerRadius="8"
-                            Padding="10"
+                            BorderBrush="{DynamicResource SidebarBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="12"
                             Margin="0,10,0,0">
 
                         <Grid ColumnDefinitions="140,140,120,120,*">
-                            <TextBlock Grid.Column="0" Text="Username" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="1" Text="Role" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="2" Text="Currency" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="3" Text="IsBlocked" FontWeight="Bold"/>
+                            <TextBlock Grid.Column="0" Text="Username" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Grid.Column="1" Text="Role" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Grid.Column="2" Text="Currency" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Grid.Column="3" Text="IsBlocked" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
 
-                            <StackPanel Grid.Column="4"
-                                        Orientation="Horizontal"
-                                        Spacing="10"
-                                        HorizontalAlignment="Right"
-                                        Width="210">
-
-                                <TextBlock Text="Actions"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center"/>
-
-                            </StackPanel>
+                            <TextBlock Grid.Column="4"
+                                       Text="Actions"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,150,0"/>
                         </Grid>
                     </Border>
 
@@ -86,16 +86,28 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="models:AdminUser">
                                 <Border Background="{DynamicResource CardBrush}"
+                                        BorderBrush="{DynamicResource SidebarBorderBrush}"
+                                        BorderThickness="1"
                                         CornerRadius="10"
-                                        Padding="10"
+                                        Padding="12"
                                         Margin="0,6,0,0">
 
                                     <Grid ColumnDefinitions="140,140,120,120,*">
-                                        <TextBlock Grid.Column="0" Text="{Binding Username}" FontWeight="Bold"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding Role}"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding Currency}"/>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding Username}"
+                                                   FontWeight="Bold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
 
-                                        <TextBlock Grid.Column="3">
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Role}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding Currency}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                                        <TextBlock Grid.Column="3"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}">
                                             <TextBlock.Text>
                                                 <Binding Path="IsBlocked">
                                                     <Binding.Converter>
@@ -151,9 +163,17 @@
                                 Command="{Binding PreviousPageCommand}"
                                 IsEnabled="{Binding CanGoPrevious}" />
 
-                        <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" />
-                        <TextBlock Text=" / " VerticalAlignment="Center" />
-                        <TextBlock Text="{Binding TotalPages}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CurrentPage}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                   VerticalAlignment="Center" />
+
+                        <TextBlock Text=" / "
+                                   Foreground="{DynamicResource TextMutedBrush}"
+                                   VerticalAlignment="Center" />
+
+                        <TextBlock Text="{Binding TotalPages}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                   VerticalAlignment="Center" />
 
                         <Button Content="Next"
                                 Classes="detailsBtn"
@@ -164,22 +184,24 @@
                 </StackPanel>
             </Border>
         </StackPanel>
-        
+
         <Border Grid.Column="1"
                 Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource SidebarBorderBrush}"
+                BorderThickness="1"
                 CornerRadius="18"
                 Padding="20"
                 Margin="20,60,0,0"
                 Height="530"
                 VerticalAlignment="Top"
-                BoxShadow="0 10 30 0 #14000000"
+                BoxShadow="0 12 40 0 #66000000"
                 IsVisible="{Binding HasSelectedUser}">
 
             <Grid RowDefinitions="Auto,Auto,*,Auto">
 
                 <TextBlock Grid.Row="0"
                            Text="User Details"
-                           FontSize="18"
+                           FontSize="20"
                            FontWeight="Bold"
                            Foreground="{DynamicResource TextPrimaryBrush}"/>
 
@@ -244,7 +266,7 @@
                             IsEnabled="{Binding CanChangeSelectedUserRole}"/>
 
                     <Button Content="Close"
-                            Classes="unblockBtn"
+                            Classes="closeBtn"
                             Command="{Binding CloseSelectionCommand}"
                             HorizontalAlignment="Center"/>
                 </StackPanel>

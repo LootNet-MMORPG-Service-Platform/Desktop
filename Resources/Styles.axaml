@@ -5,14 +5,17 @@
         <Border Padding="20" Width="400">
             <StackPanel Orientation="Vertical" Spacing="10">
                 <TextBox Watermark="Email"/>
-                <!--<Button Classes="googleBtn" HorizontalAlignment="Stretch"/>-->
                 <Button Classes="submitBtn" Content="Login" HorizontalAlignment="Stretch"/>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
 
     <Style Selector="TextBox">
-        <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="CaretBrush" Value="White"/>
+        <Style Selector="^ /template/ TextPresenter#PART_TextPresenter">
+            <Setter Property="CaretBrush" Value="White"/>
+        </Style>
+        <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Height" Value="50"/>
         <Setter Property="BorderThickness" Value="2"/>
@@ -39,7 +42,7 @@
         </Style>
 
         <Style Selector="^ /template/ Border#PART_BorderElement">
-            <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
             <Setter Property="Transitions">
                 <Transitions>
                     <BrushTransition Property="BorderBrush" Duration="0:0:0.5" Easing="QuarticEaseOut"/>
@@ -66,84 +69,6 @@
         </Style>
     </Style>
 
-    <!--
-    <Style Selector="Button.googleBtn">
-        <Setter Property="Height" Value="50"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Classes="base"
-                            Background="White"
-                            CornerRadius="12"
-                            ClipToBounds="True"
-                            BorderThickness="2">
-                        <Border.Styles>
-                            <Style Selector="Border.base">
-                                <Setter Property="BorderBrush" Value="rgba(0,0,0,0.3)"/>
-                                <Setter Property="Transitions">
-                                    <Transitions>
-                                        <BrushTransition Property="BorderBrush" Duration="0:0:0.5" Easing="QuarticEaseOut"/>
-                                    </Transitions>
-                                </Setter>
-
-                                <Style Selector="^ Grid.logo">
-                                    <Setter Property="Margin" Value="10 0 0 0"/>
-                                    <Setter Property="Background" Value="White"/>
-                                    <Setter Property="Transitions">
-                                        <Transitions>
-                                            <ThicknessTransition Property="Margin" Duration="0:0:0.5" Easing="QuarticEaseOut"/>
-                                        </Transitions>
-                                    </Setter>
-                                </Style>
-
-                                <Style Selector="^ TextBlock.text">
-                                    <Setter Property="Width" Value="0"/>
-                                    <Setter Property="Transitions">
-                                        <Transitions>
-                                            <DoubleTransition Property="Width" Duration="0:0:0.5" Easing="QuarticEaseOut"/>
-                                        </Transitions>
-                                    </Setter>
-                                </Style>
-
-                                <Style Selector="^:pointerover">
-                                    <Setter Property="BorderBrush" Value="{DynamicResource prColor}"/>
-                                    <Style Selector="^ Grid.logo">
-                                        <Setter Property="Margin" Value="0 0 0 0"/>
-                                    </Style>
-                                    <Style Selector="^ TextBlock.text">
-                                        <Setter Property="Width" Value="104"/>
-                                    </Style>
-                                </Style>
-                            </Style>
-                        </Border.Styles>
-
-                        <StackPanel Spacing="10"
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-
-                            <Grid Classes="logo" Background="Transparent" Width="22" Height="22">
-                                <Path Data="M5.01822 11C5.01822 10.3331 5.12898 9.69378 5.32666 9.09411L1.86655 6.45184C1.19219 7.82104 0.812256 9.36384 0.812256 11C0.812256 12.6347 1.19173 14.1766 1.86515 15.5448L5.32339 12.8974C5.12758 12.3006 5.01822 11.6636 5.01822 11Z" Fill="#FBBC05"/>
-                                <Path Data="M11.0935 4.93331C12.5423 4.93331 13.8508 5.44664 14.8789 6.28664L17.8698 3.29997C16.0472 1.71331 13.7106 0.733307 11.0935 0.733307C7.03057 0.733307 3.53868 3.05684 1.86658 6.45184L5.32668 9.09411C6.12395 6.67397 8.39657 4.93331 11.0935 4.93331Z" Fill="#EB4335"/>
-                                <Path Data="M11.0935 17.0667C8.39657 17.0667 6.12395 15.326 5.32668 12.9059L1.86658 15.5477C3.53868 18.9431 7.03057 21.2667 11.0935 21.2667C13.6012 21.2667 15.9954 20.3763 17.7922 18.7079L14.5078 16.1688C13.5811 16.7526 12.4142 17.0667 11.0935 17.0667Z" Fill="#34A853"/>
-                                <Path Data="M20.9074 11C20.9074 10.3933 20.814 9.73997 20.6738 9.1333H11.0935V13.1H16.608C16.3323 14.4524 15.5817 15.4921 14.5078 16.1688L17.7922 18.7079C19.6798 16.956 20.9074 14.3464 20.9074 11Z" Fill="#4285F4"/>
-                            </Grid>
-
-                            <TextBlock Classes="text"
-                                       Text="Login with Google"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Foreground="{DynamicResource prColor}"
-                                       FontSize="12"
-                                       FontWeight="SemiBold"/>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    -->
-
     <Style Selector="Button.submitBtn">
         <Setter Property="Height" Value="50"/>
         <Setter Property="Background" Value="{DynamicResource PrColor}"/>
@@ -156,12 +81,12 @@
                     <Border x:Name="Root"
                             Background="{TemplateBinding Background}"
                             CornerRadius="25">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -171,12 +96,12 @@
             <Setter Property="Background" Value="{DynamicResource PrColorHover}"/>
         </Style>
     </Style>
-    
+
     <Style Selector="Button.navBtn">
         <Setter Property="Height" Value="52"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Background" Value="{DynamicResource SidebarButtonBrush}"/>
-        <Setter Property="Foreground" Value="{DynamicResource NeutralLightBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextOnDarkBrush}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Template">
@@ -187,12 +112,12 @@
                             Background="{TemplateBinding Background}"
                             CornerRadius="12"
                             Padding="16,0">
-                        <ContentPresenter HorizontalAlignment="Left"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Left"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -202,7 +127,7 @@
             <Setter Property="Background" Value="{DynamicResource SidebarButtonHoverBrush}"/>
         </Style>
     </Style>
-    
+
     <Style Selector="Button.navBtn.active">
         <Setter Property="Background" Value="{DynamicResource PrColor}"/>
         <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
@@ -211,9 +136,9 @@
             <Setter Property="Background" Value="{DynamicResource PrColorHover}"/>
         </Style>
     </Style>
-    
+
     <Style Selector="Button.logoutBtn">
-        <Setter Property="Background" Value="{DynamicResource PrColor}"/>
+        <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Template">
@@ -224,22 +149,72 @@
                             CornerRadius="10"
                             Padding="18,10"
                             MinWidth="110">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
 
         <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="{DynamicResource PrColorHover}"/>
+            <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
+        </Style>
+
+        <Style Selector="^:pressed /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource DangerPressedBrush}"/>
+        </Style>
+
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TextOnDarkMutedBrush}"/>
+        </Style>
+
+        <Style Selector="^:disabled /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
         </Style>
     </Style>
-    
+
+    <Style Selector="Button.closeBtn">
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="10"
+                            Padding="12,8"
+                            MinWidth="100">
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
+        </Style>
+
+        <Style Selector="^:pressed /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource DangerPressedBrush}"/>
+        </Style>
+
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TextOnDarkMutedBrush}"/>
+        </Style>
+
+        <Style Selector="^:disabled /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
+        </Style>
+    </Style>
+
     <Style Selector="Button.actionBtn">
         <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -251,12 +226,11 @@
                             CornerRadius="10"
                             Padding="12,8"
                             MinWidth="100">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -270,12 +244,8 @@
             <Setter Property="Background" Value="{DynamicResource DangerPressedBrush}"/>
         </Style>
     </Style>
-    
+
     <Style Selector="Button.blockBtn">
-        <Style Selector="^:disabled /template/ Border#Root">
-            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
-        </Style>
-        
         <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
@@ -288,12 +258,11 @@
                             CornerRadius="10"
                             Padding="12,8"
                             MinWidth="100">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -306,13 +275,17 @@
         <Style Selector="^:pressed /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource DangerPressedBrush}"/>
         </Style>
-    </Style>
-    
-    <Style Selector="Button.unblockBtn">
+
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TextOnDarkMutedBrush}"/>
+        </Style>
+
         <Style Selector="^:disabled /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
         </Style>
-        
+    </Style>
+
+    <Style Selector="Button.unblockBtn">
         <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Background" Value="{DynamicResource SuccessBrush}"/>
@@ -325,12 +298,11 @@
                             CornerRadius="10"
                             Padding="12,8"
                             MinWidth="100">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -343,8 +315,16 @@
         <Style Selector="^:pressed /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource SuccessPressedBrush}"/>
         </Style>
+
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TextOnDarkMutedBrush}"/>
+        </Style>
+
+        <Style Selector="^:disabled /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
+        </Style>
     </Style>
-    
+
     <Style Selector="Button.dialogConfirmBtn">
         <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -357,12 +337,11 @@
                             CornerRadius="8"
                             Padding="12,8"
                             MinWidth="90">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -385,12 +364,11 @@
                             CornerRadius="8"
                             Padding="12,8"
                             MinWidth="90">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -400,12 +378,8 @@
             <Setter Property="Background" Value="{DynamicResource NeutralLightHoverBrush}"/>
         </Style>
     </Style>
-    
-    <Style Selector="Button.detailsBtn">
-        <Style Selector="^:disabled /template/ Border#Root">
-            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
-        </Style>
 
+    <Style Selector="Button.detailsBtn">
         <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Background" Value="{DynamicResource InfoBrush}"/>
@@ -418,12 +392,11 @@
                             CornerRadius="10"
                             Padding="12,8"
                             MinWidth="100">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -436,8 +409,16 @@
         <Style Selector="^:pressed /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource InfoPressedBrush}"/>
         </Style>
+
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TextOnDarkMutedBrush}"/>
+        </Style>
+
+        <Style Selector="^:disabled /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource TextDisabledBrush}"/>
+        </Style>
     </Style>
-    
+
     <Style Selector="ScrollBar:vertical">
         <Setter Property="Width" Value="10"/>
     </Style>
@@ -463,5 +444,32 @@
     <Style Selector="ScrollBar:vertical:pressed /template/ Thumb">
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Background" Value="{DynamicResource ScrollThumbBrush}"/>
+    </Style>
+
+    <Style Selector="Button.backBtn">
+        <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="12,6"/>
+
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Button">
+                <Border Background="Transparent"
+                        Padding="{TemplateBinding Padding}">
+                    <TextBlock Text="{TemplateBinding Content}"
+                               Foreground="{TemplateBinding Foreground}"
+                               FontWeight="{TemplateBinding FontWeight}"
+                               FontSize="{TemplateBinding FontSize}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover">
+            <Setter Property="Foreground" Value="#F4F4F5"/>
+        </Style>
     </Style>
 </Styles>

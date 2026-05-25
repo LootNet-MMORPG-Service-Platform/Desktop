@@ -7,70 +7,96 @@
              x:Name="LogsRoot">
 
     <Border Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource SidebarBorderBrush}"
+            BorderThickness="1"
             CornerRadius="18"
             Padding="22"
             VerticalAlignment="Top"
-            BoxShadow="0 10 30 0 #14000000">
+            BoxShadow="0 12 40 0 #66000000">
 
-        <StackPanel Spacing="14">
-            <TextBlock Text="Admin Logs"
-                       FontSize="18"
-                       FontWeight="Bold"
-                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+        <StackPanel Spacing="16">
 
-            <TextBlock Text="{Binding StatusMessage}"
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Admin Logs"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
 
-            <StackPanel Orientation="Horizontal"
-                        Spacing="12"
-                        VerticalAlignment="Center">
-                <TextBox Width="180"
-                         Height="42"
-                         Watermark="Action"
-                         Text="{Binding ActionFilter}"/>
+                    <TextBlock Text="{Binding StatusMessage}"
+                               TextWrapping="Wrap"
+                               FontSize="13"
+                               Foreground="{DynamicResource TextMutedBrush}"/>
+                </StackPanel>
 
-                <ComboBox Width="240"
-                          Height="42"
-                          CornerRadius="10"
-                          ItemsSource="{Binding AdminOptions}"
-                          SelectedItem="{Binding SelectedAdminOption}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="vm:AdminFilterOption">
-                            <TextBlock Text="{Binding DisplayName}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-
-                <TextBox Width="240"
-                         Height="42"
-                         Watermark="TargetUserId"
-                         Text="{Binding TargetUserIdFilter}"/>
-
-                <Button Content="Clear"
+                <Button Grid.Column="1"
+                        Content="Clear Filters"
                         Height="42"
-                        Classes="unblockBtn"
+                        Classes="detailsBtn"
                         Command="{Binding ClearFiltersCommand}"/>
-            </StackPanel>
+            </Grid>
+
+            <Border Background="{DynamicResource CardBrush}"
+                    BorderBrush="{DynamicResource SidebarBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="14"
+                    Padding="14">
+
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Filters"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="12"
+                                VerticalAlignment="Center">
+
+                        <TextBox Width="180"
+                                 Height="42"
+                                 Watermark="Action"
+                                 Text="{Binding ActionFilter}"/>
+
+                        <ComboBox Width="240"
+                                  Height="42"
+                                  CornerRadius="10"
+                                  ItemsSource="{Binding AdminOptions}"
+                                  SelectedItem="{Binding SelectedAdminOption}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="vm:AdminFilterOption">
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBox Width="240"
+                                 Height="42"
+                                 Watermark="TargetUserId"
+                                 Text="{Binding TargetUserIdFilter}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
 
             <TextBlock Text="No logs found."
                        FontSize="13"
-                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       Foreground="{DynamicResource TextMutedBrush}"
                        IsVisible="{Binding !HasLogs}"/>
 
             <Border Background="{DynamicResource MutedSurfaceBrush}"
-                    CornerRadius="8"
-                    Padding="10"
+                    BorderBrush="{DynamicResource SidebarBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="12"
                     IsVisible="{Binding HasLogs}">
+
                 <Grid ColumnDefinitions="145,140,250,190,*,100"
                       ColumnSpacing="12">
-                    <TextBlock Grid.Column="0" Text="CreatedAt" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="Action" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="2" Text="AdminId" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="3" Text="TargetUserId" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="4" Text="Data" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="5" Text="Actions" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="0" Text="CreatedAt" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Grid.Column="1" Text="Action" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Grid.Column="2" Text="AdminId" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Grid.Column="3" Text="TargetUserId" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Grid.Column="4" Text="Data" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Grid.Column="5" Text="Actions" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </Grid>
             </Border>
 
@@ -79,41 +105,58 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="models:AdminLog">
                         <Border Background="{DynamicResource CardBrush}"
-                                CornerRadius="10"
-                                Padding="10"
-                                Margin="0,6,0,0">
+                                BorderBrush="{DynamicResource SidebarBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="12"
+                                Margin="0,0,0,8">
+
                             <Grid ColumnDefinitions="145,140,250,190,*,100"
                                   ColumnSpacing="12">
+
                                 <TextBlock Grid.Column="0"
                                            Text="{Binding CreatedAtText}"
-                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Foreground="{DynamicResource TextMutedBrush}"
+                                           FontSize="12"
                                            TextWrapping="Wrap"/>
 
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Action}"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"
-                                           TextWrapping="Wrap"/>
+                                <Border Grid.Column="1"
+                                        Background="#1E3A8A"
+                                        CornerRadius="999"
+                                        Padding="12,5"
+                                        MaxWidth="170"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top">
+
+                                    <TextBlock Text="{Binding Action}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"
+                                               Foreground="White"
+                                               TextWrapping="NoWrap"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </Border>
 
                                 <TextBlock Grid.Column="2"
                                            Text="{Binding AdminId}"
                                            Foreground="{DynamicResource TextSecondaryBrush}"
+                                           FontSize="12"
                                            TextWrapping="Wrap"/>
 
                                 <TextBlock Grid.Column="3"
                                            Text="{Binding TargetUserId}"
                                            Foreground="{DynamicResource TextSecondaryBrush}"
+                                           FontSize="12"
                                            TextWrapping="Wrap"/>
 
                                 <TextBlock Grid.Column="4"
                                            Text="{Binding DataPreview}"
                                            Foreground="{DynamicResource TextSecondaryBrush}"
+                                           FontSize="12"
                                            TextWrapping="Wrap"/>
 
                                 <Button Grid.Column="5"
                                         Content="Details"
                                         Classes="detailsBtn"
-                                        MinWidth="90"
                                         HorizontalAlignment="Right"
                                         Click="Details_Click"/>
                             </Grid>
@@ -126,14 +169,23 @@
                         HorizontalAlignment="Center"
                         Spacing="10"
                         Margin="0,12,0,0">
+
                 <Button Content="Previous"
                         Classes="detailsBtn"
                         Command="{Binding PreviousPageCommand}"
                         IsEnabled="{Binding CanGoPrevious}"/>
 
-                <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center"/>
-                <TextBlock Text=" / " VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding TotalPages}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding CurrentPage}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Text=" / "
+                           Foreground="{DynamicResource TextMutedBrush}"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Text="{Binding TotalPages}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"/>
 
                 <Button Content="Next"
                         Classes="detailsBtn"

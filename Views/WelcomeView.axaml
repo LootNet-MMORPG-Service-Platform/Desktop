@@ -13,16 +13,25 @@
                    FontFamily="{StaticResource LobsterFont}"
                    Foreground="{DynamicResource TextPrimaryBrush}"/>
 
-        <TextBlock HorizontalAlignment="Center"
-                   TextAlignment="Center"
-                   FontSize="14"
-                   FontWeight="SemiBold"
-                   TextWrapping="Wrap"
-                   Foreground="{DynamicResource TextStrongNeutralBrush}">
-            Welcome to the LootNet-MMORPG
-            <LineBreak/>
-            Admin Panel
-        </TextBlock>
+        <StackPanel Orientation="Vertical"
+                    Spacing="2"
+                    HorizontalAlignment="Center">
+
+            <TextBlock HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextPrimaryBrush}">
+                Welcome to the LootNet-MMORPG
+            </TextBlock>
+
+            <TextBlock HorizontalAlignment="Center"
+                       Text="Admin Panel"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Foreground="{DynamicResource PrColor}"/>
+        </StackPanel>
 
         <TextBlock TextWrapping="Wrap"
                    TextAlignment="Center"
