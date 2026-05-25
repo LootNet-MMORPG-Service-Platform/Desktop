@@ -59,12 +59,12 @@ public partial class HomeViewModel : ViewModelBase
     public bool CanAccessItemGeneration => Role == "SuperAdmin" || Role == "GameModerator";
     public bool CanAccessEnemyGeneration => Role == "SuperAdmin" || Role == "GameModerator";
 
-    public bool IsDashboardActive => ActiveSection == "Dashboard";
-    public bool IsUsersActive => ActiveSection == "Users";
-    public bool IsItemGenerationActive => ActiveSection == "ItemGeneration";
-    public bool IsEnemyGenerationActive => ActiveSection == "EnemyGeneration";
-    public bool IsEconomyActive => ActiveSection == "Economy";
-    public bool IsLogsActive => ActiveSection == "Logs";
+    public bool IsDashboardActive => ActiveSection == HomeSection.Dashboard;
+    public bool IsUsersActive => ActiveSection == HomeSection.Users;
+    public bool IsItemGenerationActive => ActiveSection == HomeSection.ItemGeneration;
+    public bool IsEnemyGenerationActive => ActiveSection == HomeSection.EnemyGeneration;
+    public bool IsEconomyActive => ActiveSection == HomeSection.Economy;
+    public bool IsLogsActive => ActiveSection == HomeSection.Logs;
 
     [ObservableProperty]
     private string _username = "admin";
@@ -73,7 +73,7 @@ public partial class HomeViewModel : ViewModelBase
     private string _role = "";
 
     [ObservableProperty]
-    private string _activeSection = "Dashboard";
+    private HomeSection _activeSection = HomeSection.Dashboard;
 
     [ObservableProperty]
     private string _currentSectionTitle = "Dashboard";
@@ -93,7 +93,7 @@ public partial class HomeViewModel : ViewModelBase
         ItemGenerationVm.ClearSelection();
         EnemyGenerationVm.ClearSelection();
         
-        ActiveSection = "Dashboard";
+        ActiveSection = HomeSection.Dashboard;
         CurrentSectionTitle = "Dashboard";
         CurrentSectionDescription = "Overview of the administrative panel and key management areas.";
         CurrentSectionMessage = "Choose a section from the sidebar to manage the game as an administrator.";
@@ -105,7 +105,7 @@ public partial class HomeViewModel : ViewModelBase
         ItemGenerationVm.ClearSelection();
         EnemyGenerationVm.ClearSelection();
         
-        ActiveSection = "Users";
+        ActiveSection = HomeSection.Users;
         CurrentSectionTitle = "Users";
         CurrentSectionDescription = "Manage user accounts, roles and access.";
 
@@ -119,7 +119,7 @@ public partial class HomeViewModel : ViewModelBase
         UsersVm.ClearSelection();
         EnemyGenerationVm.ClearSelection();
 
-        ActiveSection = "ItemGeneration";
+        ActiveSection = HomeSection.ItemGeneration;
         CurrentSectionTitle = "Item Generation";
         CurrentSectionDescription = "Manage item generation profiles, rules and type weights.";
 
@@ -132,7 +132,7 @@ public partial class HomeViewModel : ViewModelBase
         UsersVm.ClearSelection();
         ItemGenerationVm.ClearSelection();
 
-        ActiveSection = "EnemyGeneration";
+        ActiveSection = HomeSection.EnemyGeneration;
         CurrentSectionTitle = "Enemy Generation";
         CurrentSectionDescription = "Manage enemy generation profiles, scenarios, slots and class profiles.";
 
@@ -146,7 +146,7 @@ public partial class HomeViewModel : ViewModelBase
         EnemyGenerationVm.ClearSelection();
         UsersVm.ClearSelection();
         
-        ActiveSection = "Economy";
+        ActiveSection = HomeSection.Economy;
         CurrentSectionTitle = "Economy";
         CurrentSectionDescription = "Manage economy settings and game balance.";
 
@@ -160,7 +160,7 @@ public partial class HomeViewModel : ViewModelBase
         ItemGenerationVm.ClearSelection();
         EnemyGenerationVm.ClearSelection();
         
-        ActiveSection = "Logs";
+        ActiveSection = HomeSection.Logs;
         CurrentSectionTitle = "Logs";
         CurrentSectionDescription = "Review logs, statistics and important system events.";
 
@@ -225,7 +225,7 @@ public partial class HomeViewModel : ViewModelBase
         EconomyVm.ResetSessionState();
         LogsVm.ResetSessionState();
 
-        ActiveSection = "Dashboard";
+        ActiveSection = HomeSection.Dashboard;
         CurrentSectionTitle = "Dashboard";
         CurrentSectionDescription = "Overview of the administrative panel and key management areas.";
         CurrentSectionMessage = "Choose a section from the sidebar to manage the game as an administrator.";
@@ -252,7 +252,7 @@ public partial class HomeViewModel : ViewModelBase
         }
     }
 
-    partial void OnActiveSectionChanged(string value)
+    partial void OnActiveSectionChanged(HomeSection value)
     {
         _ = value;
 
