@@ -89,25 +89,22 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     private void ShowDashboard()
     {
-        UsersVm.ClearSelection();
-        ItemGenerationVm.ClearSelection();
-        EnemyGenerationVm.ClearSelection();
-        
-        ActiveSection = HomeSection.Dashboard;
-        CurrentSectionTitle = "Dashboard";
-        CurrentSectionDescription = "Overview of the administrative panel and key management areas.";
+        ClearAllSelections();
+        SetSection(
+            HomeSection.Dashboard,
+            "Dashboard",
+            "Overview of the administrative panel and key management areas.");
         CurrentSectionMessage = "Choose a section from the sidebar to manage the game as an administrator.";
     }
 
     [RelayCommand]
     private async Task ShowUsers()
     {
-        ItemGenerationVm.ClearSelection();
-        EnemyGenerationVm.ClearSelection();
-        
-        ActiveSection = HomeSection.Users;
-        CurrentSectionTitle = "Users";
-        CurrentSectionDescription = "Manage user accounts, roles and access.";
+        ClearAllSelections();
+        SetSection(
+            HomeSection.Users,
+            "Users",
+            "Manage user accounts, roles and access.");
 
         await UsersVm.LoadUsersAsync();
         CurrentSectionMessage = UsersVm.StatusMessage;
@@ -116,12 +113,11 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     private async Task ShowItemGeneration()
     {
-        UsersVm.ClearSelection();
-        EnemyGenerationVm.ClearSelection();
-
-        ActiveSection = HomeSection.ItemGeneration;
-        CurrentSectionTitle = "Item Generation";
-        CurrentSectionDescription = "Manage item generation profiles, rules and type weights.";
+        ClearAllSelections();
+        SetSection(
+            HomeSection.ItemGeneration,
+            "Item Generation",
+            "Manage item generation profiles, rules and type weights.");
 
         await ItemGenerationVm.LoadProfilesAsync();
     }
@@ -129,12 +125,11 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     private async Task ShowEnemyGeneration()
     {
-        UsersVm.ClearSelection();
-        ItemGenerationVm.ClearSelection();
-
-        ActiveSection = HomeSection.EnemyGeneration;
-        CurrentSectionTitle = "Enemy Generation";
-        CurrentSectionDescription = "Manage enemy generation profiles, scenarios, slots and class profiles.";
+        ClearAllSelections();
+        SetSection(
+            HomeSection.EnemyGeneration,
+            "Enemy Generation",
+            "Manage enemy generation profiles, scenarios, slots and class profiles.");
 
         await EnemyGenerationVm.LoadProfilesAsync();
     }
@@ -142,13 +137,11 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     private async Task ShowEconomy()
     {
-        ItemGenerationVm.ClearSelection();
-        EnemyGenerationVm.ClearSelection();
-        UsersVm.ClearSelection();
-        
-        ActiveSection = HomeSection.Economy;
-        CurrentSectionTitle = "Economy";
-        CurrentSectionDescription = "Manage economy settings and game balance.";
+        ClearAllSelections();
+        SetSection(
+            HomeSection.Economy,
+            "Economy",
+            "Manage economy settings and game balance.");
 
         await EconomyVm.LoadAsync();
     }
@@ -156,13 +149,11 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     private async Task ShowLogs()
     {
-        UsersVm.ClearSelection();
-        ItemGenerationVm.ClearSelection();
-        EnemyGenerationVm.ClearSelection();
-        
-        ActiveSection = HomeSection.Logs;
-        CurrentSectionTitle = "Logs";
-        CurrentSectionDescription = "Review logs, statistics and important system events.";
+        ClearAllSelections();
+        SetSection(
+            HomeSection.Logs,
+            "Logs",
+            "Review logs, statistics and important system events.");
 
         await LogsVm.LoadLogsAsync();
     }
@@ -225,10 +216,25 @@ public partial class HomeViewModel : ViewModelBase
         EconomyVm.ResetSessionState();
         LogsVm.ResetSessionState();
 
-        ActiveSection = HomeSection.Dashboard;
-        CurrentSectionTitle = "Dashboard";
-        CurrentSectionDescription = "Overview of the administrative panel and key management areas.";
+        SetSection(
+            HomeSection.Dashboard,
+            "Dashboard",
+            "Overview of the administrative panel and key management areas.");
         CurrentSectionMessage = "Choose a section from the sidebar to manage the game as an administrator.";
+    }
+
+    private void ClearAllSelections()
+    {
+        UsersVm.ClearSelection();
+        ItemGenerationVm.ClearSelection();
+        EnemyGenerationVm.ClearSelection();
+    }
+
+    private void SetSection(HomeSection section, string title, string description)
+    {
+        ActiveSection = section;
+        CurrentSectionTitle = title;
+        CurrentSectionDescription = description;
     }
 
     public async Task ChangePasswordAsync(string oldPassword, string newPassword)
