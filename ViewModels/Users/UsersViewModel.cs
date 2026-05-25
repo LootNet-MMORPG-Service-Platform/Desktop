@@ -19,7 +19,7 @@ public partial class UsersViewModel : ViewModelBase
     public string SelectedUserCurrencyText =>
         SelectedUser?.Currency.ToString(CultureInfo.CurrentCulture) ?? "";
     public string SelectedUserBlockedText => SelectedUser?.IsBlocked.ToString() ?? "";
-    
+
     private AdminService _adminService;
     private readonly AuthService _authService;
     private readonly AuthTokenService _authTokenService;
@@ -301,7 +301,7 @@ public partial class UsersViewModel : ViewModelBase
     {
         SelectedUser = null;
     }
-    
+
     partial void OnSelectedUserChanged(AdminUser? value)
     {
         OnPropertyChanged(nameof(HasSelectedUser));

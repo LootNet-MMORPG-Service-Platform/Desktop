@@ -20,7 +20,7 @@ public partial class LoginView : UserControl
             }
         };
     }
-    
+
     private async void LoginButton_Click(object? sender, RoutedEventArgs e)
     {
         try

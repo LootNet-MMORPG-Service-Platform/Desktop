@@ -38,7 +38,7 @@ public partial class ItemGenerationView : UserControl
             () => vm.DeleteSelectedProfileAsync(),
             "Profile deleted.");
     }
-    
+
     private async void CreateProfile_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not ItemGenerationViewModel vm)
@@ -58,7 +58,7 @@ public partial class ItemGenerationView : UserControl
             () => vm.CreateProfileAsync(name),
             "Profile created.");
     }
-    
+
     private async void AddRule_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not ItemGenerationViewModel vm)
@@ -160,7 +160,7 @@ public partial class ItemGenerationView : UserControl
                 result.Weight),
             "Type weight updated.");
     }
-    
+
     private async void DeleteRule_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not ItemGenerationViewModel vm)
@@ -214,7 +214,7 @@ public partial class ItemGenerationView : UserControl
                 result.IsFallback),
             "Rule updated.");
     }
-    
+
     private async void AddParameter_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not ItemGenerationViewModel vm)
@@ -266,7 +266,7 @@ public partial class ItemGenerationView : UserControl
             () => vm.DeleteParameterAsync(parameter),
             "Parameter deleted.");
     }
-    
+
     private async void AddElement_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not ItemGenerationViewModel vm)

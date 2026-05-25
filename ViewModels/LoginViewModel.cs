@@ -47,7 +47,7 @@ public partial class LoginViewModel : ViewModelBase
         _mainWindow.ShowHome(result);
         NotificationService.Instance.ShowSuccess($"Welcome, {result.Username}.", "Login successful");
     }
-    
+
     public void Reset()
     {
         Username = "";

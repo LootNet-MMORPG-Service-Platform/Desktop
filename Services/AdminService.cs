@@ -69,7 +69,7 @@ public class AdminService
         return await _httpClient.GetFromJsonAsync<List<AdminUserList>>(
             "/api/admin/users/admins");
     }
-    
+
     public async Task BlockUserAsync(string userId)
     {
         var response = await _httpClient.PostAsJsonAsync($"/api/admin/users/{userId}/block", new
@@ -87,7 +87,7 @@ public class AdminService
 
         response.EnsureSuccessStatusCode();
     }
-    
+
     public async Task ChangeRoleAsync(string userId, int role)
     {
         var response = await _httpClient.PostAsJsonAsync($"/api/admin/users/{userId}/role", new
@@ -97,14 +97,14 @@ public class AdminService
 
         response.EnsureSuccessStatusCode();
     }
-    
+
     public async Task<ItemCollectionDTO?> GetInventoryAsync(string userId)
     {
         return await _httpClient.GetFromJsonAsync<ItemCollectionDTO>(
             $"/api/admin/users/{userId}/inventory"
         );
     }
-    
+
     public async Task<EquipmentResponseDTO?> GetEquipmentAsync(string userId)
     {
         return await _httpClient.GetFromJsonAsync<EquipmentResponseDTO>(

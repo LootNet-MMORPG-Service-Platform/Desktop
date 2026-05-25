@@ -154,7 +154,7 @@ public partial class ItemGenerationViewModel : ViewModelBase
 
         await LoadProfilesAsync();
     }
-    
+
     public async Task CreateRuleAsync(ItemCategory category, WeaponType? weaponType, ArmorType? armorType, bool isFallback)
     {
         if (SelectedProfile == null)
@@ -212,7 +212,7 @@ public partial class ItemGenerationViewModel : ViewModelBase
 
         await RefreshWeightsAsync();
     }
-    
+
     public async Task DeleteRuleAsync(GenerationRule rule)
     {
         await _service.DeleteRuleAsync(rule.Id);
@@ -239,7 +239,7 @@ public partial class ItemGenerationViewModel : ViewModelBase
 
         await RefreshRulesAsync();
     }
-    
+
     public async Task CreateParameterAsync(
         GenerationRule rule,
         ItemParameter parameter,
@@ -264,7 +264,7 @@ public partial class ItemGenerationViewModel : ViewModelBase
             await RefreshParametersAsync(rule);
         }
     }
-    
+
     public async Task CreateElementAsync(
         GenerationRule rule,
         ItemElementType elementType,

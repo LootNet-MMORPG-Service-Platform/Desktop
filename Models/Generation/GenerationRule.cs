@@ -19,7 +19,7 @@ public class GenerationRule
 
     public bool HasParameters => Parameters.Count > 0;
     public List<GenerationParameter> Parameters { get; set; } = new();
-    
+
     public bool HasElements => Elements.Count > 0;
     public List<GenerationElement> Elements { get; set; } = new();
 }

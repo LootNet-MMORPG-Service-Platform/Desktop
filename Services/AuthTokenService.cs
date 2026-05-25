@@ -15,14 +15,14 @@ public class AuthTokenService
         {
             EnsureWindowsCredentialManager();
 
-            #pragma warning disable CA1416
+#pragma warning disable CA1416
             CredentialManager.WriteCredential(
                 applicationName: ApplicationName,
                 userName: UserName,
                 secret: token,
                 comment: "LootNet desktop app refresh token",
                 persistence: CredentialPersistence.LocalMachine);
-            #pragma warning restore CA1416
+#pragma warning restore CA1416
         }
 
         return Task.CompletedTask;
@@ -32,9 +32,9 @@ public class AuthTokenService
     {
         EnsureWindowsCredentialManager();
 
-        #pragma warning disable CA1416
+#pragma warning disable CA1416
         var credential = CredentialManager.ReadCredential(ApplicationName);
-        #pragma warning restore CA1416
+#pragma warning restore CA1416
 
         return Task.FromResult(credential?.Password);
     }
@@ -43,9 +43,9 @@ public class AuthTokenService
     {
         EnsureWindowsCredentialManager();
 
-        #pragma warning disable CA1416
+#pragma warning disable CA1416
         CredentialManager.DeleteCredential(ApplicationName);
-        #pragma warning restore CA1416
+#pragma warning restore CA1416
 
         return Task.CompletedTask;
     }

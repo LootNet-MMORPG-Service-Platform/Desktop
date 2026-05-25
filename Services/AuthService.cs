@@ -18,7 +18,7 @@ public class AuthService
         {
             BaseAddress = ApiSettings.BaseUrl
         };
-        
+
         _jwtParser = new JwtParser();
     }
 
@@ -52,7 +52,7 @@ public class AuthService
             Role = user.Role
         };
     }
-    
+
     public async Task<LoginResult?> RefreshAsync(string refreshToken)
     {
         var response = await _httpClient.PostAsJsonAsync("/api/auth/refresh", refreshToken);
@@ -96,7 +96,7 @@ public class AuthService
         var response = await _httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
     }
-    
+
     public class LoginResult
     {
         public string Token { get; set; } = "";

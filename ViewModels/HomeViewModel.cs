@@ -22,7 +22,7 @@ public partial class HomeViewModel : ViewModelBase
     private EnemyGenerationAdminService _enemyGenerationAdminService;
     private EconomyAdminService _economyAdminService;
     private readonly AuthService _authService;
-    
+
     private string _token = "";
 
     public UsersViewModel UsersVm { get; }
@@ -36,13 +36,13 @@ public partial class HomeViewModel : ViewModelBase
         Parent = parent;
         _adminService = null!;
         _authService = new AuthService();
-        
+
         _itemGenerationAdminService = null!;
         ItemGenerationVm = new ItemGenerationViewModel(_itemGenerationAdminService);
 
         _enemyGenerationAdminService = null!;
         EnemyGenerationVm = new EnemyGenerationViewModel(_enemyGenerationAdminService);
-        
+
         _economyAdminService = null!;
         EconomyVm = new EconomyViewModel(_economyAdminService);
 

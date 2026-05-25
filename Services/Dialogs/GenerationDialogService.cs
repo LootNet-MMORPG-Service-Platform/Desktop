@@ -12,7 +12,7 @@ public static class GenerationDialogService
     {
         return await ProfileGenerationDialogs.ShowCreateProfileDialogAsync(owner);
     }
-    
+
     public static async Task<CreateRuleDialogResult?> ShowCreateRuleDialogAsync(Window owner)
     {
         return await RuleGenerationDialogs.ShowCreateRuleDialogAsync(owner);
@@ -32,12 +32,12 @@ public static class GenerationDialogService
     {
         return await TypeWeightGenerationDialogs.ShowEditTypeWeightDialogAsync(owner, weight);
     }
-    
+
     public static async Task<CreateParameterDialogResult?> ShowCreateParameterDialogAsync(Window owner)
     {
         return await ParameterGenerationDialogs.ShowCreateParameterDialogAsync(owner);
     }
-    
+
     public static async Task<CreateElementDialogResult?> ShowCreateElementDialogAsync(Window owner)
     {
         return await ParameterGenerationDialogs.ShowCreateElementDialogAsync(owner);

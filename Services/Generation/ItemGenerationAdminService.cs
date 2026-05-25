@@ -28,13 +28,13 @@ public class ItemGenerationAdminService
         return await _httpClient.GetFromJsonAsync<List<GenerationProfile>>(
             "/api/admin/generation/profiles");
     }
-    
+
     public async Task<List<GenerationRule>?> GetRulesAsync(Guid profileId)
     {
         return await _httpClient.GetFromJsonAsync<List<GenerationRule>>(
             $"/api/admin/generation/profiles/{profileId}/rules");
     }
-    
+
     public async Task<List<TypeWeight>?> GetWeightsAsync(Guid profileId)
     {
         return await _httpClient.GetFromJsonAsync<List<TypeWeight>>(
@@ -89,7 +89,7 @@ public class ItemGenerationAdminService
 
         response.EnsureSuccessStatusCode();
     }
-    
+
     public async Task DeleteProfileAsync(Guid profileId)
     {
         var response = await _httpClient.DeleteAsync(
@@ -97,7 +97,7 @@ public class ItemGenerationAdminService
 
         response.EnsureSuccessStatusCode();
     }
-    
+
     public async Task CreateProfileAsync(string name)
     {
         var response = await _httpClient.PostAsJsonAsync(
@@ -109,7 +109,7 @@ public class ItemGenerationAdminService
 
         response.EnsureSuccessStatusCode();
     }
-    
+
     public async Task CreateRuleAsync(Guid profileId, ItemCategory category, WeaponType? weaponType, ArmorType? armorType, bool isFallback)
     {
         var response = await _httpClient.PostAsJsonAsync(
@@ -140,7 +140,7 @@ public class ItemGenerationAdminService
 
         response.EnsureSuccessStatusCode();
     }
-    
+
     public async Task DeleteRuleAsync(Guid ruleId)
     {
         var response = await _httpClient.DeleteAsync(
@@ -154,7 +154,7 @@ public class ItemGenerationAdminService
         return await _httpClient.GetFromJsonAsync<List<GenerationParameter>>(
             $"/api/admin/generation/rules/{ruleId}/parameters");
     }
-    
+
     public async Task CreateParameterAsync(
         Guid ruleId,
         ItemParameter parameter,
@@ -184,7 +184,7 @@ public class ItemGenerationAdminService
         return await _httpClient.GetFromJsonAsync<List<GenerationElement>>(
             $"/api/admin/generation/rules/{ruleId}/elements");
     }
-    
+
     public async Task CreateElementAsync(
         Guid ruleId,
         ItemElementType elementType,

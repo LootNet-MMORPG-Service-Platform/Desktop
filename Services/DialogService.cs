@@ -45,12 +45,12 @@ public static class DialogService
     {
         return UserDialogService.ShowEquipmentDialogAsync(owner, eq);
     }
-    
+
     public static Task<string?> ShowCreateProfileDialogAsync(Window owner)
     {
         return GenerationDialogService.ShowCreateProfileDialogAsync(owner);
     }
-    
+
     public static Task<CreateRuleDialogResult?> ShowCreateRuleDialogAsync(Window owner)
     {
         return GenerationDialogService.ShowCreateRuleDialogAsync(owner);
@@ -70,12 +70,12 @@ public static class DialogService
     {
         return GenerationDialogService.ShowEditTypeWeightDialogAsync(owner, weight);
     }
-    
+
     public static Task<CreateParameterDialogResult?> ShowCreateParameterDialogAsync(Window owner)
     {
         return GenerationDialogService.ShowCreateParameterDialogAsync(owner);
     }
-    
+
     public static Task<CreateElementDialogResult?> ShowCreateElementDialogAsync(Window owner)
     {
         return GenerationDialogService.ShowCreateElementDialogAsync(owner);
