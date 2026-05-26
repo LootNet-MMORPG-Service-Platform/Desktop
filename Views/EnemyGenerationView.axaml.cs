@@ -11,6 +11,8 @@ namespace desktop_app.Views;
 
 public partial class EnemyGenerationView : UserControl
 {
+    private bool _isActionRunning;
+
     public EnemyGenerationView()
     {
         InitializeComponent();
@@ -215,10 +217,15 @@ public partial class EnemyGenerationView : UserControl
             "Class profile deleted.");
     }
 
-    private static async Task RunEnemyGenerationActionAsync(Func<Task> action, string? successMessage = null)
+    private async Task RunEnemyGenerationActionAsync(Func<Task> action, string? successMessage = null)
     {
+        if (_isActionRunning)
+            return;
+
         try
         {
+            _isActionRunning = true;
+
             await action();
 
             if (!string.IsNullOrWhiteSpace(successMessage))
@@ -231,6 +238,10 @@ public partial class EnemyGenerationView : UserControl
         catch (Exception)
         {
             NotificationService.Instance.ShowError("Operation failed. Please try again.");
+        }
+        finally
+        {
+            _isActionRunning = false;
         }
     }
 }

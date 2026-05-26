@@ -43,7 +43,6 @@ public static class UserDialogService
         var saveButton = new Button
         {
             Content = "Save",
-            Width = 90,
             Height = 36,
             Classes = { "detailsBtn" }
         };

@@ -26,12 +26,15 @@ public static class DialogWindowFactory
             CanResize = false,
             ShowInTaskbar = false,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Background = GetBrush("SurfaceBrush", Brushes.White),
             Content = new Border
             {
-                Background = GetBrush("WhiteBrush", Brushes.White),
+                Background = GetBrush("SurfaceBrush", Brushes.White),
+                BorderBrush = GetBrush("SidebarBorderBrush", Brushes.Gray),
+                BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(12),
                 Padding = new Thickness(20),
-                BoxShadow = BoxShadows.Parse("0 10 30 0 #14000000"),
+                BoxShadow = BoxShadows.Parse("0 12 40 0 #66000000"),
                 Child = content
             }
         };

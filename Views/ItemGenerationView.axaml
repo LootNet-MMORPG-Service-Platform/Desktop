@@ -202,7 +202,7 @@
                                                            FontWeight="SemiBold"
                                                            Foreground="{DynamicResource TextPrimaryBrush}">
                                                     <Run Text="{Binding Category}"/>
-                                                    <Run Text=" · "/>
+                                                    <Run Text=" - "/>
                                                     <Run Text="{Binding TypeDisplay}"/>
                                                 </TextBlock>
 
@@ -278,15 +278,6 @@
                                                 <StackPanel Orientation="Horizontal"
                                                             Spacing="8"
                                                             VerticalAlignment="Center">
-
-                                                    <Border Background="#27272A"
-                                                            CornerRadius="10"
-                                                            Padding="10,4">
-                                                        <TextBlock Text="{Binding Category}"
-                                                                   FontSize="12"
-                                                                   FontWeight="SemiBold"
-                                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                                    </Border>
 
                                                     <Border Background="#1E3A8A"
                                                             CornerRadius="10"
@@ -531,6 +522,12 @@
                             Classes="blockBtn"
                             Width="140"
                             Click="DeleteProfile_Click"/>
+
+                    <Button Content="Close"
+                            Classes="closeBtn"
+                            Width="120"
+                            Margin="10,0,0,0"
+                            Command="{Binding CloseSelectionCommand}"/>
                 </StackPanel>
             </Grid>
         </Border>

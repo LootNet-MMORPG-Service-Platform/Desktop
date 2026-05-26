@@ -11,6 +11,8 @@ namespace desktop_app.Views;
 
 public partial class ItemGenerationView : UserControl
 {
+    private bool _isActionRunning;
+
     public ItemGenerationView()
     {
         InitializeComponent();
@@ -319,10 +321,15 @@ public partial class ItemGenerationView : UserControl
             "Element deleted.");
     }
 
-    private static async Task RunGenerationActionAsync(Func<Task> action, string? successMessage = null)
+    private async Task RunGenerationActionAsync(Func<Task> action, string? successMessage = null)
     {
+        if (_isActionRunning)
+            return;
+
         try
         {
+            _isActionRunning = true;
+
             await action();
 
             if (!string.IsNullOrWhiteSpace(successMessage))
@@ -335,6 +342,10 @@ public partial class ItemGenerationView : UserControl
         catch (Exception)
         {
             NotificationService.Instance.ShowError("Operation failed. Please try again.");
+        }
+        finally
+        {
+            _isActionRunning = false;
         }
     }
 }

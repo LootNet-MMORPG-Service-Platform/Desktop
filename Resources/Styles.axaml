@@ -69,6 +69,129 @@
         </Style>
     </Style>
 
+    <Style Selector="ComboBox">
+        <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="Foreground" Value="#09090B"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}"/>
+    </Style>
+
+    <Style Selector="ComboBoxItem">
+        <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="Foreground" Value="#09090B"/>
+    </Style>
+
+    <Style Selector="ComboBoxItem:pointerover">
+        <Setter Property="Background" Value="#E5E7EB"/>
+        <Setter Property="Foreground" Value="#09090B"/>
+    </Style>
+
+    <Style Selector="ComboBoxItem:selected">
+        <Setter Property="Background" Value="#DBEAFE"/>
+        <Setter Property="Foreground" Value="#09090B"/>
+    </Style>
+
+    <Style Selector="CheckBox">
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+    </Style>
+
+    <Style Selector="CheckBox /template/ Border#PART_Border">
+        <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
+    <Style Selector="CheckBox:pointerover /template/ Border#PART_Border">
+        <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WhiteBrush}"/>
+    </Style>
+
+    <Style Selector="CheckBox:checked /template/ Border#PART_Border">
+        <Setter Property="Background" Value="{DynamicResource InfoBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource InfoHoverBrush}"/>
+    </Style>
+
+    <Style Selector="CheckBox.fallbackCheckBox">
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="8"
+                                Background="{DynamicResource TransparentBrush}">
+                        <Border x:Name="Box"
+                                Width="16"
+                                Height="16"
+                                Background="{DynamicResource TransparentBrush}"
+                                BorderBrush="{DynamicResource WhiteBrush}"
+                                BorderThickness="2"
+                                CornerRadius="3"
+                                VerticalAlignment="Center">
+                            <Path x:Name="CheckMark"
+                                  Data="M2,5 L5,8 L11,2"
+                                  Stroke="{DynamicResource WhiteBrush}"
+                                  StrokeThickness="2"
+                                  Width="13"
+                                  Height="10"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  IsVisible="False"/>
+                        </Border>
+
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{DynamicResource WhiteBrush}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="CheckBox.fallbackCheckBox:pointerover">
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
+    </Style>
+
+    <Style Selector="CheckBox.fallbackCheckBox:checked /template/ Border#Box">
+        <Setter Property="Background" Value="{DynamicResource InfoBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WhiteBrush}"/>
+    </Style>
+
+    <Style Selector="CheckBox.fallbackCheckBox:checked /template/ Path#CheckMark">
+        <Setter Property="IsVisible" Value="True"/>
+    </Style>
+
+    <Style Selector="ToggleSwitch">
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+    </Style>
+
+    <Style Selector="ToggleSwitch:disabled">
+        <Setter Property="Opacity" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+    </Style>
+
+    <Style Selector="ToggleSwitch:disabled /template/ Border#OuterBorder">
+        <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
+    <Style Selector="ToggleSwitch:disabled /template/ Border#SwitchKnobBounds">
+        <Setter Property="Background" Value="#55FFFFFF"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
+    <Style Selector="ToggleSwitch:disabled /template/ Border#PART_SwitchKnob">
+        <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WhiteBrush}"/>
+    </Style>
+
+    <Style Selector="ToggleSwitch:disabled /template/ Ellipse#PART_SwitchKnob">
+        <Setter Property="Fill" Value="{DynamicResource WhiteBrush}"/>
+    </Style>
+
     <Style Selector="Button.submitBtn">
         <Setter Property="Height" Value="50"/>
         <Setter Property="Background" Value="{DynamicResource PrColor}"/>
@@ -328,6 +451,37 @@
     <Style Selector="Button.dialogConfirmBtn">
         <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Background" Value="{DynamicResource InfoBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            Padding="12,8"
+                            MinWidth="90">
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource InfoHoverBrush}"/>
+        </Style>
+
+        <Style Selector="^:pressed /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource InfoPressedBrush}"/>
+        </Style>
+    </Style>
+
+    <Style Selector="Button.dialogCancelBtn">
+        <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -350,32 +504,9 @@
         <Style Selector="^:pointerover /template/ Border#Root">
             <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
         </Style>
-    </Style>
 
-    <Style Selector="Button.dialogCancelBtn">
-        <Setter Property="Foreground" Value="{DynamicResource TextStrongNeutralBrush}"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Background" Value="{DynamicResource NeutralLightBrush}"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Root"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="8"
-                            Padding="12,8"
-                            MinWidth="90">
-                        <TextBlock Text="{TemplateBinding Content}"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   FontWeight="{TemplateBinding FontWeight}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-
-        <Style Selector="^:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="{DynamicResource NeutralLightHoverBrush}"/>
+        <Style Selector="^:pressed /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource DangerPressedBrush}"/>
         </Style>
     </Style>
 

@@ -46,6 +46,8 @@ public static class RuleGenerationDialogs
         var fallbackBox = new CheckBox
         {
             Content = "Fallback rule",
+            Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
+            Classes = { "fallbackCheckBox" },
             HorizontalAlignment = HorizontalAlignment.Center
         };
 
@@ -222,6 +224,8 @@ public static class RuleGenerationDialogs
         {
             Content = "Fallback rule",
             IsChecked = rule.IsFallback,
+            Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
+            Classes = { "fallbackCheckBox" },
             HorizontalAlignment = HorizontalAlignment.Center
         };
 

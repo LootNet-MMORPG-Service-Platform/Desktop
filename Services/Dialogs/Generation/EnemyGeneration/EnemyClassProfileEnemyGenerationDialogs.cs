@@ -37,7 +37,7 @@ public static class EnemyClassProfileEnemyGenerationDialogs
                 new TextBlock
                 {
                     Text = profile?.Name ?? "",
-                    Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black)
+                    Foreground = Brushes.Black
                 })
         };
         var weightBox = EnemyGenerationDialogs.CreateTextBox("Weight");
