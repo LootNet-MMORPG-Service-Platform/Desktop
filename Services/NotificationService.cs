@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -16,9 +17,6 @@ public class NotificationService
     public static NotificationService Instance => LazyInstance.Value;
 
     public ObservableCollection<NotificationMessage> Notifications { get; } = new();
-
-    private string _lastTitle = "";
-    private string _lastMessage = "";
 
     public void ShowSuccess(string message, string title = "Success") =>
         Show(NotificationType.Success, title, message);
@@ -54,11 +52,8 @@ public class NotificationService
 
         Dispatcher.UIThread.Post(() =>
         {
-            if (_lastTitle == title && _lastMessage == message)
+            if (Notifications.Any(n => n.Title == title && n.Message == message))
                 return;
-
-            _lastTitle = title;
-            _lastMessage = message;
 
             Notifications.Add(notification);
             _ = DismissLaterAsync(notification);

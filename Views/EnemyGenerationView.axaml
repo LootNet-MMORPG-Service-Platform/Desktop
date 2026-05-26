@@ -133,6 +133,10 @@
                                                 Command="{Binding #Root.((vm:EnemyGenerationViewModel)DataContext).SelectProfileCommand}"
                                                 CommandParameter="{Binding}"/>
 
+                                        <Button Content="Edit"
+                                                Classes="detailsBtn"
+                                                Click="EditStageProfile_Click"/>
+
                                         <Button Content="Delete"
                                                 Classes="blockBtn"
                                                 Click="DeleteStageProfile_Click"/>
@@ -262,11 +266,20 @@
 
                                     </StackPanel>
 
-                                    <Button Grid.Column="1"
-                                            Content="Delete"
-                                            Classes="blockBtn"
-                                            VerticalAlignment="Center"
-                                            Click="DeleteEnemyClassProfile_Click"/>
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal"
+                                                Spacing="8"
+                                                VerticalAlignment="Center">
+
+                                        <Button Content="Edit"
+                                                Classes="detailsBtn"
+                                                Click="EditEnemyClassProfile_Click"/>
+
+                                        <Button Content="Delete"
+                                                Classes="blockBtn"
+                                                Click="DeleteEnemyClassProfile_Click"/>
+
+                                    </StackPanel>
 
                                 </Grid>
 
@@ -400,6 +413,10 @@
                                                         Command="{Binding #Root.((vm:EnemyGenerationViewModel)DataContext).SelectScenarioCommand}"
                                                         CommandParameter="{Binding}"/>
 
+                                                <Button Content="Edit"
+                                                        Classes="detailsBtn"
+                                                        Click="EditStageScenario_Click"/>
+
                                                 <Button Content="Delete"
                                                         Classes="blockBtn"
                                                         Click="DeleteStageScenario_Click"/>
@@ -491,11 +508,20 @@
 
                                             </StackPanel>
 
-                                            <Button Grid.Column="1"
-                                                    Content="Delete"
-                                                    Classes="blockBtn"
-                                                    VerticalAlignment="Center"
-                                                    Click="DeleteScenarioSlot_Click"/>
+                                            <StackPanel Grid.Column="1"
+                                                        Orientation="Horizontal"
+                                                        Spacing="8"
+                                                        VerticalAlignment="Center">
+
+                                                <Button Content="Edit"
+                                                        Classes="detailsBtn"
+                                                        Click="EditScenarioSlot_Click"/>
+
+                                                <Button Content="Delete"
+                                                        Classes="blockBtn"
+                                                        Click="DeleteScenarioSlot_Click"/>
+
+                                            </StackPanel>
 
                                         </Grid>
 

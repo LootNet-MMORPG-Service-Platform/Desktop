@@ -48,9 +48,23 @@ public static class GenerationDialogService
         return await EnemyGenerationDialogs.ShowCreateStageProfileDialogAsync(owner);
     }
 
+    public static async Task<CreateStageProfileDialogResult?> ShowEditStageProfileDialogAsync(
+        Window owner,
+        StageProfile profile)
+    {
+        return await EnemyGenerationDialogs.ShowEditStageProfileDialogAsync(owner, profile);
+    }
+
     public static async Task<CreateStageScenarioDialogResult?> ShowCreateStageScenarioDialogAsync(Window owner)
     {
         return await EnemyGenerationDialogs.ShowCreateStageScenarioDialogAsync(owner);
+    }
+
+    public static async Task<CreateStageScenarioDialogResult?> ShowEditStageScenarioDialogAsync(
+        Window owner,
+        StageScenario scenario)
+    {
+        return await EnemyGenerationDialogs.ShowEditStageScenarioDialogAsync(owner, scenario);
     }
 
     public static async Task<CreateScenarioSlotDialogResult?> ShowCreateScenarioSlotDialogAsync(
@@ -60,10 +74,29 @@ public static class GenerationDialogService
         return await EnemyGenerationDialogs.ShowCreateScenarioSlotDialogAsync(owner, classProfiles);
     }
 
+    public static async Task<CreateScenarioSlotDialogResult?> ShowEditScenarioSlotDialogAsync(
+        Window owner,
+        System.Collections.Generic.IEnumerable<EnemyClassProfile> classProfiles,
+        ScenarioSlot slot)
+    {
+        return await EnemyGenerationDialogs.ShowEditScenarioSlotDialogAsync(owner, classProfiles, slot);
+    }
+
     public static async Task<CreateEnemyClassProfileDialogResult?> ShowCreateEnemyClassProfileDialogAsync(
         Window owner,
         System.Collections.Generic.IEnumerable<StageProfile> generationProfiles)
     {
         return await EnemyGenerationDialogs.ShowCreateEnemyClassProfileDialogAsync(owner, generationProfiles);
+    }
+
+    public static async Task<CreateEnemyClassProfileDialogResult?> ShowEditEnemyClassProfileDialogAsync(
+        Window owner,
+        System.Collections.Generic.IEnumerable<StageProfile> generationProfiles,
+        EnemyClassProfile classProfile)
+    {
+        return await EnemyGenerationDialogs.ShowEditEnemyClassProfileDialogAsync(
+            owner,
+            generationProfiles,
+            classProfile);
     }
 }

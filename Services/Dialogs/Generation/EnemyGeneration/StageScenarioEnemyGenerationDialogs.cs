@@ -3,12 +3,29 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 using desktop_app.Models.EnemyGeneration;
+using System.Globalization;
 
 namespace desktop_app.Services.Dialogs.Generation.EnemyGeneration;
 
 public static class StageScenarioEnemyGenerationDialogs
 {
     public static async Task<CreateStageScenarioDialogResult?> ShowCreateStageScenarioDialogAsync(Window owner)
+    {
+        return await ShowStageScenarioDialogAsync(owner, "Create scenario", "Create");
+    }
+
+    public static async Task<CreateStageScenarioDialogResult?> ShowEditStageScenarioDialogAsync(
+        Window owner,
+        StageScenario scenario)
+    {
+        return await ShowStageScenarioDialogAsync(owner, "Edit scenario", "Save", scenario);
+    }
+
+    private static async Task<CreateStageScenarioDialogResult?> ShowStageScenarioDialogAsync(
+        Window owner,
+        string title,
+        string buttonText,
+        StageScenario? scenario = null)
     {
         var tcs = new TaskCompletionSource<CreateStageScenarioDialogResult?>();
 
@@ -22,7 +39,13 @@ public static class StageScenarioEnemyGenerationDialogs
             MinHeight = 34
         };
 
-        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        if (scenario != null)
+        {
+            enemyCountBox.Text = scenario.EnemyCount.ToString(CultureInfo.CurrentCulture);
+            weightBox.Text = scenario.Weight.ToString(CultureInfo.CurrentCulture);
+        }
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton(buttonText, "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
@@ -40,7 +63,7 @@ public static class StageScenarioEnemyGenerationDialogs
                     {
                         new TextBlock
                         {
-                            Text = "Create scenario",
+                            Text = title,
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
                             Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
@@ -61,7 +84,7 @@ public static class StageScenarioEnemyGenerationDialogs
         };
 
         var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 360);
-        dialog.Title = "Create scenario";
+        dialog.Title = title;
 
         cancelButton.Click += (_, _) =>
         {

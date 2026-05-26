@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -16,7 +18,31 @@ public static class EnemyClassProfileEnemyGenerationDialogs
         Window owner,
         IEnumerable<StageProfile> generationProfiles)
     {
+        return await ShowEnemyClassProfileDialogAsync(owner, generationProfiles, "Create class profile", "Create");
+    }
+
+    public static async Task<CreateEnemyClassProfileDialogResult?> ShowEditEnemyClassProfileDialogAsync(
+        Window owner,
+        IEnumerable<StageProfile> generationProfiles,
+        EnemyClassProfile classProfile)
+    {
+        return await ShowEnemyClassProfileDialogAsync(
+            owner,
+            generationProfiles,
+            "Edit class profile",
+            "Save",
+            classProfile);
+    }
+
+    private static async Task<CreateEnemyClassProfileDialogResult?> ShowEnemyClassProfileDialogAsync(
+        Window owner,
+        IEnumerable<StageProfile> generationProfiles,
+        string title,
+        string buttonText,
+        EnemyClassProfile? classProfile = null)
+    {
         var tcs = new TaskCompletionSource<CreateEnemyClassProfileDialogResult?>();
+        var generationProfilesList = generationProfiles.ToList();
 
         var nameBox = EnemyGenerationDialogs.CreateTextBox("Name");
         var classBox = new ComboBox
@@ -31,7 +57,7 @@ public static class EnemyClassProfileEnemyGenerationDialogs
         {
             Width = 230,
             PlaceholderText = "Generation profile",
-            ItemsSource = generationProfiles,
+            ItemsSource = generationProfilesList,
             HorizontalAlignment = HorizontalAlignment.Center,
             ItemTemplate = new FuncDataTemplate<StageProfile>((profile, _) =>
                 new TextBlock
@@ -49,7 +75,17 @@ public static class EnemyClassProfileEnemyGenerationDialogs
             MinHeight = 34
         };
 
-        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        if (classProfile != null)
+        {
+            nameBox.Text = classProfile.Name;
+            classBox.SelectedItem = classProfile.Class;
+            allowedColumnsBox.Text = string.Join(",", classProfile.AllowedColumns);
+            generationProfileBox.SelectedItem = generationProfilesList.FirstOrDefault(
+                x => x.Id == classProfile.GenerationProfileId);
+            weightBox.Text = classProfile.Weight.ToString(CultureInfo.CurrentCulture);
+        }
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton(buttonText, "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
@@ -67,7 +103,7 @@ public static class EnemyClassProfileEnemyGenerationDialogs
                     {
                         new TextBlock
                         {
-                            Text = "Create class profile",
+                            Text = title,
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
                             Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
@@ -94,7 +130,7 @@ public static class EnemyClassProfileEnemyGenerationDialogs
         };
 
         var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 575);
-        dialog.Title = "Create class profile";
+        dialog.Title = title;
 
         cancelButton.Click += (_, _) =>
         {

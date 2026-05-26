@@ -86,9 +86,23 @@ public static class DialogService
         return GenerationDialogService.ShowCreateStageProfileDialogAsync(owner);
     }
 
+    public static Task<CreateStageProfileDialogResult?> ShowEditStageProfileDialogAsync(
+        Window owner,
+        StageProfile profile)
+    {
+        return GenerationDialogService.ShowEditStageProfileDialogAsync(owner, profile);
+    }
+
     public static Task<CreateStageScenarioDialogResult?> ShowCreateStageScenarioDialogAsync(Window owner)
     {
         return GenerationDialogService.ShowCreateStageScenarioDialogAsync(owner);
+    }
+
+    public static Task<CreateStageScenarioDialogResult?> ShowEditStageScenarioDialogAsync(
+        Window owner,
+        StageScenario scenario)
+    {
+        return GenerationDialogService.ShowEditStageScenarioDialogAsync(owner, scenario);
     }
 
     public static Task<CreateScenarioSlotDialogResult?> ShowCreateScenarioSlotDialogAsync(
@@ -98,10 +112,29 @@ public static class DialogService
         return GenerationDialogService.ShowCreateScenarioSlotDialogAsync(owner, classProfiles);
     }
 
+    public static Task<CreateScenarioSlotDialogResult?> ShowEditScenarioSlotDialogAsync(
+        Window owner,
+        System.Collections.Generic.IEnumerable<EnemyClassProfile> classProfiles,
+        ScenarioSlot slot)
+    {
+        return GenerationDialogService.ShowEditScenarioSlotDialogAsync(owner, classProfiles, slot);
+    }
+
     public static Task<CreateEnemyClassProfileDialogResult?> ShowCreateEnemyClassProfileDialogAsync(
         Window owner,
         System.Collections.Generic.IEnumerable<StageProfile> generationProfiles)
     {
         return GenerationDialogService.ShowCreateEnemyClassProfileDialogAsync(owner, generationProfiles);
+    }
+
+    public static Task<CreateEnemyClassProfileDialogResult?> ShowEditEnemyClassProfileDialogAsync(
+        Window owner,
+        System.Collections.Generic.IEnumerable<StageProfile> generationProfiles,
+        EnemyClassProfile classProfile)
+    {
+        return GenerationDialogService.ShowEditEnemyClassProfileDialogAsync(
+            owner,
+            generationProfiles,
+            classProfile);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -80,6 +81,25 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         await LoadProfilesAsync();
     }
 
+    public async Task UpdateStageProfileAsync(
+        StageProfile profile,
+        string name,
+        int stageIndex,
+        double weight,
+        double falloff,
+        int threshold)
+    {
+        await _service.UpdateStageProfileAsync(
+            profile.Id,
+            name.Trim(),
+            stageIndex,
+            weight,
+            falloff,
+            threshold);
+
+        await LoadProfilesAsync();
+    }
+
     public async Task CreateStageScenarioAsync(int enemyCount, double weight)
     {
         if (SelectedProfile == null)
@@ -106,6 +126,21 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         await RefreshScenariosAsync();
     }
 
+    public async Task UpdateStageScenarioAsync(StageScenario scenario, int enemyCount, double weight)
+    {
+        await _service.UpdateStageScenarioAsync(
+            scenario.Id,
+            enemyCount,
+            weight);
+
+        var wasSelectedScenario = SelectedScenario?.Id == scenario.Id;
+
+        await RefreshScenariosAsync();
+
+        if (wasSelectedScenario)
+            SelectedScenario = Scenarios.FirstOrDefault(x => x.Id == scenario.Id);
+    }
+
     public async Task CreateScenarioSlotAsync(int position, Guid classProfileId, double weight)
     {
         if (SelectedScenario == null)
@@ -123,6 +158,21 @@ public partial class EnemyGenerationViewModel : ViewModelBase
     public async Task DeleteScenarioSlotAsync(ScenarioSlot slot)
     {
         await _service.DeleteScenarioSlotAsync(slot.Id);
+        await RefreshSlotsAsync();
+    }
+
+    public async Task UpdateScenarioSlotAsync(
+        ScenarioSlot slot,
+        int position,
+        Guid classProfileId,
+        double weight)
+    {
+        await _service.UpdateScenarioSlotAsync(
+            slot.Id,
+            position,
+            classProfileId,
+            weight);
+
         await RefreshSlotsAsync();
     }
 
@@ -149,6 +199,25 @@ public partial class EnemyGenerationViewModel : ViewModelBase
     public async Task DeleteEnemyClassProfileAsync(EnemyClassProfile classProfile)
     {
         await _service.DeleteEnemyClassProfileAsync(classProfile.Id);
+        await RefreshClassProfilesAsync();
+    }
+
+    public async Task UpdateEnemyClassProfileAsync(
+        EnemyClassProfile classProfile,
+        string name,
+        EnemyClass enemyClass,
+        List<int> allowedColumns,
+        Guid generationProfileId,
+        double weight)
+    {
+        await _service.UpdateEnemyClassProfileAsync(
+            classProfile.Id,
+            name.Trim(),
+            enemyClass,
+            allowedColumns,
+            generationProfileId,
+            weight);
+
         await RefreshClassProfilesAsync();
     }
 

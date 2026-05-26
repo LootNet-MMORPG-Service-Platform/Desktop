@@ -3,12 +3,29 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 using desktop_app.Models.EnemyGeneration;
+using System.Globalization;
 
 namespace desktop_app.Services.Dialogs.Generation.EnemyGeneration;
 
 public static class StageProfileEnemyGenerationDialogs
 {
     public static async Task<CreateStageProfileDialogResult?> ShowCreateStageProfileDialogAsync(Window owner)
+    {
+        return await ShowStageProfileDialogAsync(owner, "Create stage profile", "Create");
+    }
+
+    public static async Task<CreateStageProfileDialogResult?> ShowEditStageProfileDialogAsync(
+        Window owner,
+        StageProfile profile)
+    {
+        return await ShowStageProfileDialogAsync(owner, "Edit stage profile", "Save", profile);
+    }
+
+    private static async Task<CreateStageProfileDialogResult?> ShowStageProfileDialogAsync(
+        Window owner,
+        string title,
+        string buttonText,
+        StageProfile? profile = null)
     {
         var tcs = new TaskCompletionSource<CreateStageProfileDialogResult?>();
 
@@ -25,7 +42,16 @@ public static class StageProfileEnemyGenerationDialogs
             MinHeight = 34
         };
 
-        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        if (profile != null)
+        {
+            nameBox.Text = profile.Name;
+            stageIndexBox.Text = profile.StageIndex.ToString(CultureInfo.CurrentCulture);
+            weightBox.Text = profile.Weight.ToString(CultureInfo.CurrentCulture);
+            falloffBox.Text = profile.Falloff.ToString(CultureInfo.CurrentCulture);
+            thresholdBox.Text = profile.Threshold.ToString(CultureInfo.CurrentCulture);
+        }
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton(buttonText, "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
@@ -43,7 +69,7 @@ public static class StageProfileEnemyGenerationDialogs
                     {
                         new TextBlock
                         {
-                            Text = "Create stage profile",
+                            Text = title,
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
                             Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
@@ -70,7 +96,7 @@ public static class StageProfileEnemyGenerationDialogs
         };
 
         var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 600);
-        dialog.Title = "Create stage profile";
+        dialog.Title = title;
 
         cancelButton.Click += (_, _) =>
         {

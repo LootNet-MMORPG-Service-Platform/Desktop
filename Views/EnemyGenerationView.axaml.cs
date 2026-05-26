@@ -69,6 +69,35 @@ public partial class EnemyGenerationView : UserControl
             "Stage profile deleted.");
     }
 
+    private async void EditStageProfile_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: StageProfile profile })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowEditStageProfileDialogAsync(owner, profile);
+
+        if (result == null)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.UpdateStageProfileAsync(
+                profile,
+                result.Name,
+                result.StageIndex,
+                result.Weight,
+                result.Falloff,
+                result.Threshold),
+            "Stage profile updated.");
+    }
+
     private async void CreateStageScenario_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not EnemyGenerationViewModel vm)
@@ -115,6 +144,32 @@ public partial class EnemyGenerationView : UserControl
         await RunEnemyGenerationActionAsync(
             () => vm.DeleteStageScenarioAsync(scenario),
             "Scenario deleted.");
+    }
+
+    private async void EditStageScenario_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: StageScenario scenario })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowEditStageScenarioDialogAsync(owner, scenario);
+
+        if (result == null)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.UpdateStageScenarioAsync(
+                scenario,
+                result.EnemyCount,
+                result.Weight),
+            "Scenario updated.");
     }
 
     private async void CreateScenarioSlot_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -166,6 +221,33 @@ public partial class EnemyGenerationView : UserControl
             "Slot deleted.");
     }
 
+    private async void EditScenarioSlot_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: ScenarioSlot slot })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowEditScenarioSlotDialogAsync(owner, vm.ClassProfiles, slot);
+
+        if (result == null)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.UpdateScenarioSlotAsync(
+                slot,
+                result.Position,
+                result.ClassProfileId,
+                result.Weight),
+            "Slot updated.");
+    }
+
     private async void CreateEnemyClassProfile_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not EnemyGenerationViewModel vm)
@@ -215,6 +297,35 @@ public partial class EnemyGenerationView : UserControl
         await RunEnemyGenerationActionAsync(
             () => vm.DeleteEnemyClassProfileAsync(classProfile),
             "Class profile deleted.");
+    }
+
+    private async void EditEnemyClassProfile_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not EnemyGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: EnemyClassProfile classProfile })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowEditEnemyClassProfileDialogAsync(owner, vm.Profiles, classProfile);
+
+        if (result == null)
+            return;
+
+        await RunEnemyGenerationActionAsync(
+            () => vm.UpdateEnemyClassProfileAsync(
+                classProfile,
+                result.Name,
+                result.Class,
+                result.AllowedColumns,
+                result.GenerationProfileId,
+                result.Weight),
+            "Class profile updated.");
     }
 
     private async Task RunEnemyGenerationActionAsync(Func<Task> action, string? successMessage = null)

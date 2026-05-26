@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -14,14 +16,33 @@ public static class ScenarioSlotEnemyGenerationDialogs
         Window owner,
         IEnumerable<EnemyClassProfile> classProfiles)
     {
+        return await ShowScenarioSlotDialogAsync(owner, classProfiles, "Create slot", "Create");
+    }
+
+    public static async Task<CreateScenarioSlotDialogResult?> ShowEditScenarioSlotDialogAsync(
+        Window owner,
+        IEnumerable<EnemyClassProfile> classProfiles,
+        ScenarioSlot slot)
+    {
+        return await ShowScenarioSlotDialogAsync(owner, classProfiles, "Edit slot", "Save", slot);
+    }
+
+    private static async Task<CreateScenarioSlotDialogResult?> ShowScenarioSlotDialogAsync(
+        Window owner,
+        IEnumerable<EnemyClassProfile> classProfiles,
+        string title,
+        string buttonText,
+        ScenarioSlot? slot = null)
+    {
         var tcs = new TaskCompletionSource<CreateScenarioSlotDialogResult?>();
+        var classProfilesList = classProfiles.ToList();
 
         var positionBox = EnemyGenerationDialogs.CreateTextBox("Position");
         var classProfileBox = new ComboBox
         {
             Width = 230,
             PlaceholderText = "Class profile",
-            ItemsSource = classProfiles,
+            ItemsSource = classProfilesList,
             HorizontalAlignment = HorizontalAlignment.Center,
             ItemTemplate = new FuncDataTemplate<EnemyClassProfile>((profile, _) =>
                 new TextBlock
@@ -39,7 +60,14 @@ public static class ScenarioSlotEnemyGenerationDialogs
             MinHeight = 34
         };
 
-        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        if (slot != null)
+        {
+            positionBox.Text = slot.Position.ToString(CultureInfo.CurrentCulture);
+            classProfileBox.SelectedItem = classProfilesList.FirstOrDefault(x => x.Id == slot.ClassProfileId);
+            weightBox.Text = slot.Weight.ToString(CultureInfo.CurrentCulture);
+        }
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton(buttonText, "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
@@ -57,7 +85,7 @@ public static class ScenarioSlotEnemyGenerationDialogs
                     {
                         new TextBlock
                         {
-                            Text = "Create slot",
+                            Text = title,
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
                             Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
@@ -80,7 +108,7 @@ public static class ScenarioSlotEnemyGenerationDialogs
         };
 
         var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 400, 400);
-        dialog.Title = "Create slot";
+        dialog.Title = title;
 
         cancelButton.Click += (_, _) =>
         {

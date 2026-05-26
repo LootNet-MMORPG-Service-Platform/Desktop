@@ -18,9 +18,23 @@ public static class EnemyGenerationDialogs
         return await StageProfileEnemyGenerationDialogs.ShowCreateStageProfileDialogAsync(owner);
     }
 
+    public static async Task<CreateStageProfileDialogResult?> ShowEditStageProfileDialogAsync(
+        Window owner,
+        StageProfile profile)
+    {
+        return await StageProfileEnemyGenerationDialogs.ShowEditStageProfileDialogAsync(owner, profile);
+    }
+
     public static async Task<CreateStageScenarioDialogResult?> ShowCreateStageScenarioDialogAsync(Window owner)
     {
         return await StageScenarioEnemyGenerationDialogs.ShowCreateStageScenarioDialogAsync(owner);
+    }
+
+    public static async Task<CreateStageScenarioDialogResult?> ShowEditStageScenarioDialogAsync(
+        Window owner,
+        StageScenario scenario)
+    {
+        return await StageScenarioEnemyGenerationDialogs.ShowEditStageScenarioDialogAsync(owner, scenario);
     }
 
     public static async Task<CreateScenarioSlotDialogResult?> ShowCreateScenarioSlotDialogAsync(
@@ -30,6 +44,17 @@ public static class EnemyGenerationDialogs
         return await ScenarioSlotEnemyGenerationDialogs.ShowCreateScenarioSlotDialogAsync(owner, classProfiles);
     }
 
+    public static async Task<CreateScenarioSlotDialogResult?> ShowEditScenarioSlotDialogAsync(
+        Window owner,
+        IEnumerable<EnemyClassProfile> classProfiles,
+        ScenarioSlot slot)
+    {
+        return await ScenarioSlotEnemyGenerationDialogs.ShowEditScenarioSlotDialogAsync(
+            owner,
+            classProfiles,
+            slot);
+    }
+
     public static async Task<CreateEnemyClassProfileDialogResult?> ShowCreateEnemyClassProfileDialogAsync(
         Window owner,
         IEnumerable<StageProfile> generationProfiles)
@@ -37,6 +62,17 @@ public static class EnemyGenerationDialogs
         return await EnemyClassProfileEnemyGenerationDialogs.ShowCreateEnemyClassProfileDialogAsync(
             owner,
             generationProfiles);
+    }
+
+    public static async Task<CreateEnemyClassProfileDialogResult?> ShowEditEnemyClassProfileDialogAsync(
+        Window owner,
+        IEnumerable<StageProfile> generationProfiles,
+        EnemyClassProfile classProfile)
+    {
+        return await EnemyClassProfileEnemyGenerationDialogs.ShowEditEnemyClassProfileDialogAsync(
+            owner,
+            generationProfiles,
+            classProfile);
     }
 
     internal static TextBox CreateTextBox(string watermark)
