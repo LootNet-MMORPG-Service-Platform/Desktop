@@ -120,6 +120,30 @@ public static class EnemyGenerationDialogs
             return false;
         }
 
+        if (string.IsNullOrWhiteSpace(stageIndexValue))
+        {
+            error = "Stage index is required.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(weightValue))
+        {
+            error = "Weight is required.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(falloffValue))
+        {
+            error = "Falloff is required.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(thresholdValue))
+        {
+            error = "Threshold is required.";
+            return false;
+        }
+
         if (!int.TryParse(stageIndexValue, NumberStyles.Integer, CultureInfo.CurrentCulture, out var stageIndex) ||
             !TryParseDouble(weightValue, out var weight) ||
             !TryParseDouble(falloffValue, out var falloff) ||
@@ -174,6 +198,18 @@ public static class EnemyGenerationDialogs
         result = null;
         error = "";
 
+        if (string.IsNullOrWhiteSpace(enemyCountValue))
+        {
+            error = "Enemy count is required.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(weightValue))
+        {
+            error = "Weight is required.";
+            return false;
+        }
+
         if (!int.TryParse(enemyCountValue, NumberStyles.Integer, CultureInfo.CurrentCulture, out var enemyCount))
         {
             error = "Enter valid numeric values.";
@@ -217,6 +253,12 @@ public static class EnemyGenerationDialogs
         result = null;
         error = "";
 
+        if (string.IsNullOrWhiteSpace(positionValue))
+        {
+            error = "Position is required.";
+            return false;
+        }
+
         if (!int.TryParse(positionValue, NumberStyles.Integer, CultureInfo.CurrentCulture, out var position))
         {
             error = "Enter valid numeric values.";
@@ -232,6 +274,12 @@ public static class EnemyGenerationDialogs
         if (classProfile == null || classProfile.Id == Guid.Empty)
         {
             error = "Class profile is required.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(weightValue))
+        {
+            error = "Weight is required.";
             return false;
         }
 
@@ -298,6 +346,12 @@ public static class EnemyGenerationDialogs
         if (!TryParseAllowedColumns(allowedColumnsValue, out var allowedColumns, out var allowedColumnsError))
         {
             error = allowedColumnsError;
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(weightValue))
+        {
+            error = "Weight is required.";
             return false;
         }
 

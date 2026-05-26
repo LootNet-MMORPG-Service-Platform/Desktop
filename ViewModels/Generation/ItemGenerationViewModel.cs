@@ -82,7 +82,7 @@ public partial class ItemGenerationViewModel : ViewModelBase
         catch (HttpRequestException)
         {
             StatusMessage = "Failed to load profile details.";
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {
@@ -116,7 +116,7 @@ public partial class ItemGenerationViewModel : ViewModelBase
         catch (HttpRequestException)
         {
             StatusMessage = "Failed to load profiles.";
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {
@@ -153,6 +153,21 @@ public partial class ItemGenerationViewModel : ViewModelBase
         RefreshDetailsState();
 
         await LoadProfilesAsync();
+    }
+
+    public async Task UpdateSelectedProfileAsync(string name)
+    {
+        if (SelectedProfile == null || string.IsNullOrWhiteSpace(name))
+            return;
+
+        var profileId = SelectedProfile.Id;
+
+        await _service.UpdateProfileAsync(profileId, name.Trim());
+
+        await LoadProfilesAsync();
+
+        SelectedProfile = Profiles.FirstOrDefault(profile => profile.Id == profileId);
+        RefreshDetailsState();
     }
 
     public async Task CreateRuleAsync(ItemCategory category, WeaponType? weaponType, ArmorType? armorType, bool isFallback)
@@ -265,6 +280,24 @@ public partial class ItemGenerationViewModel : ViewModelBase
         }
     }
 
+    public async Task UpdateParameterAsync(
+        GenerationParameter parameter,
+        ItemParameter itemParameter,
+        List<CreateSegmentInput> segments)
+    {
+        var rule = Rules.FirstOrDefault(r => r.Parameters.Any(p => p.Id == parameter.Id));
+
+        await _service.UpdateParameterAsync(
+            parameter.Id,
+            itemParameter,
+            segments);
+
+        if (rule != null)
+        {
+            await RefreshParametersAsync(rule);
+        }
+    }
+
     public async Task CreateElementAsync(
         GenerationRule rule,
         ItemElementType elementType,
@@ -283,6 +316,24 @@ public partial class ItemGenerationViewModel : ViewModelBase
         var rule = Rules.FirstOrDefault(r => r.Elements.Any(e => e.Id == element.Id));
 
         await _service.DeleteElementAsync(element.Id);
+
+        if (rule != null)
+        {
+            await RefreshElementsAsync(rule);
+        }
+    }
+
+    public async Task UpdateElementAsync(
+        GenerationElement element,
+        ItemElementType elementType,
+        List<CreateSegmentInput> segments)
+    {
+        var rule = Rules.FirstOrDefault(r => r.Elements.Any(e => e.Id == element.Id));
+
+        await _service.UpdateElementAsync(
+            element.Id,
+            elementType,
+            segments);
 
         if (rule != null)
         {
@@ -363,13 +414,20 @@ public partial class ItemGenerationViewModel : ViewModelBase
     {
         var parameters = await _service.GetParametersAsync(rule.Id);
 
-        rule.Parameters = parameters ?? new List<GenerationParameter>();
-
         var ruleIndex = Rules.IndexOf(rule);
 
         if (ruleIndex >= 0)
         {
-            Rules[ruleIndex] = rule;
+            Rules[ruleIndex] = new GenerationRule
+            {
+                Id = rule.Id,
+                Category = rule.Category,
+                WeaponType = rule.WeaponType,
+                ArmorType = rule.ArmorType,
+                IsFallback = rule.IsFallback,
+                Parameters = parameters ?? new List<GenerationParameter>(),
+                Elements = rule.Elements
+            };
         }
 
         RefreshDetailsState();
@@ -379,13 +437,20 @@ public partial class ItemGenerationViewModel : ViewModelBase
     {
         var elements = await _service.GetElementsAsync(rule.Id);
 
-        rule.Elements = elements ?? new List<GenerationElement>();
-
         var ruleIndex = Rules.IndexOf(rule);
 
         if (ruleIndex >= 0)
         {
-            Rules[ruleIndex] = rule;
+            Rules[ruleIndex] = new GenerationRule
+            {
+                Id = rule.Id,
+                Category = rule.Category,
+                WeaponType = rule.WeaponType,
+                ArmorType = rule.ArmorType,
+                IsFallback = rule.IsFallback,
+                Parameters = rule.Parameters,
+                Elements = elements ?? new List<GenerationElement>()
+            };
         }
 
         RefreshDetailsState();

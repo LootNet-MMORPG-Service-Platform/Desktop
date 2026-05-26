@@ -225,7 +225,7 @@ public partial class EconomyViewModel : ViewModelBase
         catch (HttpRequestException ex) when (ex.StatusCode == null)
         {
             StatusMessage = "Failed to load economy data.";
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (HttpRequestException)
         {

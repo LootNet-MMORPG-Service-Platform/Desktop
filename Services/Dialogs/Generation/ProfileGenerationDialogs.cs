@@ -9,15 +9,31 @@ public static class ProfileGenerationDialogs
 {
     public static async Task<string?> ShowCreateProfileDialogAsync(Window owner)
     {
+        return await ShowProfileDialogAsync(owner, "Create generation profile", "Create profile", "Create");
+    }
+
+    public static async Task<string?> ShowEditProfileDialogAsync(Window owner, string currentName)
+    {
+        return await ShowProfileDialogAsync(owner, "Edit generation profile", "Edit profile", "Save", currentName);
+    }
+
+    private static async Task<string?> ShowProfileDialogAsync(
+        Window owner,
+        string heading,
+        string title,
+        string buttonText,
+        string? currentName = null)
+    {
         var tcs = new TaskCompletionSource<string?>();
 
         var textBox = new TextBox
         {
             Width = 220,
-            Watermark = "Profile name"
+            Watermark = "Profile name",
+            Text = currentName
         };
 
-        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        var createButton = GenerationDialogUiFactory.CreateDialogButton(buttonText, "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
         var errorText = new TextBlock
         {
@@ -42,7 +58,7 @@ public static class ProfileGenerationDialogs
                     {
                         new TextBlock
                         {
-                            Text = "Create generation profile",
+                            Text = heading,
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
                             Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
@@ -60,7 +76,7 @@ public static class ProfileGenerationDialogs
         };
 
         var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 360, 205);
-        dialog.Title = "Create profile";
+        dialog.Title = title;
 
         cancelButton.Click += (_, _) =>
         {

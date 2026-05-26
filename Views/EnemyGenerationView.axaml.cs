@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.VisualTree;
 using desktop_app.Models.EnemyGeneration;
 using desktop_app.Services;
@@ -344,7 +344,7 @@ public partial class EnemyGenerationView : UserControl
         }
         catch (HttpRequestException)
         {
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {

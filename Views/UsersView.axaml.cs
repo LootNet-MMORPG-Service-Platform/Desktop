@@ -102,7 +102,7 @@ public partial class UsersView : UserControl
         }
         catch (HttpRequestException)
         {
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {

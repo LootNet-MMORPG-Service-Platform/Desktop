@@ -61,6 +61,26 @@ public partial class ItemGenerationView : UserControl
             "Profile created.");
     }
 
+    private async void EditProfile_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not ItemGenerationViewModel vm || vm.SelectedProfile == null)
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var name = await DialogService.ShowEditProfileDialogAsync(owner, vm.SelectedProfile);
+
+        if (string.IsNullOrWhiteSpace(name))
+            return;
+
+        await RunGenerationActionAsync(
+            () => vm.UpdateSelectedProfileAsync(name),
+            "Profile updated.");
+    }
+
     private async void AddRule_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not ItemGenerationViewModel vm)
@@ -269,6 +289,32 @@ public partial class ItemGenerationView : UserControl
             "Parameter deleted.");
     }
 
+    private async void EditParameter_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not ItemGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: GenerationParameter parameter })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowEditParameterDialogAsync(owner, parameter);
+
+        if (result == null)
+            return;
+
+        await RunGenerationActionAsync(
+            () => vm.UpdateParameterAsync(
+                parameter,
+                result.Parameter,
+                result.Segments),
+            "Parameter updated.");
+    }
+
     private async void AddElement_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (DataContext is not ItemGenerationViewModel vm)
@@ -321,6 +367,32 @@ public partial class ItemGenerationView : UserControl
             "Element deleted.");
     }
 
+    private async void EditElement_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not ItemGenerationViewModel vm)
+            return;
+
+        if (sender is not Button { DataContext: GenerationElement element })
+            return;
+
+        var owner = this.GetVisualRoot() as Window;
+
+        if (owner == null)
+            return;
+
+        var result = await DialogService.ShowEditElementDialogAsync(owner, element);
+
+        if (result == null)
+            return;
+
+        await RunGenerationActionAsync(
+            () => vm.UpdateElementAsync(
+                element,
+                result.ElementType,
+                result.Segments),
+            "Element updated.");
+    }
+
     private async Task RunGenerationActionAsync(Func<Task> action, string? successMessage = null)
     {
         if (_isActionRunning)
@@ -337,7 +409,7 @@ public partial class ItemGenerationView : UserControl
         }
         catch (HttpRequestException)
         {
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {

@@ -110,6 +110,19 @@ public class ItemGenerationAdminService
         response.EnsureSuccessStatusCode();
     }
 
+    public async Task UpdateProfileAsync(Guid profileId, string name)
+    {
+        var response = await _httpClient.PutAsJsonAsync(
+            "/api/admin/generation/profiles",
+            new
+            {
+                id = profileId,
+                name
+            });
+
+        response.EnsureSuccessStatusCode();
+    }
+
     public async Task CreateRuleAsync(Guid profileId, ItemCategory category, WeaponType? weaponType, ArmorType? armorType, bool isFallback)
     {
         var response = await _httpClient.PostAsJsonAsync(
@@ -179,6 +192,23 @@ public class ItemGenerationAdminService
         response.EnsureSuccessStatusCode();
     }
 
+    public async Task UpdateParameterAsync(
+        Guid parameterId,
+        ItemParameter parameter,
+        List<CreateSegmentInput> segments)
+    {
+        var response = await _httpClient.PutAsJsonAsync(
+            "/api/admin/generation/parameters",
+            new
+            {
+                id = parameterId,
+                parameter,
+                segments
+            });
+
+        response.EnsureSuccessStatusCode();
+    }
+
     public async Task<List<GenerationElement>?> GetElementsAsync(Guid ruleId)
     {
         return await _httpClient.GetFromJsonAsync<List<GenerationElement>>(
@@ -205,6 +235,23 @@ public class ItemGenerationAdminService
     {
         var response = await _httpClient.DeleteAsync(
             $"/api/admin/generation/elements/{elementId}");
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task UpdateElementAsync(
+        Guid elementId,
+        ItemElementType elementType,
+        List<CreateSegmentInput> segments)
+    {
+        var response = await _httpClient.PutAsJsonAsync(
+            "/api/admin/generation/elements",
+            new
+            {
+                id = elementId,
+                elementType,
+                segments
+            });
 
         response.EnsureSuccessStatusCode();
     }

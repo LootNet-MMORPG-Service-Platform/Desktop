@@ -131,7 +131,7 @@ public partial class LogsViewModel : ViewModelBase
         catch (HttpRequestException ex) when (ex.StatusCode == null)
         {
             StatusMessage = "Failed to load logs.";
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {

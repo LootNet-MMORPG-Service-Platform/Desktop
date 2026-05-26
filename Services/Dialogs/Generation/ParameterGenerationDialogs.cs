@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -13,6 +14,22 @@ namespace desktop_app.Services.Dialogs.Generation;
 public static class ParameterGenerationDialogs
 {
     public static async Task<CreateParameterDialogResult?> ShowCreateParameterDialogAsync(Window owner)
+    {
+        return await ShowParameterDialogAsync(owner, "Create parameter", "Create");
+    }
+
+    public static async Task<CreateParameterDialogResult?> ShowEditParameterDialogAsync(
+        Window owner,
+        GenerationParameter parameter)
+    {
+        return await ShowParameterDialogAsync(owner, "Edit parameter", "Save", parameter);
+    }
+
+    private static async Task<CreateParameterDialogResult?> ShowParameterDialogAsync(
+        Window owner,
+        string title,
+        string buttonText,
+        GenerationParameter? parameter = null)
     {
         var tcs = new TaskCompletionSource<CreateParameterDialogResult?>();
 
@@ -52,7 +69,13 @@ public static class ParameterGenerationDialogs
             MinHeight = 34
         };
 
-        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        if (parameter != null)
+        {
+            parameterBox.SelectedItem = parameter.Parameter;
+            ApplySegmentValues(parameter.Segments.FirstOrDefault(), minBox, maxBox, weightBox);
+        }
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton(buttonText, "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
@@ -70,7 +93,7 @@ public static class ParameterGenerationDialogs
                     {
                         new TextBlock
                         {
-                            Text = "Create parameter",
+                            Text = title,
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
                             Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
@@ -91,7 +114,7 @@ public static class ParameterGenerationDialogs
         };
 
         var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 360, 400);
-        dialog.Title = "Create parameter";
+        dialog.Title = title;
 
         cancelButton.Click += (_, _) =>
         {
@@ -136,6 +159,22 @@ public static class ParameterGenerationDialogs
 
     public static async Task<CreateElementDialogResult?> ShowCreateElementDialogAsync(Window owner)
     {
+        return await ShowElementDialogAsync(owner, "Create element", "Create");
+    }
+
+    public static async Task<CreateElementDialogResult?> ShowEditElementDialogAsync(
+        Window owner,
+        GenerationElement element)
+    {
+        return await ShowElementDialogAsync(owner, "Edit element", "Save", element);
+    }
+
+    private static async Task<CreateElementDialogResult?> ShowElementDialogAsync(
+        Window owner,
+        string title,
+        string buttonText,
+        GenerationElement? element = null)
+    {
         var tcs = new TaskCompletionSource<CreateElementDialogResult?>();
 
         var elements = Enum.GetValues<ItemElementType>();
@@ -174,7 +213,13 @@ public static class ParameterGenerationDialogs
             MinHeight = 34
         };
 
-        var createButton = GenerationDialogUiFactory.CreateDialogButton("Create", "detailsBtn");
+        if (element != null)
+        {
+            elementBox.SelectedItem = element.ElementType;
+            ApplySegmentValues(element.Segments.FirstOrDefault(), minBox, maxBox, weightBox);
+        }
+
+        var createButton = GenerationDialogUiFactory.CreateDialogButton(buttonText, "detailsBtn");
         var cancelButton = GenerationDialogUiFactory.CreateDialogButton("Cancel", "dialogCancelBtn");
 
         var content = new Grid
@@ -192,7 +237,7 @@ public static class ParameterGenerationDialogs
                     {
                         new TextBlock
                         {
-                            Text = "Create element",
+                            Text = title,
                             FontSize = 16,
                             FontWeight = FontWeight.SemiBold,
                             Foreground = GenerationDialogUiFactory.GetBrush("TextPrimaryBrush", Brushes.Black),
@@ -213,7 +258,7 @@ public static class ParameterGenerationDialogs
         };
 
         var dialog = GenerationDialogUiFactory.CreateBaseDialog(content, 360, 400);
-        dialog.Title = "Create element";
+        dialog.Title = title;
 
         cancelButton.Click += (_, _) =>
         {
@@ -254,6 +299,20 @@ public static class ParameterGenerationDialogs
 
         await dialog.ShowDialog(owner);
         return await tcs.Task;
+    }
+
+    private static void ApplySegmentValues(
+        Segment? segment,
+        TextBox minBox,
+        TextBox maxBox,
+        TextBox weightBox)
+    {
+        if (segment == null)
+            return;
+
+        minBox.Text = segment.Min.ToString(CultureInfo.CurrentCulture);
+        maxBox.Text = segment.Max.ToString(CultureInfo.CurrentCulture);
+        weightBox.Text = segment.Weight.ToString(CultureInfo.CurrentCulture);
     }
 
     private static bool TryCreateSegment(

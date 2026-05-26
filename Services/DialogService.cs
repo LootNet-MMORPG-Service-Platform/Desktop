@@ -51,6 +51,11 @@ public static class DialogService
         return GenerationDialogService.ShowCreateProfileDialogAsync(owner);
     }
 
+    public static Task<string?> ShowEditProfileDialogAsync(Window owner, GenerationProfile profile)
+    {
+        return GenerationDialogService.ShowEditProfileDialogAsync(owner, profile);
+    }
+
     public static Task<CreateRuleDialogResult?> ShowCreateRuleDialogAsync(Window owner)
     {
         return GenerationDialogService.ShowCreateRuleDialogAsync(owner);
@@ -76,9 +81,23 @@ public static class DialogService
         return GenerationDialogService.ShowCreateParameterDialogAsync(owner);
     }
 
+    public static Task<CreateParameterDialogResult?> ShowEditParameterDialogAsync(
+        Window owner,
+        GenerationParameter parameter)
+    {
+        return GenerationDialogService.ShowEditParameterDialogAsync(owner, parameter);
+    }
+
     public static Task<CreateElementDialogResult?> ShowCreateElementDialogAsync(Window owner)
     {
         return GenerationDialogService.ShowCreateElementDialogAsync(owner);
+    }
+
+    public static Task<CreateElementDialogResult?> ShowEditElementDialogAsync(
+        Window owner,
+        GenerationElement element)
+    {
+        return GenerationDialogService.ShowEditElementDialogAsync(owner, element);
     }
 
     public static Task<CreateStageProfileDialogResult?> ShowCreateStageProfileDialogAsync(Window owner)

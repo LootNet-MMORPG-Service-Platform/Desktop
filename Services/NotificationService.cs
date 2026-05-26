@@ -34,7 +34,7 @@ public class NotificationService
     {
         if (exception is HttpRequestException { StatusCode: null })
         {
-            ShowError("API unavailable. Check if the server is running.");
+            ShowError("API unavailable. Check if the server is running and verify your internet connection.");
             return;
         }
 

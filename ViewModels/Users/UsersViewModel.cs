@@ -147,7 +147,7 @@ public partial class UsersViewModel : ViewModelBase
         catch (HttpRequestException)
         {
             StatusMessage = "Failed to load users.";
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
             return;
         }
         catch (Exception)
@@ -219,6 +219,8 @@ public partial class UsersViewModel : ViewModelBase
         if (user.Id == _currentUserId)
             return;
 
+        var selectedUserId = SelectedUser?.Id;
+
         user.IsBusy = true;
 
         try
@@ -232,7 +234,10 @@ public partial class UsersViewModel : ViewModelBase
             });
 
             if (changed)
+            {
                 await LoadUsersAsync();
+                SelectedUser = Users.FirstOrDefault(u => u.Id == selectedUserId);
+            }
         }
         finally
         {
@@ -393,7 +398,7 @@ public partial class UsersViewModel : ViewModelBase
         }
         catch (HttpRequestException)
         {
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
             return false;
         }
         catch (Exception)

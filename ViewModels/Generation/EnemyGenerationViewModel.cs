@@ -261,7 +261,7 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         catch (HttpRequestException)
         {
             StatusMessage = "Failed to load enemy generation profiles.";
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {
@@ -287,7 +287,7 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         catch (HttpRequestException)
         {
             StatusMessage = "Failed to load stage profile details.";
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {
@@ -301,6 +301,14 @@ public partial class EnemyGenerationViewModel : ViewModelBase
     {
         try
         {
+            if (SelectedScenario?.Id == scenario.Id)
+            {
+                SelectedScenario = null;
+                Slots.Clear();
+                RefreshDetailsState();
+                return;
+            }
+
             SelectedScenario = scenario;
 
             Slots.Clear();
@@ -322,7 +330,7 @@ public partial class EnemyGenerationViewModel : ViewModelBase
         catch (HttpRequestException)
         {
             StatusMessage = "Failed to load scenario slots.";
-            NotificationService.Instance.ShowError("API unavailable. Check if the server is running.");
+            NotificationService.Instance.ShowError("API unavailable. Check if the server is running and verify your internet connection.");
         }
         catch (Exception)
         {
