@@ -17,6 +17,9 @@ public class NotificationService
 
     public ObservableCollection<NotificationMessage> Notifications { get; } = new();
 
+    private string _lastTitle = "";
+    private string _lastMessage = "";
+
     public void ShowSuccess(string message, string title = "Success") =>
         Show(NotificationType.Success, title, message);
 
@@ -49,8 +52,17 @@ public class NotificationService
             Message = message
         };
 
-        Dispatcher.UIThread.Post(() => Notifications.Add(notification));
-        _ = DismissLaterAsync(notification);
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (_lastTitle == title && _lastMessage == message)
+                return;
+
+            _lastTitle = title;
+            _lastMessage = message;
+
+            Notifications.Add(notification);
+            _ = DismissLaterAsync(notification);
+        });
     }
 
     private async Task DismissLaterAsync(NotificationMessage notification)

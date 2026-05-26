@@ -25,11 +25,13 @@ public static class CommonDialogService
         string message,
         string confirmText = "Confirm")
     {
+        _ = confirmText;
+
         var tcs = new TaskCompletionSource<bool>();
 
         var confirmButton = new Button
         {
-            Content = confirmText,
+            Content = "Confirm",
             Width = 90,
             Height = 36,
             Classes = { "dialogConfirmBtn" }
