@@ -10,7 +10,13 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <Compile Remove="Desktop.Tests\**\*.cs" />
+        <EmbeddedResource Remove="Desktop.Tests\**\*" />
+        <None Remove="Desktop.Tests\**\*" />
+    </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.12" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.12" />

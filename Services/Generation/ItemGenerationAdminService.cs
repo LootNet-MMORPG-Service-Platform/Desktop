@@ -12,12 +12,11 @@ public class ItemGenerationAdminService
 {
     private readonly HttpClient _httpClient;
 
-    public ItemGenerationAdminService(string token)
+    public ItemGenerationAdminService(string token, HttpClient? httpClient = null)
     {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = ApiSettings.BaseUrl
-        };
+        _httpClient = httpClient ?? new HttpClient();
+
+        _httpClient.BaseAddress ??= ApiSettings.BaseUrl;
 
         _httpClient.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);

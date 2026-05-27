@@ -11,12 +11,11 @@ public class AdminService
 {
     private readonly HttpClient _httpClient;
 
-    public AdminService(string token)
+    public AdminService(string token, HttpClient? httpClient = null)
     {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = ApiSettings.BaseUrl
-        };
+        _httpClient = httpClient ?? new HttpClient();
+
+        _httpClient.BaseAddress ??= ApiSettings.BaseUrl;
 
         _httpClient.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
