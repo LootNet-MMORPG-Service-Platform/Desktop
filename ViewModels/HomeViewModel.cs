@@ -58,6 +58,8 @@ public partial class HomeViewModel : ViewModelBase
     public bool CanAccessUsers => Role == "SuperAdmin" || Role == "Admin";
     public bool CanAccessItemGeneration => Role == "SuperAdmin" || Role == "GameModerator";
     public bool CanAccessEnemyGeneration => Role == "SuperAdmin" || Role == "GameModerator";
+    public bool CanAccessEconomy => Role == "SuperAdmin" || Role == "Admin";
+    public bool CanAccessLogs => Role == "SuperAdmin" || Role == "Admin";
 
     public bool IsDashboardActive => ActiveSection == HomeSection.Dashboard;
     public bool IsUsersActive => ActiveSection == HomeSection.Users;
@@ -276,5 +278,7 @@ public partial class HomeViewModel : ViewModelBase
         OnPropertyChanged(nameof(CanAccessUsers));
         OnPropertyChanged(nameof(CanAccessItemGeneration));
         OnPropertyChanged(nameof(CanAccessEnemyGeneration));
+        OnPropertyChanged(nameof(CanAccessEconomy));
+        OnPropertyChanged(nameof(CanAccessLogs));
     }
 }

@@ -97,12 +97,14 @@
                 <Button Classes.navBtn="True"
                         Classes.active="{Binding IsEconomyActive}"
                         Content="Economy"
-                        Command="{Binding ShowEconomyCommand}"/>
+                        Command="{Binding ShowEconomyCommand}"
+                        IsVisible="{Binding CanAccessEconomy}"/>
 
                 <Button Classes.navBtn="True"
                         Classes.active="{Binding IsLogsActive}"
                         Content="Logs"
-                        Command="{Binding ShowLogsCommand}"/>
+                        Command="{Binding ShowLogsCommand}"
+                        IsVisible="{Binding CanAccessLogs}"/>
             </StackPanel>
         </Border>
 
